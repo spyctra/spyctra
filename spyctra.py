@@ -27,6 +27,7 @@ CHANGE LOG
 2025-09-05 Initial release
 """
 
+
 debugger = 0 #prints sum of abs of all data after each method
 
 class spyctra():
