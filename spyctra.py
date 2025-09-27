@@ -21,6 +21,7 @@ import sys
 """
 CHANGE LOG
 
+2025-09-27 find_ becomes get_ to make commands easier to remember
 2025-09-16 Updated plot formatting
 2025-09-15 Fixed negative shift behavior, listprint format
 2025-09-05 Initial release
@@ -36,16 +37,17 @@ class spyctra():
         Spyctras store a list of np.arrays as self.data and other useful data
         Assumes uniformly sampled data.
 
-        Items in the dictionary self.meta must be lists to aid in deleting/appending
+        Items in the dictionary self.meta should be lists to aid in deleting/appending
 
-        Get/Find naming convention
-            get* return existing data
-            find* performs a calculation before returning data
+        get/calc naming convention
+            get* returns a fact about the existing data
+            calc* performs a calculation on the data using a subjective algorithm
 
         Raises:
             ValueError: No "data" kwarg passed
             ValueError: No "delta" kwarg passed
-        2025-09-07
+
+        2025-09-27
         """
 
         self.c0 = [] #list of times used to time methods
@@ -107,6 +109,7 @@ class spyctra():
 
         Raises:
             TypeError if ind isn't an allowed type
+
         2025-09-07
         """
 
@@ -147,22 +150,6 @@ class spyctra():
         return f'{" "*3*len(self.c0)}'
 
 
-    def t0(self):
-        #Set internal timestamp
-        return self.c0.append(time())
-
-
-    def t1(self):
-        #Print elapsed time of operation
-        print(f'{self.level}   Done: {1000*(time()-self.c0.pop(-1)):.1f} ms')
-
-        if debugger:
-            self.debug(1)
-
-        if len(self.c0) == 0:
-            print()
-
-
     def add(self, new_spyctra):
         """
         Add data from a second spyctra to self.
@@ -171,10 +158,11 @@ class spyctra():
 
         Args:
             new_spyctra: the new spyctra to be added to self.
+
         2025-09-06
         """
 
-        a = new_spyctra.copy(quiet=1) #Need to copy here to work with original
+        a = new_spyctra.copy(quiet=1) #Need to copy here to continue working with original
 
         if self.data == []: #Check if current spyctra is empty
             self.__dict__.update(a.__dict__)
@@ -190,12 +178,8 @@ class spyctra():
                         self.meta[item] += a.meta[item]
                     else:
                         print(f'WARNING: deleting {item} from meta')
+
                         del self.meta[item]
-
-
-    def check_space(self, space):
-        if self.space != space:
-            raise ValueError(f'ERROR: Expecting self.space={space}, but self.space is {self.space}')
 
 
     def copy(self, *user_copy, quiet=0):
@@ -211,6 +195,7 @@ class spyctra():
 
         Raises:
             TypeError: if type(user_copy) isn't allowed
+
         2025-09-07
         """
 
@@ -259,16 +244,6 @@ class spyctra():
         return a
 
 
-    def debug(self, last=0):
-        sums = [np.sum(np.abs(d)) for d in self.data]
-
-        if last == 0:
-            for i, summ in enumerate(sums):
-                print(i, summ)
-
-        print(np.sum(sums))
-
-
     def decimate(self, number=0):
         """
         Averages sequential spyctra and their metadata.
@@ -278,7 +253,8 @@ class spyctra():
 
         Args:
             number: The number of spyctra to be added together
-        2025-09-06
+
+        2025-09-27
         """
 
         if number == 0:
@@ -291,7 +267,7 @@ class spyctra():
             print(f'{self.level} Decimating by {number}, creating {self.count}/{number}={new_count} spyctra of length {self.points}:')
 
             if self.count%number != 0:
-                print(f'WARNING: {self.count = } % {number} = {self.count%number}')
+                print(f'WARNING: self.count%number = {self.count}%{number} = {self.count%number}')
                 print(f'WARNING: Will reduce number of spyctra to {new_count}')
 
             for i in range(new_count):
@@ -315,6 +291,8 @@ class spyctra():
 
         Args:
             FWHM: The decay constant expressed as a FWHM in Hz.
+
+        2025-09-27
         """
 
         self.t0()
@@ -342,6 +320,7 @@ class spyctra():
             divide: If equal to 1 determines whether first point in x domain
                     should be normalized. Holdover from V0...
             rezero: fftshift the data. Default behavior.
+
         2025-09-06
         """
 
@@ -391,72 +370,76 @@ class spyctra():
         self.t1()
 
 
-    def find_df(self):
+    def get_df(self):
         """
-        Quickly find off-resonance in frequency domain using the location of the peak magnitude
+        Quickly determine the off-resonance (delta-f) in frequency domain using the location
+        of the peak magnitude
 
         Returns:
             np.array of off-resonances in Hz. Faster than np.fromiter
 
         Raises:
             ValueError when attempted in time domain
-        2025-09-06
+
+        2025-09-27
         """
 
         self.t0()
 
-        print(f'{self.level} Finding off-resonance (F(act)-F(rf)) with raw resolution {self.delta:.3f} Hz:')
+        print(f'{self.level} Calculating delta-f (F(act)-F(rf)) with precision {self.delta:.3f} Hz:')
 
         self.check_space('Hz')
 
-        dfs = np.array([self.start + self.delta*peak for peak in self.find_peak('M')[0]])
+        dfs = np.array([self.start + self.delta*peak for peak in self.get_peak('M')[0]])
 
         self.t1()
 
         return dfs
 
 
-    def find_freq(self):
+    def get_freq(self):
         """
-        Quickly determine the signal frequency using self.freq and find_df()
+        Roughly determine the signal frequency using self.freq and get_df()
 
         Returns:
             np.array of estimated signal frequencies in Hz
+
         2025-09-06
         """
 
         self.t0()
 
-        print(f'{self.level} Finding frequency of signal with accuracy {self.delta:.3f} Hz:')
+        print(f'{self.level} Calculating frequency of signal with precision {self.delta:.3f} Hz:')
 
-        freq = self.freq + self.find_df()
+        freq = self.freq + self.get_df()
 
         self.t1()
 
         return freq
 
 
-    def find_linewidth(self, comp='R'):
+    def get_linewidth(self, comp='R'):
         """
-        Quickly determine the linewidth (the Full-Width-at-Half-Max) of the specified component of the signal
+        Quickly determine the linewidth (Full-Width-at-Half-Max) of the specified component of the signal
 
         Returns:
             np.array of linewidths in Hz
 
         Raises:
             ValueError: Errors if data is in time domain
+
         2025-09-06
         """
 
         self.t0()
 
-        print(f'{self.level} Finding linewidths of {comp}:')
+        print(f'{self.level} Calculating linewidths of {comp} with precision {self.delta:.3f} Hz:')
 
         check_component(comp)
         self.check_space('Hz')
 
         linewidths = np.zeros(self.count)
-        peaks, vals = self.find_peak(comp)
+        peaks, vals = self.get_peak(comp)
 
         func = get_component_function(comp)
 
@@ -485,21 +468,23 @@ class spyctra():
         return np.array(linewidths)
 
 
-    def find_noise(self, fraction=4):
+    def get_noise(self, fraction=4):
         """
-        Calculate the RMS of the magnitude of noise in the frequency domain using first and last 1/fraction of the data
+        Calculate the RMS of the magnitude of noise in the frequency domain using
+        first and last 1/fraction of the data
 
         Returns:
             array of noise measurements
 
         Raises:
             ValueError: if performed in time domain
+
         2025-09-06
         """
 
         self.t0()
 
-        print(f'{self.level} Finding noise using first and last 1/{fraction} of data:')
+        print(f'{self.level} Calculating noise using first and last 1/{fraction} of data:')
 
         self.check_space('Hz')
 
@@ -512,7 +497,7 @@ class spyctra():
         return noise
 
 
-    def find_offset(self, fraction=8):
+    def get_offset(self, fraction=8):
         """
         Calculate average value of the last 1/fraction of data to identify DC offsets
 
@@ -521,12 +506,13 @@ class spyctra():
 
         Returns:
             np.array of the complex offsets.
+
         2025-09-06
         """
 
         self.t0()
 
-        print(f'{self.level} Finding offset in last 1/{fraction} of data:')
+        print(f'{self.level} Calculating offset in last 1/{fraction} of data:')
 
         points = self.points//fraction
         offset = np.array([np.mean(d[-points:]) for d in self.data])
@@ -536,16 +522,17 @@ class spyctra():
         return offset
 
 
-    def find_peak(self, component='M'):
+    def get_peak(self, component='M'):
         """
-        Finds the largest value of the specified component in the data
+        Returns the position and value of the largest value of the specified component in the data
 
         Args:
             component: which component of the data to check
 
         Returns:
             [np.array of positions, np.array of peak values]
-        2025-09-06
+
+        2025-09-27
         """
 
         self.t0()
@@ -564,12 +551,37 @@ class spyctra():
         return [xVals, yVals]
 
 
-    def find_phi_by_time(self):
+    def get_phi(self):
         """
-        Calculate the data's phase at every point. Using for finding electromagnet instabilities.
+        Quickly find the signal phase at the peak in magnitude using arctan2
+
+        Allows you to work in time domain, which is probably useless
+
+        Returns:
+            np.array of phases in radians.
+
+        2025-09-13
+        """
+
+        self.t0()
+
+        print(f'{self.level} Finding phase:')
+
+        data = self.get_point(self.get_peak('M')[0], 'C')
+        phis = np.arctan2(np.imag(data), np.real(data))
+
+        self.t1()
+
+        return np.array(phis)
+
+
+    def get_phi_by_time(self):
+        """
+        Returns the data's phase at every point. Using for finding electromagnet instabilities.
 
         Returns:
             2D np.array of phases.
+
         2025-09-06
         """
 
@@ -584,58 +596,6 @@ class spyctra():
         return phases
 
 
-    def find_phi(self):
-        """
-        Quickly find the signal phase at the peak in Magnitude using arctan2
-
-        Allows you to work in time domain, which is probably useless
-
-        Returns:
-            np.array of phases in radians.
-        2025-09-13
-        """
-
-        self.t0()
-
-        print(f'{self.level} Finding phase:')
-
-        data = self.get_point(self.find_peak('M')[0], 'C')
-        phis = np.arctan2(np.imag(data), np.real(data))
-
-        self.t1()
-
-        return np.array(phis)
-
-
-    def find_SNR(self, peaks=None):
-        """
-        Calculate SNR of the abs(peak) to the RMS noise or user specified location.
-
-        Returns:
-            np.array of SNRs.
-
-        Raises:
-            ValueError: if not in frequency domain
-        2025-09-06
-        """
-
-        self.t0()
-
-        print(f'{self.level} Finding SNR:')
-
-        self.check_space('Hz')
-
-        if peaks is None:
-            snrs = self.find_peak()[1]/self.find_noise()
-        else:
-            peaks = ensure_iterable(peaks, self.count)
-            snrs = self.get_point(peaks, 'M')/self.find_noise()
-
-        self.t1()
-
-        return np.array(snrs)
-
-
     def get_point(self, point, component='C'):
         """
         Return data at specified point
@@ -647,6 +607,7 @@ class spyctra():
 
         Returns:
             np.array of specified points
+
         2025-09-06
         """
 
@@ -665,6 +626,36 @@ class spyctra():
         return data
 
 
+    def get_snr(self, peaks=None):
+        """
+        Calculate SNR of the abs(peak) to the RMS noise or user specified location.
+
+        Returns:
+            np.array of SNRs.
+
+        Raises:
+            ValueError: if not in frequency domain
+
+        2025-09-06
+        """
+
+        self.t0()
+
+        print(f'{self.level} Finding SNR:')
+
+        self.check_space('Hz')
+
+        if peaks is None:
+            snrs = self.get_peak()[1]/self.get_noise()
+        else:
+            peaks = ensure_iterable(peaks, self.count)
+            snrs = self.get_point(peaks, 'M')/self.get_noise()
+
+        self.t1()
+
+        return np.array(snrs)
+
+
     def get_time(self, t0=None, scale=1):
         """
         Return the time of each spyctra since t0
@@ -675,12 +666,13 @@ class spyctra():
 
         Returns:
             np.array of times since t0
+
         2025-09-06
         """
 
         self.t0()
 
-        print(f'{self.level} Calculating spyctra elapsed times:')
+        print(f'{self.level} Determining spyctra elapsed times:')
 
         if t0 == None:
             t0 = self.time[0]
@@ -698,6 +690,7 @@ class spyctra():
 
         Args:
             component: which components (RIM) to plot
+
         2025-09-07
         """
 
@@ -747,6 +740,7 @@ class spyctra():
 
         Returns:
             np.array of the integrals
+
         2025-09-06
         """
 
@@ -777,6 +771,7 @@ class spyctra():
 
         Args:
             N : the number of new spyctra to be created
+
         2025-09-06
         """
 
@@ -846,17 +841,18 @@ class spyctra():
 
     def normalize(self, norm=None):
         """
-        Divide data by specified normalization factor or peak of magnitude
+        Divide data by specified normalization factor or peak of magnitude in each data
 
         Args:
             *norm: a single value or list used to normalize the data
+
         2025-09-06
         """
 
         self.t0()
 
         if norm is None:
-            norm = self.find_peak()[1]
+            norm = self.get_peak()[1]
         else:
             norm = ensure_iterable(norm, self.count)
 
@@ -871,6 +867,7 @@ class spyctra():
     def open(self, path):
         """
         Load a pickled spyctra from path
+
         2025-09-06
         """
 
@@ -895,6 +892,7 @@ class spyctra():
         Args:
             phis: Single value or list/array corresponding to the phase
                   adjustment made to the data
+
         2025-09-06
         """
 
@@ -903,7 +901,7 @@ class spyctra():
         print(f'{self.level} Phasing by {list_print(phis)}:')
 
         if phis is None:
-            phis = self.find_phi()
+            phis = self.get_phi()
         else:
             phis = np.array(ensure_iterable(phis, self.count))
 
@@ -918,10 +916,11 @@ class spyctra():
         self.t1()
 
 
-    def phase_FOC(self, phaseCorrs):
+    def phase_foc(self, phaseCorrs):
         """
         Applies first, and zeroth, order phase corrections to data
         [dPhidF,f0,phi0] is expected order of phase correction
+
         2025-09-06
         """
 
@@ -931,7 +930,7 @@ class spyctra():
         if type(phaseCorrs[0]) not in [list, np.array]:
             phaseCorrs = [phaseCorrs]*self.count
 
-        print(f'{self.level} 1st & 0th order phase correction dPhase=dPhi/dF*(f0-x) - phi0:')
+        print(f'{self.level} Phase using 1st & 0th order phase corrections dPhase=dPhi/dF*(f0-x) - phi0:')
 
         for i in range(self.count):
             print(phaseCorrs[i])
@@ -942,7 +941,7 @@ class spyctra():
             else:
                 dPhidF, f0, phi0 = phaseCorrs[i]
 
-            phiAdj = (f0-self.x)*dPhidF - phi0
+            phiAdj = (f0 - self.x)*dPhidF - phi0
             self.data[i]*=e**(1j*phiAdj)
 
         self.t1()
@@ -952,13 +951,14 @@ class spyctra():
         """
         Plots selected spyctra as a single image of adjacent plots.
         Single image makes it much faster to look at dozens of spyctra.
-        Default behavior is to append data, making x-axis units misleading.
+        Default behavior is to append data.
 
         Args:
             *args: String used to specify components. Default is R,I,M
-                   List of integers subsets the data to plot
+                   List of integers for which data to plot
                    Single integer isolates data to plot
-        2025-09-14
+
+        2025-09-27
         """
 
         self.t0()
@@ -1045,6 +1045,7 @@ class spyctra():
             *args: String used to specify components. Default is R,I,M
                    List of integers subsets the data to plot
                    Single integer isolates data to plot
+
         2025-09-06
         """
         self.t0()
@@ -1078,47 +1079,10 @@ class spyctra():
         self.t1()
 
 
-    def plot_format(self, fig, ax, plots):
-        """
-        Ensures consistent formatting of plot and plot_over images
-        2025-09-06
-        """
-
-        ys = plt.ylim()
-        xs = plt.xlim()
-
-        def setLabels(xlabel, ylabel, title):
-            ax.set_xlabel(xlabel, fontsize=20)
-            ax.set_ylabel(ylabel, fontsize=20)
-            ax.set_title(title, fontsize=20)
-
-        if self.space == 'Hz':
-            setLabels(r'$\Delta$f (Hz)', 'FFT', 'Frequency domain')
-        else:
-            setLabels('Time (s)', 'Signal', 'Time domain')
-
-        if np.log10(ys[1]) > 3:
-            ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(x, ',')))
-        if plots == 1 and np.log10(xs[1]) > 3:
-            ax.get_xaxis().set_major_formatter(FuncFormatter(lambda x, p: format(x, ',')))
-
-        ys = ax.get_ylim()
-        xs = ax.get_xlim()
-
-        if ys[0] < 0 <ys[1]:
-            ax.axhline(0, alpha=0.5, color='black', linestyle=':')
-        if xs[0] < 0 <xs[1]:
-            ax.axvline(0, alpha=0.5, color='black', linestyle=':')
-
-        plt.xticks(fontsize=14)
-        plt.yticks(fontsize=14)
-
-        button()
-
-
     def plot_phase_cor(self, dPhidF=0, ddPhidF=0.001, f0=0, df0=0.01, phi0=0, dphi0=0.1):
         """
         Plots zero and first order phase corrections and returns values
+
         2025-09-06
         """
 
@@ -1137,6 +1101,7 @@ class spyctra():
 
         Args:
             toRemove: the list of spyctra to remove
+
         2025-09-06
         """
 
@@ -1167,7 +1132,8 @@ class spyctra():
 
         Args:
             points: the number of lines to print, default is all lines
-        #2025-09-06
+
+        2025-09-06
         """
 
         if points is None:
@@ -1176,6 +1142,7 @@ class spyctra():
         print(f'Printing {points} points from {self.count} spyctra')
 
         labels = self.space + ''.join([f'\tR_{i}\tI_{i}\tM_{i}' for i in range(self.count)])
+
         print(labels)
 
         for j in range(points):
@@ -1193,6 +1160,7 @@ class spyctra():
         """
         Print basic facts about spyctra object
         """
+
         print(f'\nREPORT:\n'
               f' Count: {self.count}\n'
               f' Points: {self.points}\n'
@@ -1218,6 +1186,7 @@ class spyctra():
 
         Args:
             N: The new length of each spyctra if integer; the x bounds if list
+
         2025-09-06
         """
 
@@ -1260,6 +1229,7 @@ class spyctra():
     def save(self, path):
         """
         Save spyctra object using pickle
+
         2025-09-06
         """
 
@@ -1282,6 +1252,7 @@ class spyctra():
 
         Params:
             points: the number of points to be removed, int or list, negative values allowed
+
         2025-09-15
         """
 
@@ -1289,7 +1260,7 @@ class spyctra():
         print(f'{self.level} Shifting by {list_print(shifts)} point[s]:')
 
         if type(shifts) in([list, np.array]):
-            print('WARNING: self.start no longer consistent between spyctra!')
+            print('WARNING: self.start may no longer be consistent between spyctra!')
 
             shifts = np.array(shifts)
         else:
@@ -1313,6 +1284,7 @@ class spyctra():
 
         Args:
             smooth: The number of adjacent points to average.
+
         2025-09-06
         """
 
@@ -1337,6 +1309,7 @@ class spyctra():
 
         Args:
             x: Array whose sort indexes will be used to sort self.data
+
         2025-09-16
         """
 
@@ -1367,11 +1340,12 @@ class spyctra():
 
     def subtract(self, offset):
         """
-        Remove the specified offset or offsets from the data.
+        Subtract the specified offset or offsets from the data.
 
         Args:
             offset: A list of offsets or a single offset to be removed
                 subtracted from all spyctra.
+
         2025-09-06
         """
 
@@ -1391,6 +1365,7 @@ class spyctra():
 
         Note:
             User needs to redefine start, delta, space as appropriate
+
         2025-09-06
         """
 
@@ -1405,6 +1380,76 @@ class spyctra():
         self.time = np.zeros(self.count)
 
         self.t1()
+
+    #Commonly used operations. Should probably have underscores preceeding their names
+    def check_space(self, space):
+        if self.space != space:
+            raise ValueError(f'ERROR: Expecting self.space={space}, but self.space is {self.space}')
+
+
+    def debug(self, last=0):
+        sums = [np.sum(np.abs(d)) for d in self.data]
+
+        if last == 0:
+            for i, summ in enumerate(sums):
+                print(i, summ)
+
+        print(np.sum(sums))
+
+
+    def plot_format(self, fig, ax, plots):
+        """
+        Ensures consistent formatting of plot and plot_over images
+
+        2025-09-06
+        """
+
+        ys = plt.ylim()
+        xs = plt.xlim()
+
+        def setLabels(xlabel, ylabel, title):
+            ax.set_xlabel(xlabel, fontsize=20)
+            ax.set_ylabel(ylabel, fontsize=20)
+            ax.set_title(title, fontsize=20)
+
+        if self.space == 'Hz':
+            setLabels(r'$\Delta$f (Hz)', 'FFT', 'Frequency domain')
+        else:
+            setLabels('Time (s)', 'Signal', 'Time domain')
+
+        if np.log10(ys[1]) > 3:
+            ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(x, ',')))
+        if plots == 1 and np.log10(xs[1]) > 3:
+            ax.get_xaxis().set_major_formatter(FuncFormatter(lambda x, p: format(x, ',')))
+
+        ys = ax.get_ylim()
+        xs = ax.get_xlim()
+
+        if ys[0] < 0 <ys[1]:
+            ax.axhline(0, alpha=0.5, color='black', linestyle=':')
+        if xs[0] < 0 <xs[1]:
+            ax.axvline(0, alpha=0.5, color='black', linestyle=':')
+
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+
+        button()
+
+
+    def t0(self):
+        #Set internal timestamp
+        return self.c0.append(time())
+
+
+    def t1(self):
+        #Print elapsed time of operation
+        print(f'{self.level}   Done: {1000*(time()-self.c0.pop(-1)):.1f} ms')
+
+        if debugger:
+            self.debug(1)
+
+        if len(self.c0) == 0:
+            print()
 
 
 def check_component(component):

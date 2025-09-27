@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 """
 CHANGE LOG
 
+2025-09-27 the great get_ overhaul
 2025-09-14 Initial release
 """
 
@@ -57,21 +58,21 @@ def spyctra_test_suite_0():
     a.resize([-1000,1000])
 
     res = result()
-    res['freq'] = a.find_freq()
-    res['LW'] = a.find_linewidth()
-    res['LW_R'] = a.find_linewidth('R')
-    res['LW_I'] = a.find_linewidth('I')
-    res['LW_M'] = a.find_linewidth('M')
-    res['noise'] = a.find_noise()
-    res['noise8'] = a.find_noise(8)
-    res['DF'] = a.find_df()
-    res['offset'] = a.find_offset()
-    res['offset4'] = a.find_offset(4)
+    res['freq'] = a.get_freq()
+    res['LW'] = a.get_linewidth()
+    res['LW_R'] = a.get_linewidth('R')
+    res['LW_I'] = a.get_linewidth('I')
+    res['LW_M'] = a.get_linewidth('M')
+    res['noise'] = a.get_noise()
+    res['noise8'] = a.get_noise(8)
+    res['DF'] = a.get_df()
+    res['offset'] = a.get_offset()
+    res['offset4'] = a.get_offset(4)
 
-    peaks, vals = a.find_peak()
-    peaks_r, vals_r = a.find_peak('R')
-    peaks_i, vals_i = a.find_peak('I')
-    peaks_m, vals_m = a.find_peak('M')
+    peaks, vals = a.get_peak()
+    peaks_r, vals_r = a.get_peak('R')
+    peaks_i, vals_i = a.get_peak('I')
+    peaks_m, vals_m = a.get_peak('M')
 
     res['peak'] = peaks
     res['val'] = vals
@@ -82,12 +83,12 @@ def spyctra_test_suite_0():
     res['peak_m'] = peaks_m
     res['val_m'] = vals_m
 
-    res['phase'] = a.find_phi()
-    res['SNR'] = a.find_SNR()
-    res['SNR2'] = a.find_SNR(a.points//2)
-    res['peak_R'] = a.get_point(a.find_peak()[0], 'R')
-    res['peak_I'] = a.get_point(a.find_peak()[0], 'I')
-    res['peak_M'] = a.get_point(a.find_peak()[0], 'M')
+    res['phase'] = a.get_phi()
+    res['SNR'] = a.get_snr()
+    res['SNR2'] = a.get_snr(a.points//2)
+    res['peak_R'] = a.get_point(a.get_peak()[0], 'R')
+    res['peak_I'] = a.get_point(a.get_peak()[0], 'I')
+    res['peak_M'] = a.get_point(a.get_peak()[0], 'M')
     res['point_R'] = a.get_point(a.points//2, 'R')
     res['point_I'] = a.get_point(a.points//2, 'I')
     res['point_M'] = a.get_point(a.points//2, 'M')
@@ -114,8 +115,8 @@ def spyctra_test_suite_1():
     a.decimate(4)
     a.fft()
     res = result()
-    res['pos'] = a.find_peak()[0]
-    res['peak'] = a.find_peak()[1]
+    res['pos'] = a.get_peak()[0]
+    res['peak'] = a.get_peak()[1]
     res.print_ind()
 
 
@@ -144,7 +145,7 @@ def spyctra_test_suite_2():
     res['M_2'] = ints[2]
 
     phase_cors_0 = [3,10,2]
-    a.phase_FOC(phase_cors_0)
+    a.phase_foc(phase_cors_0)
     res['R_3'] = a.integrate('R')
     ints = a.integrate('RI')
     res['R_4'] = ints[0]
@@ -156,7 +157,7 @@ def spyctra_test_suite_2():
 
 
     phase_cors = [[phase_cors_0[0]+i,phase_cors_0[0]+i,phase_cors_0[0]+i] for i in range(a.count)]
-    a.phase_FOC(phase_cors)
+    a.phase_foc(phase_cors)
     res['R_6'] = a.integrate('R')
     ints = a.integrate('RI')
     res['R_7'] = ints[0]
@@ -227,7 +228,7 @@ def spyctra_test_suite_3():
     a.resize([a.start+a.delta*(a.points//10), a.start+a.delta*int(a.points*0.6)])
     a.smooth(2)
     a.subtract(1)
-    a.subtract(a.find_offset())
+    a.subtract(a.get_offset())
     a.transpose()
     a.transpose()
     a.resize(a.points*64)
@@ -237,21 +238,21 @@ def spyctra_test_suite_3():
     a.report()
 
     res = result()
-    res['freq'] = a.find_freq()
-    res['LW'] = a.find_linewidth()
-    res['LW_R'] = a.find_linewidth('R')
-    res['LW_I'] = a.find_linewidth('I')
-    res['LW_M'] = a.find_linewidth('M')
-    res['noise'] = a.find_noise()
-    res['noise8'] = a.find_noise(8)
-    res['DF'] = a.find_df()
-    res['offset'] = a.find_offset()
-    res['offset4'] = a.find_offset(4)
+    res['freq'] = a.get_freq()
+    res['LW'] = a.get_linewidth()
+    res['LW_R'] = a.get_linewidth('R')
+    res['LW_I'] = a.get_linewidth('I')
+    res['LW_M'] = a.get_linewidth('M')
+    res['noise'] = a.get_noise()
+    res['noise8'] = a.get_noise(8)
+    res['DF'] = a.get_df()
+    res['offset'] = a.get_offset()
+    res['offset4'] = a.get_offset(4)
 
-    peaks, vals = a.find_peak()
-    peaks_r, vals_r = a.find_peak('R')
-    peaks_i, vals_i = a.find_peak('I')
-    peaks_m, vals_m = a.find_peak('M')
+    peaks, vals = a.get_peak()
+    peaks_r, vals_r = a.get_peak('R')
+    peaks_i, vals_i = a.get_peak('I')
+    peaks_m, vals_m = a.get_peak('M')
 
     res['peak'] = peaks
     res['val'] = vals
@@ -261,17 +262,17 @@ def spyctra_test_suite_3():
     res['val_i'] = vals_i
     res['peak_m'] = peaks_m
     res['val_m'] = vals_m
-    res['phase'] = a.find_phi()
+    res['phase'] = a.get_phi()
 
     b.resize(a.count)
-    res['phaseByTime'] = b.find_phi_by_time()
-    res['phaseD'] = 180/3.14159*a.find_phi()
+    res['phaseByTime'] = b.get_phi_by_time()
+    res['phaseD'] = 180/3.14159*a.get_phi()
 
-    res['SNR'] = a.find_SNR()
-    res['SNR2'] = a.find_SNR(a.points//2)
-    res['peak_R'] = a.get_point(a.find_peak()[0], 'R')
-    res['peak_I'] = a.get_point(a.find_peak()[0], 'I')
-    res['peak_M'] = a.get_point(a.find_peak()[0], 'M')
+    res['SNR'] = a.get_snr()
+    res['SNR2'] = a.get_snr(a.points//2)
+    res['peak_R'] = a.get_point(a.get_peak()[0], 'R')
+    res['peak_I'] = a.get_point(a.get_peak()[0], 'I')
+    res['peak_M'] = a.get_point(a.get_peak()[0], 'M')
     res['point_R'] = a.get_point(a.points//2, 'R')
     res['point_I'] = a.get_point(a.points//2, 'I')
     res['point_M'] = a.get_point(a.points//2, 'M')
@@ -306,12 +307,12 @@ def TNT_test():
     a.decimate(36)
 
     res['f0'] = a.freq
-    res['df'] = a.find_df()
-    res['Freq'] = a.find_freq()
+    res['df'] = a.get_df()
+    res['Freq'] = a.get_freq()
     res['time'] = a.time
     res['phi'] = a.phi
-    res['findPeak[0]'] = a.find_peak()[0]
-    res['findPeak[1]'] = a.find_peak()[1]
+    res['findPeak[0]'] = a.get_peak()[0]
+    res['findPeak[1]'] = a.get_peak()[1]
 
     res.print_ind()
 
@@ -342,9 +343,9 @@ def SDF_test():
         b = a.copy()
         b.fft()
 
-        amps = b.find_peak()[1]
-        dfs = b.find_df()
-        phis = b.find_phi()
+        amps = b.get_peak()[1]
+        dfs = b.get_df()
+        phis = b.get_phi()
 
         p,r = fit(fl.comp_exp_dec, a.x, a.data,
                   [amps*3,
@@ -386,9 +387,9 @@ def TREEV2_test():
     a.decimate(50)
 
     res = result()
-    res['phase'] = a.find_phi()
-    res['Freq'] = a.find_freq()
-    res['noise'] = a.find_noise()
+    res['phase'] = a.get_phi()
+    res['Freq'] = a.get_freq()
+    res['noise'] = a.get_noise()
     res['3xPhase'] = res['phase']*3
 
     res.print_ind()
@@ -419,7 +420,7 @@ def fitlib_test():
 
         a.resize(16384)
         a.fft()
-        a.phase(a.find_phi())
+        a.phase(a.get_phi())
         a.resize([-1000,1000])
 
         p,r = fit(fl.lorentzian, a.x, a.data[0].real,

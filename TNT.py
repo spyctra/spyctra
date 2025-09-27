@@ -139,6 +139,7 @@ def read(path=None, *options):
 def test_suite():
     path = '../spyctraRep/TNT/test_files/'
 
+    """
     TNT_reader(path + 'EXP_00') #1.005
     exit()
     #"""
@@ -174,4 +175,4 @@ def test_suite():
     plt.show()
 
 if __name__ == '__main__':
-    testSuite()
+    test_suite()

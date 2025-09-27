@@ -216,14 +216,14 @@ def test_suite():
     TREEV2_reader('../spyctraRep/TREEV2/FID_0', 'quiet')
     TREEV2_reader('../spyctraRep/TREEV2/FID_0.tdms')
     TREEV2_reader('../spyctraRep/TREEV2/FID_0', 'quiet,debug')
-    TREEV2_reader('../spyctraRep/TreeV2/Multi_channel/test_013')
+    TREEV2_reader('../spyctraRep/TREEV2/Multi_channel/test_013')
 
 
 def work():
     from file_reader import master_reader
     import matplotlib.pyplot as plt
 
-    a = TREEV2_reader('../spyctraRep/TreeV2/Multi_channel/test_013')
+    a = TREEV2_reader('../spyctraRep/TREEV2/Multi_channel/test_013')
 
     b = spyctra()
     b.add(a)

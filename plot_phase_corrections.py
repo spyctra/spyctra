@@ -52,7 +52,6 @@ class phase_correction_plotter():
         self.fig.text(0.875, 0.19, 'increment')
 
 
-
         #1 dPhidF slider
         self.ax_dPhidF = plt.axes([0.125, 0.15, 0.65, 0.03])
         self.s_dPhidF = Slider(self.ax_dPhidF, 'dPhidF', self.dPhidF-self.dPhidF_inc*100, self.dPhidF+self.dPhidF_inc*100, valinit=self.dPhidF, valstep=self.dPhidF_inc)

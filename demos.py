@@ -20,8 +20,8 @@ CHANGE LOG
 def spyctra_introduction():
     a = spyctra()
 
-    for i in range(30):
-        a.add(fake_spyctra(a=0, t_2=(i+1)*3e-3, df=i*10, phi=i, noise=100))
+    for i in range(20):
+        a.add(fake_spyctra(amp=0, t_2=(i+1)*3e-3, df=i*10, phi=i, noise=100))
 
     #"""
     a.plot()
@@ -37,10 +37,10 @@ def spyctra_introduction():
     b.plot()
     plt.show()
 
-    dfs = b.find_df()
+    dfs = b.get_df()
     phis = b.phi
-    peaks = b.find_peak()[1]
-    lws = b.find_linewidth()
+    peaks = b.get_peak()[1]
+    lws = b.get_linewidth()
 
     p, d = fit(comp_exp_dec, a.x, a.data,
               [ [512]*a.count
@@ -85,9 +85,9 @@ def advanced_fitting():
     b = a.copy()
     b = processor(b)
 
-    dfs = b.find_df()
-    phis = b.find_phi()
-    lws = b.find_linewidth()
+    dfs = b.get_df()
+    phis = b.get_phi()
+    lws = b.get_linewidth()
 
     x = a.delta*np.arange(a.points)
 
@@ -213,7 +213,7 @@ def fft_demo():
     plt.show()
 
 
-def find_SNR_demo():
+def get_snr_demo():
     a = spyctra()
 
     trials = 16
@@ -228,12 +228,12 @@ def find_SNR_demo():
     a.plot()
     plt.show()
 
-    snrs = a.find_SNR() #find_SNR example
-    snrs_at_x_0 = a.find_SNR(0) #find_SNR example
-    snrs_at_x_i = a.find_SNR(np.arange(a.count)) #find_SNR example
+    snrs = a.get_snr() #get_snr example
+    snrs_at_x_0 = a.get_snr(0) #get_snr example
+    snrs_at_x_i = a.get_snr(np.arange(a.count)) #get_snr example
 
     plt.figure()
-    plt.title('find_SNR() demo')
+    plt.title('get_snr() demo')
     plt.plot(noises, snrs, label='SNR')
     plt.plot(noises, snrs_at_x_0, label='SNR @x[0]')
     plt.plot(noises, snrs_at_x_i, label='SNR @x[i]')
@@ -245,7 +245,7 @@ def find_SNR_demo():
     plt.show()
 
 
-def find_df_demo():
+def get_df_demo():
     a = spyctra()
 
     trials = 8
@@ -261,10 +261,10 @@ def find_df_demo():
     a.plot()
     plt.show()
 
-    dfs = a.find_df() #find_df example
+    dfs = a.get_df() #get_df example
 
     plt.figure(figsize=(11,11))
-    plt.suptitle('find_df() demo')
+    plt.suptitle('get_df() demo')
     plt.subplot(2,1,1)
     plt.plot(dfs_in, dfs)
     plt.ylabel('df (Hz)')
@@ -276,7 +276,7 @@ def find_df_demo():
     plt.show()
 
 
-def find_freq_demo():
+def get_freq_demo():
     a = spyctra()
 
     trials = 8
@@ -292,17 +292,17 @@ def find_freq_demo():
     a.plot()
     plt.show()
 
-    freqs = a.find_freq() #find_freq example
+    freqs = a.get_freq() #get_freq example
 
     plt.figure()
-    plt.title('find_freq() demo')
+    plt.title('get_freq() demo')
     plt.plot(dfs_in, freqs)
     plt.xlabel('signal off resonance (Hz)')
     plt.ylabel('frequency (Hz)')
     plt.show()
 
 
-def find_linewidth_demo():
+def get_linewidth_demo():
     a = spyctra()
 
     trials = 16
@@ -318,13 +318,13 @@ def find_linewidth_demo():
     a.plot()
     plt.show()
 
-    lws = a.find_linewidth() #find_linewidth example
-    lws_r = a.find_linewidth('R') #find_linewidth example
-    lws_i = a.find_linewidth('I') #find_linewidth example
-    lws_m = a.find_linewidth('M') #find_linewidth example
+    lws = a.get_linewidth() #get_linewidth example
+    lws_r = a.get_linewidth('R') #get_linewidth example
+    lws_i = a.get_linewidth('I') #get_linewidth example
+    lws_m = a.get_linewidth('M') #get_linewidth example
 
     plt.figure()
-    plt.title('find_linewidth() demo')
+    plt.title('get_linewidth() demo')
     plt.plot(t_2s, lws, label='LW')
     plt.plot(t_2s, lws_r, label='LW_R')
     plt.plot(t_2s, lws_i, label='LW_I')
@@ -337,7 +337,7 @@ def find_linewidth_demo():
     plt.show()
 
 
-def find_noise_demo():
+def get_noise_demo():
     a = spyctra()
 
     trials = 16
@@ -351,12 +351,12 @@ def find_noise_demo():
     a.plot()
     plt.show()
 
-    noises = a.find_noise() #find_noise example
-    noises_3 = a.find_noise(3) #find_noise example
-    noises_8 = a.find_noise(8) #find_noise example
+    noises = a.get_noise() #get_noise example
+    noises_3 = a.get_noise(3) #get_noise example
+    noises_8 = a.get_noise(8) #get_noise example
 
     plt.figure()
-    plt.title('find_noise() demo')
+    plt.title('get_noise() demo')
     plt.plot(noises_in, noises,label='noise')
     plt.plot(noises_in, noises_3,label='noise_3')
     plt.plot(noises_in, noises_8,label='noise_8')
@@ -368,7 +368,7 @@ def find_noise_demo():
     plt.show()
 
 
-def find_offset_demo():
+def get_offset_demo():
     a = fake_spyctra(t_2=1e-3, df=1000, noise=16)
 
     offset_in = 50*e**(1j*2)
@@ -378,10 +378,10 @@ def find_offset_demo():
     a.plot()
     plt.show()
 
-    offset = a.find_offset() #find_offset example
-    offset_2 = a.find_offset(2) #find_offset example
-    offset_4 = a.find_offset(4) #find_offset example
-    offset_8 = a.find_offset(8) #find_offset example
+    offset = a.get_offset() #get_offset example
+    offset_2 = a.get_offset(2) #get_offset example
+    offset_4 = a.get_offset(4) #get_offset example
+    offset_8 = a.get_offset(8) #get_offset example
 
     print(f'{offset_in = }')
     print(f'{offset = }')
@@ -389,13 +389,13 @@ def find_offset_demo():
     print(f'{offset_4 = }')
     print(f'{offset_8 = }')
 
-    a.subtract(a.find_offset()) #subtract example
+    a.subtract(a.get_offset()) #subtract example
 
     a.plot()
     plt.show()
 
 
-def find_peak_demo():
+def get_peak_demo():
     a = spyctra()
 
     trials = 16
@@ -407,10 +407,10 @@ def find_peak_demo():
 
     a.fft()
 
-    peaks = a.find_peak() #find_peak example
-    peaks_R = a.find_peak('R') #find_peak example
-    peaks_I = a.find_peak('I') #find_peak example
-    peaks_M = a.find_peak('M') #find_peak example
+    peaks = a.get_peak() #get_peak example
+    peaks_R = a.get_peak('R') #get_peak example
+    peaks_I = a.get_peak('I') #get_peak example
+    peaks_M = a.get_peak('M') #get_peak example
 
     plt.figure()
     plt.subplot(2,1,1)
@@ -431,16 +431,16 @@ def find_peak_demo():
     plt.show()
 
 
-def find_phi_by_time_demo():
+def get_phi_by_time_demo():
     a = spyctra()
 
     for i in range(2):
         a.add(fake_spyctra(t_2=3e-3, df=(i+1)*10, noise=2))
 
-    phase_by_time = a.find_phi_by_time() #find_phi_by_time example
+    phase_by_time = a.get_phi_by_time() #get_phi_by_time example
 
     plt.figure()
-    plt.title('find_phi_by_time() demo')
+    plt.title('get_phi_by_time() demo')
     plt.plot(a.x, phase_by_time[0], label='df=10')
     plt.plot(a.x, phase_by_time[1], label='df=20')
     plt.xlabel('time (s)')
@@ -449,7 +449,7 @@ def find_phi_by_time_demo():
     plt.show()
 
 
-def find_phi_demo():
+def get_phi_demo():
     a = spyctra()
 
     trials = 16
@@ -459,10 +459,10 @@ def find_phi_demo():
         a.add(fake_spyctra(phi=phis_in[i], noise=4))
 
     a.fft()
-    phis = a.find_phi() #find_phi example
+    phis = a.get_phi() #get_phi example
 
     plt.figure()
-    plt.title('find_phi() demo')
+    plt.title('get_phi() demo')
     plt.plot(phis_in, phis)
     plt.xlabel('time (s)')
     plt.ylabel('phase (radians)')
@@ -707,12 +707,12 @@ def plot_phase_cor_demo():
     for i in range(2):
         a.add(fake_spyctra(points=16384*64, delta=1e-5, t_2=1e-2, df=20, amp=4096, phi=i+1, noise=2))
 
-    a.subtract(a.find_offset())
+    a.subtract(a.get_offset())
     a.fft()
     a.resize([-100,100])
 
     phis = a.plot_phase_cor() #plot_phase_cor example
-    a.phase_FOC(phis)
+    a.phase_foc(phis)
 
     a.plot()
     plt.show()
@@ -820,7 +820,7 @@ def sort_demo():
 
 
 def subtract_demo():
-    find_offset_demo()
+    get_offset_demo()
 
 
 def transpose_demo():
@@ -846,22 +846,19 @@ def transpose_demo():
 
 
 def method_demos():
-    plot_over_demo()
-    exit()
-
     add_demo()
     decimate_demo()
     exp_mult_demo()
     fft_demo()
-    find_SNR_demo()
-    find_df_demo()
-    find_freq_demo()
-    find_linewidth_demo()
-    find_noise_demo()
-    find_offset_demo()
-    find_peak_demo()
-    find_phi_by_time_demo()
-    find_phi_demo()
+    get_snr_demo()
+    get_df_demo()
+    get_freq_demo()
+    get_linewidth_demo()
+    get_noise_demo()
+    get_offset_demo()
+    get_peak_demo()
+    get_phi_by_time_demo()
+    get_phi_demo()
     get_point_demo()
     imshow_demo()
     integrate_demo()
@@ -882,7 +879,7 @@ def method_demos():
 
 
 def processing_demos():
-    #spyctra_introduction()
+    spyctra_introduction()
     advanced_fitting()
 
 

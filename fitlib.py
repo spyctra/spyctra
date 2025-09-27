@@ -815,6 +815,7 @@ def fit_error_worker():
     ys[1][9] = 0
     errs = [[1,1,1,1,1,1,1,1,5,1], [1,1,1,1,1,1,1,1,1,5]]
 
+
     def parabola(x, a,b,c):
         return a*x**2 + b*x + c
 

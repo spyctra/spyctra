@@ -114,7 +114,6 @@ def test_suite():
 
 
 def work():
-    #"""
     import numpy as np
 
     r = result()
@@ -125,6 +124,7 @@ def work():
     r.pop(1)
     r.print()
     r.print_ind()
+
     print(r)
 
 
