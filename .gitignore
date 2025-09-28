@@ -1,9 +1,0 @@
-archive/
-library/
-__pycache__/
-*.tnt
-*.res
-_*.py
-*.p
-garbage.py
-TNT_reader.py
