@@ -7,5 +7,6 @@ Spyctra arranges data as a list of numpy arrays, instead of a 2d-numpy array, to
 demos.py provides an introduction to basic processing and fitting approaches.
 
 spyctra can read:\
-TNT files from Tecmag Inc. including the variables and their values\
-SDF files from Stelar including all metadata
+TNT files from Tecmag Inc. including pulse sequence variables and their values\
+SDF files from Stelar including all metadata\
+examples can be found in the test_suites() of the file readers although you must provide your own test files
