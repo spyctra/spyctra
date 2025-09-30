@@ -42,6 +42,7 @@ def get_taus(meta):
                                num=meta['NBLK'])
     except Exception as e:
         taus = None
+
         print('WARNING: Could not get tau values')
         print(e)
 
@@ -54,6 +55,7 @@ def get_delta(meta):
     except:
         print('WARNING: could not determine tDwell')
         print(' This is common in multipulse sequences')
+
         delta = 1
 
     return delta
@@ -95,13 +97,13 @@ def parse_path_and_options(pathData, *options):
     if directory == '':
         directory = './'
 
-
     if options:
         options = options[0]
     else:
         options = []
 
     find = 0
+
     for option in options:
         if option.isdigit():
             find = int(option)

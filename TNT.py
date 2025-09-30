@@ -54,6 +54,7 @@ def parse_path_and_options(path_data, options=''):
 
     if debug:
         print('\n initialization')
+
         for e in meta:
             print(e, meta[e])
 
