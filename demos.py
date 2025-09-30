@@ -678,9 +678,15 @@ def plot_over_demo():
     for i in range(trials):
         a.add(fake_spyctra(amp=amps[i], t_2=3e-3, noise=16))
 
+
     a.resize(16384)
     a.fft()
     a.resize([-1000,1000])
+
+    a.plot_over() #plot_over example
+    plt.show()
+
+    a.phase(np.arange(a.count))
 
     a.plot_over() #plot_over example
     plt.show()
@@ -846,6 +852,8 @@ def transpose_demo():
 
 
 def method_demos():
+    plot_demo()
+
     add_demo()
     decimate_demo()
     exp_mult_demo()
@@ -884,8 +892,8 @@ def processing_demos():
 
 
 def main():
-    processing_demos()
-    #method_demos()
+    #processing_demos()
+    method_demos()
 
 if __name__ == '__main__':
     main()

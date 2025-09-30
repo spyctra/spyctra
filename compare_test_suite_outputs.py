@@ -7,7 +7,7 @@ import numpy as np
 
 def main():
     new_file_path = './test_suite.res2'
-    old_file_path = '../spyctra_V6/test_suite.res2'
+    old_file_path = '../spyctra_v6/test_suite.res2'
 
     with open(new_file_path, 'r') as file:
         new_file = [line.rstrip() for line in file]
@@ -19,10 +19,20 @@ def main():
     print(f'{old_file_path = }')
     print('variable, index, new, old, ratio')
 
+    var_count = 0
+    var_pass_count = 0
+    var_pass = False
+
     for i in range(len(new_file)):
         #identify titles
         if len(new_file[i]) > 0 and new_file[i][0] != ' ':
             title = new_file[i]
+
+            if var_pass == True:
+                var_pass_count += 1
+
+            var_count += 1
+            var_pass = True
 
             print(f'\n{title}')
 
@@ -50,7 +60,6 @@ def main():
                     is_float = False
                 except:
                     print("what's this data type?", i, new_file[i], old_file[i])
-                    print(title)
 
                     exit()
             if np.abs(old_val) == 0:
@@ -68,10 +77,21 @@ def main():
                     continue
 
                 if is_float:
-                    if ratio < 0.999999 or ratio > 1.000001:
-                        print(title, i, new_file[i], old_file[i], ratio)
+                    if (ratio < 0.999999 or ratio > 1.000001):
+                        print(f'{title} {i} {new_file[i]} {old_file[i]} {ratio:.8}')
+
+                        var_pass = False
+
                 elif ratio_r < 0.999999 or ratio_r > 1.000001 or ratio_i < 0.999999 or ratio_i > 1.000001:
-                    print(title, i, new_file[i], old_file[i], ratio_r, ratio_i)
+                    print(f'{title} {i} {new_file[i]} {old_file[i]} {ratio_r:.8} {ratio_i:.8}')
+
+                    var_pass = False
+
+    if var_pass == True:
+        var_pass_count += 1
+
+    print()
+    print(f'{var_count = }, {var_pass_count = }')
 
 
 if __name__ == '__main__':

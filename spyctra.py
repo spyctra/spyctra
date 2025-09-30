@@ -21,9 +21,10 @@ import sys
 """
 CHANGE LOG
 
-2025-09-27 find_ becomes get_ to make commands easier to remember
-2025-09-16 Updated plot formatting
-2025-09-15 Fixed negative shift behavior, listprint format
+2025-09-29 plot_over() formating improved, hasattr(x, '__iter__') used to identify iterables, meta list requirements enforced
+2025-09-27 find_*() becomes get_*() to make commands easier to remember
+2025-09-16 Updated plot() formatting
+2025-09-15 Fixed negative shift() behavior, listprint() format
 2025-09-05 Initial release
 """
 
@@ -174,10 +175,10 @@ class spyctra():
 
             for item in self.meta:
                 if item in a.meta:
-                    if type(self.meta[item]) in [list, np.array, np.ndarray]:
+                    if type(self.meta[item]) == list:
                         self.meta[item] += a.meta[item]
                     else:
-                        print(f'WARNING: deleting {item} from meta')
+                        print(f'WARNING: meta elements can only be lists. Deleting {item} from meta with type {type(item)}')
 
                         del self.meta[item]
 
@@ -200,7 +201,7 @@ class spyctra():
         """
 
         if user_copy:
-            if type(user_copy[0]) in [list, np.array]:
+            if hasattr(user_copy[0], '__iter__'):
                 to_copy = np.array(user_copy[0])
             elif type(user_copy[0]) == int:
                 to_copy = np.array([user_copy[0]])
@@ -745,18 +746,18 @@ class spyctra():
         """
 
         self.t0()
-        comps = ensure_iterable(components, self.count)
+        components = ensure_iterable(components, self.count)
 
-        print(f'{self.level} Integrating {comps} component[s] in {self.space} domain:')
+        print(f'{self.level} Integrating {components} component[s] in {self.space} domain:')
 
-        integrals = np.empty((len(comps), self.count))
+        integrals = np.empty((len(components), self.count))
 
-        for j, comp in enumerate(comps):
+        for j, comp in enumerate(components):
             func = get_component_function(comp)
 
             integrals[j] = np.array([trapezoid(func(self.data[i])) for i in range(self.count)])
 
-        if len(comps)==1:
+        if len(components) == 1:
             integrals = integrals[0]
 
         self.t1()
@@ -916,7 +917,7 @@ class spyctra():
         self.t1()
 
 
-    def phase_foc(self, phaseCorrs):
+    def phase_foc(self, phase_corrs):
         """
         Applies first, and zeroth, order phase corrections to data
         [dPhidF,f0,phi0] is expected order of phase correction
@@ -927,19 +928,19 @@ class spyctra():
         self.t0()
         self.check_space('Hz')
 
-        if type(phaseCorrs[0]) not in [list, np.array]:
-            phaseCorrs = [phaseCorrs]*self.count
+        if not hasattr(phase_corrs[0], '__iter__'):
+            phase_corrs = [phase_corrs]*self.count
 
         print(f'{self.level} Phase using 1st & 0th order phase corrections dPhase=dPhi/dF*(f0-x) - phi0:')
 
         for i in range(self.count):
-            print(phaseCorrs[i])
+            print(phase_corrs[i])
 
-            if len(phaseCorrs[i]) == 2:
+            if len(phase_corrs[i]) == 2:
                 phi0 = 0
-                dPhidF, f0 = phaseCorrs[i]
+                dPhidF, f0 = phase_corrs[i]
             else:
-                dPhidF, f0, phi0 = phaseCorrs[i]
+                dPhidF, f0, phi0 = phase_corrs[i]
 
             phiAdj = (f0 - self.x)*dPhidF - phi0
             self.data[i]*=e**(1j*phiAdj)
@@ -958,20 +959,18 @@ class spyctra():
                    List of integers for which data to plot
                    Single integer isolates data to plot
 
-        2025-09-27
+        2025-09-29
         """
 
         self.t0()
 
         if args:
-            to_plot, comps = plot_arg_parser(args, self.count)
+            to_plot, components = plot_arg_parser(args, self.count)
         else:
             to_plot = np.arange(self.count);
-            comps = 'RIM'
+            components = 'RIM'
 
-        print(f'{self.level} Plotting {comps} for {list_print(to_plot)}:')
-
-        fig, ax = plt.subplots(figsize=(16,9))
+        print(f'{self.level} Plotting {components} for {list_print(to_plot)}:')
 
         data = np.concatenate([self.data[i] for i in to_plot])
 
@@ -980,12 +979,13 @@ class spyctra():
         else:
             x = self.x
 
-        if 'R' in comps:
-            ax.plot(x, np.real(data), 'r', linewidth=2.0)
-        if 'I' in comps:
-            ax.plot(x, np.imag(data), 'g', linewidth=2.0)
-        if 'M' in comps:
-            ax.plot(x, np.abs(data), 'b', linewidth=2.0)
+        colors = {'R': 'r', 'I': 'g', 'M': 'b'}
+
+        fig, ax = plt.subplots(figsize=(16,9))
+
+        for component in components:
+            func = get_component_function(component)
+            ax.plot(x, func(data), colors[component], linewidth=2.0)
 
         ax.set_xlim([x[0],x[-1]])
 
@@ -1046,31 +1046,43 @@ class spyctra():
                    List of integers subsets the data to plot
                    Single integer isolates data to plot
 
-        2025-09-06
+        2025-09-29
         """
         self.t0()
 
+        from itertools import cycle
+
+        prop_cycle = plt.rcParams['axes.prop_cycle']
+        colors = cycle(prop_cycle.by_key()['color'])
+
         if args:
-            to_plot, comps = plot_arg_parser(args, self.count)
+            to_plot, components = plot_arg_parser(args, self.count)
         else:
             to_plot = np.arange(self.count);
-            comps = 'RIM'
+            components = 'RIM'
 
-        print(f'{self.level} Plotting Over {comps} for {list_print(to_plot)}:')
+        print(f'{self.level} Plotting Over {components} for {list_print(to_plot)}:')
 
         x = self.x
 
         fig, ax = plt.subplots(figsize=(16, 9))
 
         for i in to_plot:
-            if 'R' in comps:
-                ax.plot(x, increment*i + np.real(self.data[i]), linewidth=2.0, alpha=0.75, label=f'Real_{i}')
-            if 'I' in comps:
-                ax.plot(x, increment*i + np.imag(self.data[i]), linewidth=2.0, alpha=0.75, label=f'Imag_{i}')
-            if 'M' in comps:
-                ax.plot(x, increment*i + np.abs(self.data[i]), linewidth=2.0, alpha=0.75, label=f'Magn_{i}')
+            color = next(colors)
 
-            if len(comps)*len(to_plot)<16:
+            for component in components:
+                func = get_component_function(component)
+
+                if component == 'R':
+                    style = {'ls': '--', 'lw': 1.5, 'lbl': f'Real_{i}', 'c': color}
+                if component == 'I':
+                    style = {'ls': ':', 'lw': 1.5, 'lbl': f'Imag_{i}', 'c': color}
+                if component == 'M':
+                    style = {'ls': '-', 'lw': 2, 'lbl': f'Magn_{i}', 'c': color}
+
+                ax.plot(x, increment*i + func(self.data[i]), linestyle=style['ls'], linewidth=style['lw'], alpha=0.75, color=style['c'], label=style['lbl'])
+
+            if len(components)*len(to_plot)<16:
                 ax.legend()
 
         plt.xlim([self.x[0], self.x[-1]])
@@ -1086,13 +1098,13 @@ class spyctra():
         2025-09-06
         """
 
-        phaseCorrs = [None]*self.count
+        phase_corrs = [None]*self.count
 
         for j in range(self.count):
             b = phase_correction_plotter(self.x, self.data[j], dPhidF, ddPhidF, f0, df0, phi0, dphi0)
-            phaseCorrs[j] = b.run()
+            phase_corrs[j] = b.run()
 
-        return phaseCorrs
+        return phase_corrs
 
 
     def pop(self, toRemove):
@@ -1109,7 +1121,7 @@ class spyctra():
 
         print(f'{self.level} Removing {list_print(toRemove)}:')
 
-        if type(toRemove) not in [list, np.array]:
+        if not hasattr(toRemove, '__iter__'):
             toRemove = np.array([toRemove])
 
         toRemove.sort()
@@ -1169,7 +1181,7 @@ class spyctra():
               f' Space: {self.space}\n')
 
         for m in self.meta:
-            if type (self.meta[m]) in [list, np.array, np.ndarray]:
+            if type (self.meta[m]) in list:
                 print(m, list_print(self.meta[m]))
             else:
                 print(m, type(self.meta[m])) #this shouldn't happen...
@@ -1253,13 +1265,13 @@ class spyctra():
         Params:
             points: the number of points to be removed, int or list, negative values allowed
 
-        2025-09-15
+        2025-09-29
         """
 
         self.t0()
         print(f'{self.level} Shifting by {list_print(shifts)} point[s]:')
 
-        if type(shifts) in([list, np.array]):
+        if hasattr(shifts, '__iter__'):
             print('WARNING: self.start may no longer be consistent between spyctra!')
 
             shifts = np.array(shifts)
@@ -1270,6 +1282,7 @@ class spyctra():
 
         for i in range(self.count):
             shift = int(shifts[i])
+
             if shift > 0:
                 self.data[i] = np.concatenate((self.data[i][shift:], np.zeros(shift)))
             elif shift < 0:
@@ -1419,6 +1432,7 @@ class spyctra():
 
         if np.log10(ys[1]) > 3:
             ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(x, ',')))
+
         if plots == 1 and np.log10(xs[1]) > 3:
             ax.get_xaxis().set_major_formatter(FuncFormatter(lambda x, p: format(x, ',')))
 
@@ -1427,6 +1441,7 @@ class spyctra():
 
         if ys[0] < 0 <ys[1]:
             ax.axhline(0, alpha=0.5, color='black', linestyle=':')
+
         if xs[0] < 0 <xs[1]:
             ax.axvline(0, alpha=0.5, color='black', linestyle=':')
 
@@ -1459,15 +1474,12 @@ def check_component(component):
 
 def ensure_iterable(q, points):
     if not hasattr(q, '__iter__'):
-        if type(q) != str:
-            return q*np.ones(points)
-        else:
-            return [q]*points
+        return q*np.ones(points)
     else:
-        if type(q[0]) != str:
-            return np.array(q)
-        else:
+        if type(q[0]) == str:
             return q
+        else:
+            return np.array(q)
 
 
 def dull(x):
@@ -1475,6 +1487,8 @@ def dull(x):
 
 
 def get_component_function(component):
+    component = component.upper()
+
     if component == 'M':
         return np.abs
     elif component == 'R':
@@ -1499,24 +1513,24 @@ def list_print(list_in):
 
 def plot_arg_parser(args, count):
     to_plot = []
-    comps = []
+    components = []
 
     for arg in args:
         if type(arg) == int:
             to_plot = [arg]
-        if type(arg) in [list, np.ndarray]:
+        elif type(arg) == str:
+            components = arg
+        elif hasattr(arg, '__iter__'):
             to_plot = list(arg)
-        if type(arg) == str:
-            comps = arg
 
     #Used to plot all spyctra if none specified
     if to_plot == []:
         to_plot = [i for i in range(count)]
 
-    if comps == []:
-        comps = 'RIM'
+    if components == []:
+        components = 'RIM'
 
-    return [to_plot, comps]
+    return [to_plot, components]
 
 
 def fake_spyctra(points=1024, delta=10e-6, df=0, noise=0, t_2=np.inf, phi=0, seed=None, amp=512, scans=1, freq=0, meta={}):

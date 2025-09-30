@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 """
 CHANGE LOG
 
+2025-09-29 added spyctra_test_suite_4() to cover negative shifts, array inputs for exp_mult, shift, phase
 2025-09-27 the great get_ overhaul
 2025-09-14 Initial release
 """
@@ -22,12 +23,13 @@ def spyctra_test_suite_0():
     from spyctra import spyctra, fake_spyctra
 
     seed(0)
-    a = spyctra()
     obs = 64
     pts = 2**14
     t2s = uniform(-6, 0.3, obs)
     t2s = 10**t2s
     dfs = randint(-250, 250, obs)
+
+    a = spyctra()
 
     for i in range(len(t2s)):
         a.add(fake_spyctra( pts
@@ -40,6 +42,7 @@ def spyctra_test_suite_0():
                           ,delta=100e-6))
 
     b = spyctra()
+
     for i in range(len(t2s)):
         b.add(fake_spyctra( pts
                           ,t_2=t2s[i]*3
@@ -103,6 +106,7 @@ def spyctra_test_suite_1():
     from spyctra import spyctra, fake_spyctra
 
     a = spyctra()
+
     for i in range(96):
         a.add(fake_spyctra( points=64*1800
                            ,t_2=(1+i)/2
@@ -124,6 +128,7 @@ def spyctra_test_suite_2():
     from spyctra import spyctra, fake_spyctra
 
     a = spyctra()
+
     for i in range(9):
         a.add(fake_spyctra( points=64*1800
                            ,t_2=(1+i)/2
@@ -284,20 +289,42 @@ def spyctra_test_suite_3():
     res.print_ind()
 
 
+def spyctra_test_suite_4():
+    from spyctra import spyctra, fake_spyctra
+
+    a = spyctra()
+
+    for i in range(8):
+        a.add(fake_spyctra(t_2=3e-3*(i+1)))
+
+    a.exp_mult(10*np.arange(a.count))
+    a.shift(-30)
+    a.shift(np.arange(a.count)*50)
+    a.shift(-np.arange(a.count)*10)
+    a.phase(np.arange(a.count))
+
+    b = a[0:7:3]
+
+    res = result()
+    res['sums'] = b.integrate('R')
+
+    res.print_ind()
+
+
 def TNT_test():
+    from spyctra import spyctra
     from TNT import read
 
-    a = read('../spyctraRep/TNT/test_sets/slse_', 2, '')
+    a = spyctra()
+    a.add(read('../spyctraRep/TNT/test_sets/slse_', 4, ''))
+    a.add(read('../spyctraRep/TNT/test_sets/slse_', 4, ''))
 
-    """
-    res = result()
-    res['tau1'] = a.meta['tau1']
-    for m in a.meta:
-        print(m, a.meta[m])
-        if e not in ['Read Time (ms)']:
-            res[m] = a.meta[m]
-    res.print_ind()
-    """
+    for e in a.meta:
+        if 'Read Time' not in e:
+            res = result()
+            res[e] = a.meta[e]
+
+            res.print_ind()
 
     res = result()
     a.new_count(a.count*324)
@@ -322,20 +349,15 @@ def SDF_test():
     from fitlib import fit
 
     raw = read('../spyctraRep/SDF/AN_sept2018c', '4')
-    """
-    res = result()
+
     for a in raw:
-        res0 = result()
-
         for m in a.meta:
-            print(m, a.meta[m])
+            res0 = result()
+
             if m not in['Read Time (ms)']:
-                res0[m] = [a.meta[m]]
+                res0[m] = a.meta[m]
+                res0.print_ind()
 
-        res.stack(res0)
-
-    res.print_ind()
-    #"""
 
     res = result()
 
@@ -655,6 +677,7 @@ def main():
     spyctra_test_suite_1()
     spyctra_test_suite_2()
     spyctra_test_suite_3()
+    spyctra_test_suite_4()
     TNT_test()
     SDF_test()
     TREEV2_test()
