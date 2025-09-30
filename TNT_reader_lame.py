@@ -31,12 +31,11 @@ class TNT_BufferedReader(BufferedReader):
     def chomp(self, chomps):
         #useful for debugging
         a0 = self.tell()
-        #if chomps > 400:
-        #    exit()
+
         for i in range(chomps):
             print(i, self.read(1))
 
-        self.seek(a0,0)
+        self.seek(a0, 0)
 
 
     def reads(self, length, name=''):
@@ -349,6 +348,7 @@ def find_and_read_variables(a, meta):
             if num_vars < 0 or num_vars > 100:
                 if debug:
                     print('bad num_vars', num_vars)
+
                 continue
 
             for _ in range(num_vars):
@@ -359,6 +359,7 @@ def find_and_read_variables(a, meta):
                 else:
                     if debug:
                         print('bad var read')
+
                     continue
 
             if num_vars > 1 and len(var_meta) == num_vars:
@@ -421,6 +422,7 @@ def TNT_reader(path, options=''):
     read_variables(a, meta)
     exit()
     """
+
     if not skip_meta:
         meta.update(find_and_read_variables(a, meta))
 

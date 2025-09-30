@@ -531,9 +531,9 @@ class spyctra():
             component: which component of the data to check
 
         Returns:
-            [np.array of positions, np.array of peak values]
+            [np.array of x indices, np.array of peak values]
 
-        2025-09-27
+        2025-09-29
         """
 
         self.t0()
@@ -544,12 +544,12 @@ class spyctra():
 
         func = get_component_function(component)
 
-        xVals = np.array([np.argmax(func(d)) for d in self.data])
-        yVals = np.array([np.amax(func(d)) for d in self.data])
+        x_indices = np.array([np.argmax(func(d)) for d in self.data])
+        y_vals = np.array([np.amax(func(d)) for d in self.data])
 
         self.t1()
 
-        return [xVals, yVals]
+        return [x_indices, y_vals]
 
 
     def get_phi(self):
@@ -559,7 +559,7 @@ class spyctra():
         Allows you to work in time domain, which is probably useless
 
         Returns:
-            np.array of phases in radians.
+            np.array of phis in radians.
 
         2025-09-13
         """
@@ -583,23 +583,23 @@ class spyctra():
         Returns:
             2D np.array of phases.
 
-        2025-09-06
+        2025-09-29
         """
 
         self.t0()
 
         print(f'{self.level} Finding phase by time:')
 
-        phases = np.array([np.arctan2(np.imag(data), np.real(data)) for data in self.data])
+        phi_by_time = np.array([np.arctan2(np.imag(data), np.real(data)) for data in self.data])
 
         self.t1()
 
-        return phases
+        return phi_by_time
 
 
-    def get_point(self, point, component='C'):
+    def get_point(self, x_indices, component='C'):
         """
-        Return data at specified point
+        Return data at specified x index
 
         Args:
             point: A list of integers specifying where to get the data, or a
@@ -609,22 +609,22 @@ class spyctra():
         Returns:
             np.array of specified points
 
-        2025-09-06
+        2025-09-29
         """
 
         self.t0()
 
-        print(f'{self.level} Getting {component} data from point[s] {list_print(point)}:')
+        print(f'{self.level} Getting {component} data from point[s] {list_print(x_indices)}:')
 
         check_component(component)
 
-        point = ensure_iterable(point, self.count)
+        x_indices = ensure_iterable(x_indices, self.count)
         func = get_component_function(component)
-        data = func(np.array([d[int(point[i])] for i,d in enumerate(self.data)]))
+        points = func(np.array([d[int(x_indices[i])] for i,d in enumerate(self.data)]))
 
         self.t1()
 
-        return data
+        return points
 
 
     def get_snr(self, peaks=None):
@@ -746,6 +746,7 @@ class spyctra():
         """
 
         self.t0()
+
         components = ensure_iterable(components, self.count)
 
         print(f'{self.level} Integrating {components} component[s] in {self.space} domain:')
@@ -837,6 +838,7 @@ class spyctra():
         self.phi = np.concatenate(newPhi)
         self.time = np.concatenate(newTime)
         self.meta = {}
+
         self.t1()
 
 
@@ -882,7 +884,7 @@ class spyctra():
         a.report()
         self.__dict__.update(a.__dict__)
 
-        print(f'  Done:{round((time()-t0)*1000, 3)} ms\n')
+        print(f'  Done:{round((time()-t0)*1000, 3)} ms\n') #don't use self.t0
 
 
     def phase(self, phis=None):
@@ -1048,6 +1050,7 @@ class spyctra():
 
         2025-09-29
         """
+
         self.t0()
 
         from itertools import cycle
@@ -1088,6 +1091,7 @@ class spyctra():
         plt.xlim([self.x[0], self.x[-1]])
 
         self.plot_format(fig, ax, 1)
+
         self.t1()
 
 
@@ -1269,6 +1273,7 @@ class spyctra():
         """
 
         self.t0()
+
         print(f'{self.level} Shifting by {list_print(shifts)} point[s]:')
 
         if hasattr(shifts, '__iter__'):
@@ -1487,18 +1492,12 @@ def dull(x):
 
 
 def get_component_function(component):
-    component = component.upper()
+    funcs = {'R': np.real, 'I': np.imag, 'M': np.abs, 'C': dull}
 
-    if component == 'M':
-        return np.abs
-    elif component == 'R':
-        return np.real
-    elif component == 'I':
-        return np.imag
-    elif component == 'C':
-        return dull
+    if component in 'RIMC':
+        return funcs[component.upper()]
     else:
-        raise ValueError(f'ERROR: Expecting comp in [R,I,M,C] received {component}')
+        raise ValueError(f'ERROR: Expecting component in [R,I,M,C] received {component}')
 
 
 def list_print(list_in):
@@ -1578,16 +1577,10 @@ def work():
         a.add(fake_spyctra(df=dfs[i], noise=4))
 
     a.resize(16384)
-    a.fft()
-    a.resize([-2000,2000])
+    a.save('./temp.p')
+    a.open('./temp.p')
 
-    a.plot()
-    plt.show()
 
-    a.imshow('R') #imshow example
-    a.imshow('RI') #imshow example
-    a.imshow('RIM') #imshow example
-    plt.show()
 
 
 if __name__ == "__main__":
