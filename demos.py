@@ -497,7 +497,7 @@ def imshow_demo():
     a = spyctra()
 
     trials = 16
-    dfs = 128*np.arange(trials)
+    dfs = 100*np.arange(trials)
 
     for i in range(trials):
         a.add(fake_spyctra(df=dfs[i], noise=4))
@@ -509,13 +509,13 @@ def imshow_demo():
     a.imshow() #imshow example
     plt.show()
 
-    a.imshow('R') #imshow example
+    a.imshow([0,1,2,4,8], 'R') #imshow example
     plt.show()
 
     a.imshow('RI') #imshow example
     plt.show()
 
-    a.imshow('RIM') #imshow example
+    a.imshow([0,3,6,9,12], 'RIM') #imshow example
     plt.show()
 
 
@@ -852,7 +852,7 @@ def transpose_demo():
 
 
 def method_demos():
-    plot_demo()
+    imshow_demo()
 
     add_demo()
     decimate_demo()

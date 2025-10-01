@@ -21,6 +21,7 @@ import sys
 """
 CHANGE LOG
 
+2025-09-30 imshow() respects to_plot
 2025-09-29 plot_over() formating improved, hasattr(x, '__iter__') used to identify iterables, meta list requirements enforced
 2025-09-27 find_*() becomes get_*() to make commands easier to remember
 2025-09-16 Updated plot() formatting
@@ -692,7 +693,7 @@ class spyctra():
         Args:
             component: which components (RIM) to plot
 
-        2025-09-07
+        2025-09-30
         """
 
         self.t0()
@@ -706,7 +707,9 @@ class spyctra():
         print(f'{self.level} Plotting imshow {components} for {list_print(to_plot)}:')
 
         fig, axs = plt.subplots(len(components))
-        extent = [self.x[0], self.x[-1], (self.count-1), 0]
+        extent = [self.x[0], self.x[-1], len(to_plot), 0]
+
+        data = np.array(self.data)[to_plot]
 
         for i, component in enumerate(components):
             func = get_component_function(component)
@@ -716,8 +719,10 @@ class spyctra():
             else:
                 ax = axs
 
-            im = ax.imshow(func(self.data), interpolation='None', aspect='auto', extent=extent)
-            ax.set_ylabel('spyctra')
+            im = ax.imshow(func(data), interpolation='None', aspect='auto', extent=extent)
+            ax.set_yticks(np.arange(len(to_plot))+0.5)
+            ax.set_yticklabels(to_plot)
+            ax.set_ylabel('spyctra index')
             fig.colorbar(im, ax=ax, label=component)
 
         if self.space == 'Hz':
@@ -729,7 +734,6 @@ class spyctra():
 
         button()
         self.t1()
-
 
 
     def integrate(self, components='R'):
@@ -1570,15 +1574,20 @@ def fake_spyctra(points=1024, delta=10e-6, df=0, noise=0, t_2=np.inf, phi=0, see
 def work():
     a = spyctra()
 
-    trials = 16
-    dfs = 128*np.arange(trials)
+    trials = 4
+    dfs = 100*np.arange(trials)
 
     for i in range(trials):
-        a.add(fake_spyctra(df=dfs[i], noise=4))
+        a.add(fake_spyctra(df=dfs[i], t_2 = 3e-3, noise=4))
 
-    a.resize(16384)
-    a.save('./temp.p')
-    a.open('./temp.p')
+    a.fft()
+    print(a.integrate('RIM'))
+
+
+    a.plot()
+    plt.show()
+
+
 
 
 
