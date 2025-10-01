@@ -14,6 +14,7 @@ import numpy as np
 
 from scipy.optimize import nnls
 
+
 def expDec(t, amp, T2):
     return amp*np.exp(-t/T2)
 
@@ -43,7 +44,7 @@ def laplaceInversion(x, y, T2):
     ## perform the final inversion using the fit regularization parameter above
     X2 = np.concatenate([X, np.sqrt(lam)*np.eye(len(T2))])
     b = np.concatenate([y, np.zeros(len(T2))])
-    t, res = nnls(X2,b)  #final non-linear leastsquares fit
+    t, res = nnls(X2, b)  #final non-linear leastsquares fit
 
     return t
 
@@ -55,30 +56,35 @@ def invlap(x,y,T2):
     for j in range(len(T2)):
         X[:,j] = expDec(x, 1.0, T2[j])
 
-    t = nnls(X,y)
+    t = nnls(X, y)
     return t[0]
-
 
 
 def main():
     from numpy.random import normal
 
-    x = np.linspace(0,100,1024)
+    x = np.linspace(0, 100, 1024)
     y = np.zeros(len(x))
-    y += expDec(x,100,.5)
-    y += expDec(x,100,12)
+    y += expDec(x, 100, .5)
+    y += expDec(x, 100, 12)
     #y += normal(0,10,len(y))
 
-    T2s = np.logspace(-2, 2, 512)
-    t = laplaceInversion(x, y, T2s)
+    T_2s = np.logspace(-2, 2, 512)
+    t = laplaceInversion(x, y, T_2s)
     #t = invlap(x, y, T2s)
 
-    plt.figure()
-    plt.subplot(2,1,1)
-    plt.plot(x,y)
-    plt.subplot(2,1,2)
-    plt.plot(T2s,t)
-    #plt.yscale('log')
+    plt.figure(figsize=(16,9))
+
+    plt.subplot(2, 1, 1)
+    plt.plot(x, y)
+    plt.xlabel('time')
+    plt.ylabel('signal')
+
+    plt.subplot(2, 1, 2)
+    plt.plot(T_2s, t)
+    plt.xlabel('t_2')
+    plt.ylabel('inverse laplace')
+    plt.xscale('log')
     plt.show()
 
 
