@@ -985,19 +985,17 @@ class spyctra():
         else:
             x = self.x
 
-        colors = {'R': 'r', 'I': 'g', 'M': 'b'}
-
         fig, ax = plt.subplots(figsize=(16,9))
 
         for component in components:
             func = get_component_function(component)
-            ax.plot(x, func(data), colors[component], linewidth=2.0)
+            ax.plot(x, func(data), {'R': 'r', 'I': 'g', 'M': 'b'}[component], linewidth=2.0)
 
         ax.set_xlim([x[0],x[-1]])
 
         if self.space == 'Hz' and self.x[0] < 0 < self.x[-1]:
             has_x_equal_0 = True
-            x0 = -self.x[0]*(self.points-1)/(self.x[-1]-self.x[0])
+            x0 = -self.x[0]*(self.points - 1)/(self.x[-1] - self.x[0])
         else:
             has_x_equal_0 = False
 
@@ -1006,11 +1004,11 @@ class spyctra():
 
         if len(to_plot)> 1:
             for i,_ in enumerate(to_plot[1:]): #vertical lines indicate different spyctra
-                ax.axvline(self.points*(i+1), alpha=0.5, color='black')
+                ax.axvline(self.points*(i + 1), alpha=0.5, color='black')
 
             if self.space == 's':
                 for i, s in enumerate(to_plot): #label spyctra index
-                    ax.text(self.points/2*(2*i+1), 0.95*ys[1], s, alpha=0.9, fontsize=16)
+                    ax.text(self.points/2*(2*i + 1), 0.95*ys[1], s, alpha=0.9, fontsize=16)
 
                 ticks0 = [self.points/2*i for i in range(2*len(to_plot))]
                 ticks1 = [f'{self.start + self.delta*(v%self.points):.3}' for v in ticks0]
@@ -1019,13 +1017,13 @@ class spyctra():
 
             if self.space == 'Hz':
                 for i, s in enumerate(to_plot): #label spyctra index
-                    ax.text(self.points/2*(2*i+1), 0.95*ys[1], s, alpha=0.5, fontsize=16)
+                    ax.text(self.points/2*(2*i + 1), 0.95*ys[1], s, alpha=0.5, fontsize=16)
 
                     if has_x_equal_0:
                         ax.axvline(x0 + self.points*i, alpha=0.5, color='black', linestyle=':')
 
                 ticks0 = ( [self.points*i + self.points/4 for i in range(len(to_plot))]
-                          +[self.points*(i+1) - self.points/4 for i in range(len(to_plot))])
+                          +[self.points*(i + 1) - self.points/4 for i in range(len(to_plot))])
                 ticks1 = [f'{self.start + self.delta*(v%self.points):.3}' for v in ticks0]
                 ax.set_xticks(ticks0)
                 ax.set_xticklabels(ticks1)
@@ -1214,7 +1212,7 @@ class spyctra():
 
         if type(N) == int:
             if N > 0:
-                if N<self.points:
+                if N < self.points:
                     print(f'{self.level} Truncating from {self.points} to {N} points:')
 
                     self.data = [d[:N] for d in self.data]
@@ -1403,6 +1401,7 @@ class spyctra():
 
         self.t1()
 
+
     #Commonly used operations. Should probably have underscores preceeding their names
     def check_space(self, space):
         if self.space != space:
@@ -1496,10 +1495,8 @@ def dull(x):
 
 
 def get_component_function(component):
-    funcs = {'R': np.real, 'I': np.imag, 'M': np.abs, 'C': dull}
-
     if component in 'RIMC':
-        return funcs[component.upper()]
+        return {'R': np.real, 'I': np.imag, 'M': np.abs, 'C': dull}[component.upper()]
     else:
         raise ValueError(f'ERROR: Expecting component in [R,I,M,C] received {component}')
 
@@ -1568,7 +1565,7 @@ def fake_spyctra(points=1024, delta=10e-6, df=0, noise=0, t_2=np.inf, phi=0, see
                    ,phi=[0.0]
                    ,start=0
                    ,meta=meta
-                  )
+                   )
 
 
 def work():
@@ -1586,10 +1583,6 @@ def work():
 
     a.plot()
     plt.show()
-
-
-
-
 
 
 if __name__ == "__main__":

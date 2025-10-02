@@ -302,6 +302,7 @@ def spyctra_test_suite_4():
     a.shift(np.arange(a.count)*50)
     a.shift(-np.arange(a.count)*10)
     a.phase(np.arange(a.count))
+    a.subtract(10*np.arange(a.count))
 
     b = a[0:7:3]
 
@@ -670,7 +671,7 @@ def fitlib_test():
 
 def main():
     c0 = time()
-    #SDF_test()
+    #spyctra_test_suite_4()
     #exit()
     #"""
     spyctra_test_suite_0()

@@ -852,7 +852,7 @@ def transpose_demo():
 
 
 def method_demos():
-    imshow_demo()
+    plot_over_demo()
 
     add_demo()
     decimate_demo()
