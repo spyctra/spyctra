@@ -277,11 +277,10 @@ def use_GUI(extension):
         label = 'SDF'
 
     # Open the file dialog
-    file_paths = filedialog.askopenfilenames(
-        title = 'Select File[s]',
-        initialdir='./',  # Start directory
-        filetypes=((f'{label} files', '*' + extension), ('All files', '*.*'))
-    )
+    file_paths = filedialog.askopenfilenames(title='Select File[s]',
+                                             initialdir='./',  # Start directory
+                                             filetypes=((f'{label} files', '*' + extension), ('All files', '*.*'))
+                                            )
     root.destroy()
 
     if file_paths:

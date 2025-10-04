@@ -4,6 +4,7 @@ variable and has a handy visualization tool.
 
 Written because LMFIT isn't that good.
 """
+
 from copy import deepcopy
 from math import e, isnan, pi
 from multiprocessing import Pool
@@ -123,6 +124,7 @@ def print_std_out(function, meta, label, p1, uncertainties, r_squared, p0_splits
     t0 = time()
 
     func = repr(function).split(' ')[1]
+
     print(f'\n FIT {label} of {func} in {t_fit*1000:.1f} ms')
 
     if not meta['global']:
@@ -166,7 +168,6 @@ def parse_returns(meta, raw_returns):
     else:
         p1s = [r[0] for r in raw_returns]
 
-    #"""
     res = {}
 
     for i, label in enumerate(meta['result']):
@@ -209,13 +210,13 @@ def parse_returns(meta, raw_returns):
             res['R^2'].append(r_squared)
 
         if meta['complex']:
-            res['<Res.real>'+'_ind'*meta['global']].append(np.mean(residuals.real)),
-            res['STD(Res.real)'+'_ind'*meta['global']].append(np.std(residuals.real))
-            res['<Res.imag>'+'_ind'*meta['global']].append(np.mean(residuals.imag))
-            res['STD(Res.imag)'+'_ind'*meta['global']].append(np.std(residuals.imag))
+            res['<Res.real>' + '_ind'*meta['global']].append(np.mean(residuals.real)),
+            res['STD(Res.real)' + '_ind'*meta['global']].append(np.std(residuals.real))
+            res['<Res.imag>' + '_ind'*meta['global']].append(np.mean(residuals.imag))
+            res['STD(Res.imag)' + '_ind'*meta['global']].append(np.std(residuals.imag))
         else:
-            res['<Res>'+'_ind'*meta['global']].append(np.mean(residuals))
-            res['STD(Res)'+'_ind'*meta['global']].append(np.std(residuals))
+            res['<Res>' + '_ind'*meta['global']].append(np.mean(residuals))
+            res['STD(Res)' + '_ind'*meta['global']].append(np.std(residuals))
 
     if meta['global']:
         if meta['complex']:
@@ -250,6 +251,7 @@ def get_summary_text(status, meta, p0, r_squared, residuals, label, function, sp
 
     if meta['global']:
         p0 = np.split(p0, splits)
+
         if uncs != None:
             uncs = np.split(uncs, splits)
 
@@ -328,7 +330,7 @@ def calc_fit(function, x, y, sigma, p0, meta, fit_kwargs):
         popt, pcov = curve_fit(function, x, y, p0=p0, sigma=sigma, **fit_kwargs)
 
     if np.isposinf(pcov[0][0]):
-        print('WARNING: Covariance failed. Try epsfcn=0.001')
+        print('WARNING: Covariance failed. Try epsfcn=0.001 or smaller')
 
     t_fit = time() - t0
 
@@ -700,6 +702,7 @@ def plot_residuals(ax, x, residuals, meta):
     if (ax.get_ylim()[0] < 0 <ax.get_ylim()[1]):
         ax.axhline(c='w', linewidth=1, zorder=2)
         ax.axhline(c='k', alpha=0.75, linestyle=':', linewidth=0.9, zorder=4)
+
     if (ax.get_xlim()[0] < 0 < ax.get_xlim()[1]):
         ax.axvline(c='w', linewidth=1, zorder=2)
         ax.axvline(c='k', alpha=0.75, linestyle=':', linewidth=0.9, zorder=4)
@@ -895,16 +898,16 @@ def worker():
 
     a = spyctra()
     for i in range(3):
-        a.add(fake_spyctra(t_2=(i+1)*3e-3, df=i*10, phi=i))
+        a.add(fake_spyctra(t_2=(i+1)*3e-3, df=i*10, phi=i, noise=16))
 
     b = a.copy()
     b.resize(b.points*8)
     b.fft()
 
-    dfs = b.find_df()
-    phis = b.find_phi()
-    peaks = np.abs(b.find_peak()[1])
-    lws = b.find_linewidth()
+    dfs = b.get_df()
+    phis = b.get_phi()
+    peaks = np.abs(b.get_peak()[1])
+    lws = b.get_linewidth()
 
     """
     a.plot()

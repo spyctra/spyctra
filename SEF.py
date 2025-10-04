@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from os.path import getmtime
 from spyctra import spyctra
 from time import ctime, perf_counter as time
