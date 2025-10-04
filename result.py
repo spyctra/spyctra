@@ -97,7 +97,7 @@ class result(dict):
             if type(self[item]) in [list]:
                 self[item] += d1[item]
             elif type(self[item]) in [np.array, np.ndarray]:
-                self[item].append(d1[item])
+                self[item] = np.append(self[item], d1[item])
             else:
                 raise TypeError(f'ERROR: element {item} is not list or numpy array. Type {type(item)}')
 
@@ -110,7 +110,33 @@ def ensure_iterable(q):
 
 
 def test_suite():
-    pass
+    import numpy as np
+
+    r0 = result()
+
+    r0['a'] = 1.6*np.ones(3, dtype=np.float64)
+    r0['b'] = [1,2,3]
+
+    r1 = result()
+
+    r1['a'] = np.arange(5)
+    r1['b'] = [i for i in range(len(r1['a']))]
+
+
+    r0.pop(1)
+    r0.print()
+    r0.print_ind()
+
+    r1.pop([2,3])
+
+    r2 = result()
+    r2.stack(r1)
+    r2.print()
+
+
+    r0.stack(r1)
+    r0.print()
+
 
 
 def work():

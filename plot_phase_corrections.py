@@ -18,6 +18,7 @@ from plot_defaults import button
 """
 CHANGE LOG
 
+2025-10-03 minor debugging
 2025-09-14 Initial release
 """
 
@@ -48,6 +49,7 @@ class phase_correction_plotter():
         self.ax0.set_title('First Order Phase Correction Visualizer')
         self.ax0.grid()
         plt.legend()
+
         self.fig.text(0.825, 0.19, 'value')
         self.fig.text(0.875, 0.19, 'increment')
 
@@ -182,7 +184,7 @@ def test_suite():
     for i in range(2):
         a.add(fake_spyctra(points=16384*64, delta=1e-5, t_2=1e-1, df=20, amp=4096, phi=i+1, noise=0))
 
-    a.subtract(a.find_offset())
+    a.subtract(a.get_offset())
     a.fft()
     a.resize([-100,100])
 
