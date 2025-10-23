@@ -76,7 +76,7 @@ def get_time_stamp(meta):
     return datetime(year, mon, day, hour, mn, sec).timestamp()
 
 
-def parse_path_and_options(pathData, *options):
+def parse_path_and_options(pathData, text_options, **kwargs):
     t0 = time()
 
     global debug
@@ -97,24 +97,18 @@ def parse_path_and_options(pathData, *options):
     if directory == '':
         directory = './'
 
-    if options:
-        options = options[0]
-    else:
-        options = []
-
     find = 0
 
-    for option in options:
-        if option.isdigit():
-            find = int(option)
+    if kwargs and 'zones' in kwargs:
+        find = kwargs['zones']
 
-    if 'debug' in options:
+    if 'debug' in text_options:
         debug = 1
 
-    if 'quiet' in options:
+    if 'quiet' in text_options:
         quiet = 1
 
-    if 'timer' in options:
+    if 'timer' in text_options:
         timer = 1
 
     a = open(directory + filename, 'r')
@@ -215,14 +209,14 @@ def make_spyctra(data, meta):
     return a
 
 
-def SDF_reader(pathData, *options):
+def SDF_reader(pathData, text_options, **kwargs):
     t0 = time()
 
     spyctras = []
     read_times = []
     found = 0
 
-    a, meta0, find = parse_path_and_options(pathData, *options)
+    a, meta0, find = parse_path_and_options(pathData, text_options, **kwargs)
 
     for line in a:
         if len(line)>3 and line[:4] == 'ZONE':
@@ -237,7 +231,7 @@ def SDF_reader(pathData, *options):
             meta.update(parse_meta(words))
 
             if line[:4] == 'DATA':
-                data = get_data(a, meta, options)
+                data = get_data(a, meta, text_options)
                 meta['taus'] = get_taus(meta)
                 meta['delta'] = get_delta(meta)
                 meta['timeStamp'] = get_time_stamp(meta)
@@ -252,7 +246,7 @@ def SDF_reader(pathData, *options):
                     pass
 
                 if find > 0 and find == found:
-                    print(f'pulled {len(spyctras)} zones from {meta["directory"] + meta["filename"]}')
+                    print(f'pulled {len(spyctras)} zones from {meta0["directory"] + meta0["filename"]}\n')
 
                     return spyctras
 
@@ -268,21 +262,27 @@ def SDF_reader(pathData, *options):
     return spyctras
 
 
-def read(path=None, *options):
+def read(path=None, numbered_files=None, text_options='', **kwargs):
     from file_reader import master_reader
 
-    return master_reader(path, '.sdf', *options)
+    return master_reader(path, '.sdf', numbered_files, text_options, **kwargs)
 
 
-def test_suite():
+def SDF_test_suite_read():
     import matplotlib.pyplot as plt
 
-    sdfs = SDF_reader('../spyctraRep/Stelar/AN_sept2018c')
+    sdfs = read()
+    sdfs = read('../spyctra_rep/Stelar/AN_sept2018c')
+    sdfs = read('../spyctra_rep/Stelar/AN_sept2018c', 'quiet')
+    sdfs = read('../spyctra_rep/Stelar/AN_sept2018c', zones=4)
 
     for a in sdfs:
         a.plot()
         plt.show()
 
+
+def test_suite():
+    ...
 
 def work():
     from file_reader import master_reader
@@ -302,7 +302,7 @@ def work():
 
 
 def main():
-     test_suite()
+    SDF_test_suite_read()
 
 
 if __name__ == "__main__":

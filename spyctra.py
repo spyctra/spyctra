@@ -630,7 +630,7 @@ class spyctra():
 
     def get_snr(self, peaks=None):
         """
-        Calculate SNR of the abs(peak) to the RMS noise or user specified location.
+        Calculate SNR of the abs(peak) or user specified location to the RMS noise.
 
         Returns:
             np.array of SNRs.
@@ -949,7 +949,7 @@ class spyctra():
                 dPhidF, f0, phi0 = phase_corrs[i]
 
             phiAdj = (f0 - self.x)*dPhidF - phi0
-            self.data[i]*=e**(1j*phiAdj)
+            self.data[i] *= e**(1j*phiAdj)
 
         self.t1()
 
@@ -1097,7 +1097,7 @@ class spyctra():
         self.t1()
 
 
-    def plot_phase_cor(self, dPhidF=0, ddPhidF=0.001, f0=0, df0=0.01, phi0=0, dphi0=0.1):
+    def plot_phase_cor(self, dPhidF=0, dPhidF_inc=0.001, f0=0, f0_inc=0.01, phi0=0, phi0_inc=0.1):
         """
         Plots zero and first order phase corrections and returns values
 
@@ -1107,32 +1107,32 @@ class spyctra():
         phase_corrs = [None]*self.count
 
         for j in range(self.count):
-            b = phase_correction_plotter(self.x, self.data[j], dPhidF, ddPhidF, f0, df0, phi0, dphi0)
+            b = phase_correction_plotter(self.x, self.data[j], dPhidF, dPhidF_inc, f0, f0_inc, phi0, phi0_inc)
             phase_corrs[j] = b.run()
 
         return phase_corrs
 
 
-    def pop(self, toRemove):
+    def pop(self, to_remove):
         """
         Removes/deletes specified spyctra
 
         Args:
-            toRemove: the list of spyctra to remove
+            to_remove: the list of spyctra to remove
 
         2025-09-06
         """
 
         self.t0()
 
-        print(f'{self.level} Removing {list_print(toRemove)}:')
+        print(f'{self.level} Removing {list_print(to_remove)}:')
 
-        if not hasattr(toRemove, '__iter__'):
-            toRemove = np.array([toRemove])
+        if not hasattr(to_remove, '__iter__'):
+            to_remove = np.array([to_remove])
 
-        toRemove.sort()
+        to_remove.sort()
 
-        for i in toRemove[::-1]:
+        for i in to_remove[::-1]:
             self.data.pop(int(i))
             self.freq = np.delete(self.freq, i)
             self.phi = np.delete(self.phi, i)
@@ -1187,7 +1187,7 @@ class spyctra():
               f' Space: {self.space}\n')
 
         for m in self.meta:
-            if type (self.meta[m]) in list:
+            if type(self.meta[m]) == list:
                 print(m, list_print(self.meta[m]))
             else:
                 print(m, type(self.meta[m])) #this shouldn't happen...

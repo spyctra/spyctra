@@ -27,7 +27,7 @@ def t1(t0):
     return round(1000*(time()-t0), 1)
 
 
-def parse_path_and_options(path_data, *options):
+def parse_path_and_options(path_data, text_options, **kwargs):
     t0 = time()
 
     global debug
@@ -47,18 +47,13 @@ def parse_path_and_options(path_data, *options):
     if directory == '':
         directory = './'
 
-    if options:
-        options = options[0]
-    else:
-        options = []
-
-    if 'quiet' in options:
+    if 'quiet' in text_options:
         quiet = 1
 
-    if 'debug' in options:
+    if 'debug' in text_options:
         debug = 1
 
-    if 'quiet' not in options:
+    if 'quiet' not in text_options:
         print(f' {filename}', end='')
 
     if debug:
@@ -196,19 +191,27 @@ def make_spyctra(a, data, meta, t0):
     return a
 
 
-def TREEV2_reader(path_data, *options):
+def TREEV2_reader(path_data, text_options, **kwargs):
     t0 = time()
-    a, meta = parse_path_and_options(path_data, *options)
+    a, meta = parse_path_and_options(path_data, text_options, **kwargs)
     data = get_data(a)
     meta.update(get_metadata(a.properties))
 
     return make_spyctra(a, data, meta, t0)
 
 
-def read(path=None, *rawOptions):
+def read(path=None, numbered_files=None, text_options='', **kwargs):
     from file_reader import master_reader
 
-    return master_reader(path, '.tdms', *rawOptions)
+    return master_reader(path, '.tdms', numbered_files, text_options, **kwargs)
+
+
+def TREEV2_test_suite_read():
+    import matplotlib.pyplot as plt
+
+    a = read()
+    a = read('../spyctra_rep/TREEV2/FID_', 4)
+    plt.show()
 
 
 def test_suite():
@@ -235,7 +238,10 @@ def work():
     plt.show()
 
 
+def main():
+    TREEV2_test_suite_read()
+
+
 if __name__ == "__main__":
-    #test_suite()
-    work()
+    main()
 

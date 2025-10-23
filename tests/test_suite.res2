@@ -4828,14 +4828,14 @@ sums
  28755.981952350172
 
 directory
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
- ../spyctraRep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
+ ../../spyctra_rep/TNT/test_sets/
 
 filename
  slse_0.tnt
@@ -6156,18 +6156,18 @@ findPeak[1]
  0.0005368510970190536
 
 directory
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
 
 filename
  AN_sept2018c.sdf
@@ -7724,18 +7724,18 @@ TAUS
  0.04000000000000001
 
 directory
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
 
 filename
  AN_sept2018c.sdf
@@ -9292,18 +9292,18 @@ TAUS
  0.03763801211000001
 
 directory
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
 
 filename
  AN_sept2018c.sdf
@@ -10860,18 +10860,18 @@ TAUS
  0.035862809239999995
 
 directory
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
- ../spyctraRep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
+ ../../spyctra_rep/SDF/
 
 filename
  AN_sept2018c.sdf
@@ -12482,16 +12482,16 @@ STD(Res)
  122.78227197098204
 
 directory
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
- ../spyctraRep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
+ ../../spyctra_rep/TREEV2/
 
 filename
  CPMG_00.tdms

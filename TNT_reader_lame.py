@@ -334,10 +334,6 @@ def find_and_read_variables(a, meta):
         a.seek(a0 + trials, 0)
         trials += 1
 
-        if debug:
-            a.chomp(10)
-            input('advance? ')
-
         try:
             num_vars = a.read_int()
 
@@ -372,14 +368,14 @@ def find_and_read_variables(a, meta):
         for e in var_meta:
             print(f'{e}:{ var_meta[e]}')
 
-        input('advance? ')
+        #input('advance? ')
 
     return var_meta
 
 
-def TNT_reader(path, options=''):
+def TNT_reader(path, text_options, **kwargs):
     t0 = time()
-    options = options.lower()
+    text_options = text_options.lower()
 
     global debug
     global timer
@@ -387,19 +383,19 @@ def TNT_reader(path, options=''):
     global skip_meta
     global quiet
 
-    if 'debug' in options:
+    if 'debug' in text_options:
         debug = 1
 
-    if 'skip_meta' in options:
+    if 'skip_meta' in text_options:
         skip_meta = 1
 
-    if 'quiet' in options:
+    if 'quiet' in text_options:
         quiet = 1
 
-    if 'timer' in options:
+    if 'timer' in text_options:
         timer = 1
 
-    if 'telling' in options:
+    if 'telling' in text_options:
         telling = 1
 
     if path[-4:] != '.tnt':
@@ -429,8 +425,15 @@ def TNT_reader(path, options=''):
     return data, meta
 
 
+def test_suite():
+    path = '../spyctra_rep/TNT/test_files/'
+    data, meta = TNT_reader(path + 'LW_0') #1.001
+
+    #data, meta = TNT_reader(path + 'LW_0', 'quiet,debug') #1.001
+
+
 def main():
-    path = '../spyctraRep/TNT/test_files/'
+    path = '../spyctra_rep/TNT/test_files/'
     #data, meta = TNT_reader(path + 'slse_0') #1.003
     #exit()
     data, meta = TNT_reader(path + 'GJL001_pPAPs_f1=15_02272019_0cm_open_vary_excite') #1.005
@@ -465,4 +468,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    test_suite()
+    #main()

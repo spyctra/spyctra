@@ -1,0 +1,23 @@
+
+quad_detector_simulator
+========================
+
+Don't you wish you knew how quadrature detectors worked? In principle, it works by splitting the analog signal into two initially identical channels: the real and imaginary. Both channels get multiplied by an AC signal at the demodulation frequency but the AC signal for each channel differs by pi/2 radians. The channels are then filtered to remove high frequency components. After the filter the data is discretely sampled and that data is averaged over some sampling period: the dwell time.
+
+.. py:function:: quad_detector(x0, y0, t_dwell, f_demod, bandwidth=100000, rec_phase=3)
+
+   Simulate quadrature detection of a signal to identify demodulation's impact on signal processing.
+
+   :param x0: The initial discretely sampled raw time basis of the data.
+   :type x0: ndarray[float]
+   :param y0: The initial discretely sampled raw signal.
+   :type y0: ndarray[float]
+   :param t_dwell: The demodulated data's sampling period or dwell time.
+   :type t_dwell: float
+   :param f_demod: The demodulation frequency of the detector.
+   :type f_demod: float
+   :param bandwidth: The cutoff frequency for the low pass butterworth filter simulation.
+   :type bandwidth: float
+   :return: A new spyctra.
+   :rtype: spyctra
+

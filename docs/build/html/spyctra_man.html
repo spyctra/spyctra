@@ -1,0 +1,1117 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>spyctra &#8212; spyctra_v6 6 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=e22f532e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'spyctra_man';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="fitlib" href="fitlib_man.html" />
+    <link rel="prev" title="spyctra_v6 Documentation" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">spyctra_v6 6 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    spyctra
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="fitlib_man.html">
+    fitlib
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="TNT_man.html">
+    TNT
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="SDF_man.html">
+    SDF
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quad_detector_simulator_man.html">
+    quad_detector_simulator
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    spyctra
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="fitlib_man.html">
+    fitlib
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="TNT_man.html">
+    TNT
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="SDF_man.html">
+    SDF
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quad_detector_simulator_man.html">
+    quad_detector_simulator
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">spyctra</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="spyctra">
+<h1>spyctra<a class="headerlink" href="#spyctra" title="Link to this heading">#</a></h1>
+<p>The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within <em>self</em>, or can accept an iterable, with same length as <em>self.data</em>, with each value applied to the corresponding spyctra.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.__init__">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the python object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>None</em>) – Optional path to saved spyctra.</p></li>
+<li><p><strong>data</strong> (<em>list</em><em>[</em><em>ndarray</em><em>]</em>) – List of ndarrays() containing the individual spyctra data.</p></li>
+<li><p><strong>start</strong> (<em>float</em>) – The initial x-axis value.</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – The x-axis increment.</p></li>
+<li><p><strong>space</strong> (<em>char</em>) – A flag indicating if the data is in the time (‘s’) or frequency (‘Hz’) domain.</p></li>
+<li><p><strong>phi</strong> (<em>ndarray</em><em> or </em><em>None</em>) – The cumulative phase adjustments made to each spyctra. Default is 0.</p></li>
+<li><p><strong>meta</strong> (<em>dict</em><em> or </em><em>None</em>) – A dictionary of iterables that track additional metadata of the spyctra.</p></li>
+<li><p><strong>freq</strong> (<em>ndarray</em><em> or </em><em>None</em>) – The observation frequencies of the spyctra. Default is 0.</p></li>
+<li><p><strong>time</strong> (<em>datetime.timestamp</em><em> or </em><em>None</em>) – The datetime.timestamps of the spyctra.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.__getitem__">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Copy individual spyctra into a new object in a pythonic way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ind</strong> (<em>int</em><em> or </em><em>list</em><em>[</em><em>int</em><em>] or </em><em>slice</em>) – The spyctra to copy.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new subset of the original spyctra.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>spyctra</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.count">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.count" title="Link to this definition">#</a></dt>
+<dd><p>Return the number of spyctra i.e. len(<em>self.data</em>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>len(<em>self.data</em>).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.points">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.points" title="Link to this definition">#</a></dt>
+<dd><p>Return the length of the spyctra. Spyctra assumes, but does not require, <em>self.data[i]</em> all have the same length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>len(<em>self.data[0]</em>).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.x">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.x" title="Link to this definition">#</a></dt>
+<dd><p>Return the x-axis of the data using <em>self.start</em> and <em>self.delta</em>. More efficient than always storing the whole thing since <em>self.start</em> and <em>self.delta</em> are generally more useful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The x-axis of the data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.add">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_spyctra</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.add" title="Link to this definition">#</a></dt>
+<dd><p>Add additional spyctra to <em>self</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_spyctra</strong> (<em>spyctra</em>) – The spyctra to add to <em>self</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.copy">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">user_copy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.copy" title="Link to this definition">#</a></dt>
+<dd><p>Copy the selected spyctra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>user_copy</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – The spyctra to copy. Default is all, i.e. <em>self.count</em>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new spyctra object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>spyctra</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.decimate">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">decimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.decimate" title="Link to this definition">#</a></dt>
+<dd><p>Average <em>self.data</em> at each x value across number of spyctra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>int</em>) – The number of spyctra to average. If <em>self.count%number</em> &gt; 0, decimate will ignore the remainder. If <em>number</em> == 0, decimate by <em>self.count</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.exp_mult">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">exp_mult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FWHM</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.exp_mult" title="Link to this definition">#</a></dt>
+<dd><p>Weight the spyctra by an exponential decay with time constant 1/pi/<em>FWHM</em>.
+Doesn’t check for time domain because spyctra lets you do you.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FWHM</strong> (<em>float</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – The <em>FWHM</em> used to define the time constants of the exponential weighting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.fft">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">fft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">divide</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rezero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.fft" title="Link to this definition">#</a></dt>
+<dd><p>FFT data from time to frequency domain or vice versa based on <em>self.space</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>divide</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>]</em>) – If <em>divide</em> == 1 divides first point in half when going to frequency domain and corrects when going back to the time domain. Historical feature from v0 of spyctra and Originlab NMR Tools.</p></li>
+<li><p><strong>rezero</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>]</em>) – If <em>rezero</em> == 1 performs fftshift on the FFTed data. Appropriate for demodulated data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_df">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_df" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the off-resonance (delta-f) of the peak, relative to the observation frequency, of the spyctra data in the frequency domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The array of off-resonances.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_freq">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_freq" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the absolute frequency of the peak of the spyctra data in the frequency domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The array of frequencies for each element in <em>self.data</em>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_lw">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_lw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'R'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_lw" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the full-width at half-maximum (FWHM) of the signal in the frequency domain by 1) finding the index of the peak of the signal, 2) finding the left and right indices where the signal is less than half of the peak value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> (<em>char</em><em> or </em><em>None</em>) – Which component (RIM) of the spyctra to use to calculate the linewidth.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array of FWHM, in Hz, for each spyctra.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_noise">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_noise" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the RMS of the magnitude of noise in the frequency domain using the first and last 1/<em>fraction</em> of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fraction</strong> (<em>int</em>) – The fraction of data, on both the left and right of the spyctra, that is sampled to calculate the RMS noise.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array of the RMS of the noise for each spyctra.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_offset">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_offset" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the DC offset of each spyctra by sampling the last 1/<em>fraction</em> of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fraction</strong> (<em>int</em>) – The <em>fraction</em> of data sampled to calculate offset.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array of the offsets for each spyctra.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float, complex].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_peak">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'M'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_peak" title="Link to this definition">#</a></dt>
+<dd><p>Return the index and value of the peak of the signal for the specified component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> (<em>char</em>) – Which component (RIM) of the spyctra to process.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list or two ndarrays containing the indices and values corresponding to the peak.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[ndarray[int], ndarray[float, complex]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_phi">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_phi" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the phase adjustment needed to phase the data to the peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of phases in radians.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_phi_by_time">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_phi_by_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_phi_by_time" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the phase of each point for each spyctra. Useful for identifying electromagnet instabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray of ndarrays of the phase for each spyctra.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray[ndarray[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_point">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_point" title="Link to this definition">#</a></dt>
+<dd><p>Return the specified component of the value at the specified point[s].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_indices</strong> – The specific index returned from each spyctra.</p></li>
+<li><p><strong>component</strong> (<em>char</em>) – The component (RIMC) of the value to return.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The desired values list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float, complex]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_snr">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_snr" title="Link to this definition">#</a></dt>
+<dd><p>Return the signal to noise ratio (SNR) at the peak signal location (default) or user specified location. Noise is always the default <em>self.noise</em> calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>peaks</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Where to calculate the signal. If <em>peaks</em> == None uses the absolute peak of the data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The SNR[s].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.get_time">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_time" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the time since t0 for each spyctra and then divide by <em>scale</em> to put into desired units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t0</strong> (<em>datetime.timestamp</em>) – The initial time to compare to. If <em>t0</em> == None will use time of first spyctra.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – The number of seconds to divide the elapsed times by to convert to minutes (60), hours(60*60), days(24*60*60).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the elapsed times.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.imshow">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">imshow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.imshow" title="Link to this definition">#</a></dt>
+<dd><p>Plot a 2d representation of the desired subset of <em>self.data</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – Subset of spyctra to plot.</p></li>
+<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which component[s] (RIM) of the data to plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.integrate">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'R'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.integrate" title="Link to this definition">#</a></dt>
+<dd><p>Return results of trapezoidal integration of the spyctra by the specified component[s].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>components</strong> (<em>char</em><em> or </em><em>str</em><em> or </em><em>None</em>) – Which components (RIM) to integrate. Default is ‘R’.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the desired integrals.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray[float] or ndarray[ndarray[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.new_count">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">new_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.new_count" title="Link to this definition">#</a></dt>
+<dd><p>Refactor the data into <em>N</em> new spyctra. If <em>N</em> &gt; <em>self.count</em>, metadata such as <em>self.freq</em> is preserved. If <em>N</em> &lt; <em>self.count</em>, metadata is lost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N</strong> (<em>int</em>) – The number of new spyctra to create from the existing data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.normalize">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.normalize" title="Link to this definition">#</a></dt>
+<dd><p>Divide spyctra by the specified value[s]. Default is to normalize by the largest value in each spyctra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>norm</strong> (<em>float</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – The value used to divide each spyctra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.open">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.open" title="Link to this definition">#</a></dt>
+<dd><p>Open a pickled spyctra object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to the pickled spyctra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.phase">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.phase" title="Link to this definition">#</a></dt>
+<dd><p>Phase spyctra by the specified value[s].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phis</strong> (<em>float</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – The phase adjustment, in radians, to be made to each spyctra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.phase_foc">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">phase_foc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_corrs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.phase_foc" title="Link to this definition">#</a></dt>
+<dd><p>Apply first or phase correction[s].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phase_corrs</strong> (<em>iterable</em><em>[</em><em>iterable</em><em>[</em><em>dPhidF</em><em>, </em><em>f0</em><em>, </em><em>phi0</em><em>]</em><em>]</em>) – The phase adjustment to be made to each spyctra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.plot">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the desired subset of spyctra as adjacent plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to plot.</p></li>
+<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which components (RIM) of the data to plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.plot_over">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">plot_over</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.plot_over" title="Link to this definition">#</a></dt>
+<dd><p>Plot the desired subset of spyctra in a single figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to plot.</p></li>
+<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which components (RIM) of the data to plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.plot_phase_corr">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">plot_phase_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dPhidF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dPhidF_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi0_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.plot_phase_corr" title="Link to this definition">#</a></dt>
+<dd><p>Open the interactive first order phase correction GUI and return the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dPhidF</strong> (<em>float</em>) – The rate of change of phase with respect to frequency in units of phase per Hz.</p></li>
+<li><p><strong>dPhidF_inc</strong> (<em>float</em>) – The scale for the slider on the GUI for <em>dPhidF</em>.</p></li>
+<li><p><strong>f0</strong> (<em>float</em>) – The center frequency for the first order correction in units of Hz.</p></li>
+<li><p><strong>f0_inc</strong> (<em>float</em>) – The scale for the slider on the GUI for <em>f0</em>.</p></li>
+<li><p><strong>phi0</strong> (<em>float</em>) – The zeroth order phase correction in units of radians.</p></li>
+<li><p><strong>dphi0_inc</strong> (<em>float</em>) – The scale for the slider on the GUI for <em>dphi0</em>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.pop">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_remove</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.pop" title="Link to this definition">#</a></dt>
+<dd><p>Remove the specified spyctra from <em>self</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>to_remove</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to remove.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.print">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.print" title="Link to this definition">#</a></dt>
+<dd><p>Print spyctra <em>data*[:*points</em>] to standard output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>points</strong> (<em>int</em>) – The number of points to print.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.report">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.report" title="Link to this definition">#</a></dt>
+<dd><p>Print useful information about the spyctra.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.resize">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.resize" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Resize spyctra by removing data or adding zeros.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>If <em>N</em> is an integer, truncate or append zeros to make <em>self.points</em> == <em>N</em>.</p></li>
+<li><p>If <em>N</em> is negative, zeros are prepended.</p></li>
+<li><p>If <em>N</em> is list, isolate data between the extremes in the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param N<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The new length of the spyctra.</p>
+</dd>
+<dt class="field-even">type N<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or list</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The indices used to subset the data if <em>N</em> is a list.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.save">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.save" title="Link to this definition">#</a></dt>
+<dd><p>Pickle a spyctra and save to <em>path</em> for future processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The path to save the pickled spyctra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.shift">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shifts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.shift" title="Link to this definition">#</a></dt>
+<dd><p>Remove the first <em>shift</em> points or add <em>shift</em> zeros to the spyctra data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>shifts</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – If <em>shifts</em> &gt; 0 then remove those points and append zeros. If <em>shifts</em> &lt; 0 prepend shift zeros.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.smooth">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.smooth" title="Link to this definition">#</a></dt>
+<dd><p>Successivle average points within a spyctra. Effectively a computationally cheap low-pass filter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>smooth</strong> (<em>int</em>) – the number of adjacent points to average. If <em>smooth%self.points</em> &gt; 0 the remainder of points will be dropped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.sort">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.sort" title="Link to this definition">#</a></dt>
+<dd><p>Sort the spyctra by the keys of the iterable <em>x</em>. Sort all relevant parts of <em>self</em>: <em>data</em>, <em>freq</em>, <em>phi</em>, <em>meta</em>, <em>time</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>iterable</em>) – The iterable used to identify how to sort the parts of <em>self</em>. len(<em>x</em>) must equal <em>self.count</em>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.subtract">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">subtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.subtract" title="Link to this definition">#</a></dt>
+<dd><p>Subtract offset[s] from the spyctra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>offset</strong> (<em>float</em><em>(</em><em>complex</em><em>)</em><em>, </em><em>iterable</em><em>(</em><em>float</em><em>, </em><em>complex</em><em>)</em>) – The offset[s] to subtract from each spyctra.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spyctra.transpose">
+<span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">transpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.transpose" title="Link to this definition">#</a></dt>
+<dd><p>Transpose the data in <em>self</em>. Resets <em>self</em>: <em>freq</em>, <em>time</em>, <em>meta</em>, <em>phi</em>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">fake_spyctra(points=1024,</span> <span class="pre">delta=10e-6,</span> <span class="pre">df=0,</span> <span class="pre">noise=0,</span> <span class="pre">t_2=numpy.inf,</span> <span class="pre">phi=0,</span> <span class="pre">seed=None,</span> <span class="pre">amp=512,</span> <span class="pre">scans=1,</span> <span class="pre">freq=0,</span> <span class="pre">meta={}):</span></span></dt>
+<dd><p>A quick way to generate spyctra. Will even simulate digitization of the data. This is a powerful way to test methods and can even be used for improved spectral analysis of actual data in conjunction with fitlib. Assumes data will have the form of a complex exponential decay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>int</em>) – The length of the spyctra data.</p></li>
+<li><p><strong>delta</strong> (<em>int</em><em> or </em><em>list</em>) – The x increment of the spyctra x-axis.</p></li>
+<li><p><strong>df</strong> (<em>float</em>) – The off-resonance (delta-f) of the spyctra.</p></li>
+<li><p><strong>noise</strong> (<em>float</em>) – The standard deviation of the noise in both the real and imaginary channels from one scan.</p></li>
+<li><p><strong>t_2</strong> (<em>float</em>) – The decay constant, in seconds, of the data.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – The phase offset, in radians, of the data.</p></li>
+<li><p><strong>seed</strong> (<em>None</em><em> or </em><em>int</em>) – A random seed to obtain distinct noise between spyctra. Default is to use the system time.</p></li>
+<li><p><strong>amp</strong> (<em>float</em>) – The initial amplitude of the data.</p></li>
+<li><p><strong>scans</strong> (<em>int</em>) – Simulates  averaged data by holding <em>amp</em> constant and reducing noise by <em>scans</em>**0.5.</p></li>
+<li><p><strong>freq</strong> (<em>float</em>) – The observation frequency of the data. Default is 0.</p></li>
+<li><p><strong>meta</strong> (<em>dict</em>) – A dictionary for other information about the spyctra.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fake spyctra.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>spyctra</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">spyctra_v6 Documentation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fitlib_man.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">fitlib</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.__init__"><code class="docutils literal notranslate"><span class="pre">spyctra.__init__()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.__getitem__"><code class="docutils literal notranslate"><span class="pre">spyctra.__getitem__()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.count"><code class="docutils literal notranslate"><span class="pre">spyctra.count()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.points"><code class="docutils literal notranslate"><span class="pre">spyctra.points()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.x"><code class="docutils literal notranslate"><span class="pre">spyctra.x()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.add"><code class="docutils literal notranslate"><span class="pre">spyctra.add()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.copy"><code class="docutils literal notranslate"><span class="pre">spyctra.copy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.decimate"><code class="docutils literal notranslate"><span class="pre">spyctra.decimate()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.exp_mult"><code class="docutils literal notranslate"><span class="pre">spyctra.exp_mult()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.fft"><code class="docutils literal notranslate"><span class="pre">spyctra.fft()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_df"><code class="docutils literal notranslate"><span class="pre">spyctra.get_df()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_freq"><code class="docutils literal notranslate"><span class="pre">spyctra.get_freq()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_lw"><code class="docutils literal notranslate"><span class="pre">spyctra.get_lw()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_noise"><code class="docutils literal notranslate"><span class="pre">spyctra.get_noise()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_offset"><code class="docutils literal notranslate"><span class="pre">spyctra.get_offset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_peak"><code class="docutils literal notranslate"><span class="pre">spyctra.get_peak()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_phi"><code class="docutils literal notranslate"><span class="pre">spyctra.get_phi()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_phi_by_time"><code class="docutils literal notranslate"><span class="pre">spyctra.get_phi_by_time()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_point"><code class="docutils literal notranslate"><span class="pre">spyctra.get_point()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_snr"><code class="docutils literal notranslate"><span class="pre">spyctra.get_snr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.get_time"><code class="docutils literal notranslate"><span class="pre">spyctra.get_time()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.imshow"><code class="docutils literal notranslate"><span class="pre">spyctra.imshow()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.integrate"><code class="docutils literal notranslate"><span class="pre">spyctra.integrate()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.new_count"><code class="docutils literal notranslate"><span class="pre">spyctra.new_count()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.normalize"><code class="docutils literal notranslate"><span class="pre">spyctra.normalize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.open"><code class="docutils literal notranslate"><span class="pre">spyctra.open()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.phase"><code class="docutils literal notranslate"><span class="pre">spyctra.phase()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.phase_foc"><code class="docutils literal notranslate"><span class="pre">spyctra.phase_foc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.plot"><code class="docutils literal notranslate"><span class="pre">spyctra.plot()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.plot_over"><code class="docutils literal notranslate"><span class="pre">spyctra.plot_over()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.plot_phase_corr"><code class="docutils literal notranslate"><span class="pre">spyctra.plot_phase_corr()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.pop"><code class="docutils literal notranslate"><span class="pre">spyctra.pop()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.print"><code class="docutils literal notranslate"><span class="pre">spyctra.print()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.report"><code class="docutils literal notranslate"><span class="pre">spyctra.report()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.resize"><code class="docutils literal notranslate"><span class="pre">spyctra.resize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.save"><code class="docutils literal notranslate"><span class="pre">spyctra.save()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.shift"><code class="docutils literal notranslate"><span class="pre">spyctra.shift()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.smooth"><code class="docutils literal notranslate"><span class="pre">spyctra.smooth()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.sort"><code class="docutils literal notranslate"><span class="pre">spyctra.sort()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.subtract"><code class="docutils literal notranslate"><span class="pre">spyctra.subtract()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra.transpose"><code class="docutils literal notranslate"><span class="pre">spyctra.transpose()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/spyctra_man.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Michael W. Malone.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

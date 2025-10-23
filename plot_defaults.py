@@ -6,7 +6,7 @@ from matplotlib import rcParams
 
 rcParams['font.family'] = 'Courier New'
 rcParams['font.size'] = 14
-rcParams['figure.figsize'] = [11, 11]
+rcParams['figure.figsize'] = [9, 9]
 rcParams['axes.labelsize'] = 16  # font size of the x and y labels
 rcParams['xtick.labelsize'] = 14  # font size of the tick labels
 rcParams['ytick.labelsize'] = 12  # font size of the tick labels

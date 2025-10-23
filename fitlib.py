@@ -22,6 +22,7 @@ from plot_defaults import button
 """
 CHANGE LOG
 
+2025-10-04 summary keyword added to fit options. Plots all the fit parameters if multiple y.
 2025-09-14 Initial release
 """
 
@@ -56,6 +57,9 @@ def fit(function, xs, ys, p0, **kwargs):
         p.close()
 
     returns = parse_returns(meta, raw_returns)
+
+    if meta['summary'] and len(ys) > 1:
+        plot_summary(meta, returns[1], len(ys))
 
     get_time(t0, 'Fitting')
 
@@ -129,13 +133,13 @@ def print_std_out(function, meta, label, p1, uncertainties, r_squared, p0_splits
 
     if not meta['global']:
         for i, p in enumerate(p1):
-            print('{:.4}'.format(p).ljust(11) + f'+/- {uncertainties[i]:.6}')
+            print(f'{meta['result'][i]:<{meta['max_result_label_length']}} {p: 8.5e} +/- {uncertainties[i]:8.5e}')
     else:
         p1s = np.split(p1, p0_splits)[:len(p0_splits)]
         uns = np.split(uncertainties, p0_splits)[:len(p0_splits)]
 
         for i, p in enumerate(p1s):
-            print(f'{meta["result"][i]} {repr(p)[6:-1]} \n +/- {repr(uns[i])[6:-1]}')
+            print(f'{meta['result'][i]} {repr(p)[6:-1]} \n +/- {repr(uns[i])[6:-1]}')
 
     print(f' R^2 {r_squared:.3}\n')
 
@@ -209,14 +213,16 @@ def parse_returns(meta, raw_returns):
         else:
             res['R^2'].append(r_squared)
 
+        suffix = '_ind'*meta['global']
+
         if meta['complex']:
-            res['<Res.real>' + '_ind'*meta['global']].append(np.mean(residuals.real)),
-            res['STD(Res.real)' + '_ind'*meta['global']].append(np.std(residuals.real))
-            res['<Res.imag>' + '_ind'*meta['global']].append(np.mean(residuals.imag))
-            res['STD(Res.imag)' + '_ind'*meta['global']].append(np.std(residuals.imag))
+            res[f'<Res.real>{suffix}'].append(np.mean(residuals.real)),
+            res[f'STD(Res.real){suffix}'].append(np.std(residuals.real))
+            res[f'<Res.imag>{suffix}'].append(np.mean(residuals.imag))
+            res[f'STD(Res.imag){suffix}'].append(np.std(residuals.imag))
         else:
-            res['<Res>' + '_ind'*meta['global']].append(np.mean(residuals))
-            res['STD(Res)' + '_ind'*meta['global']].append(np.std(residuals))
+            res[f'<Res>{suffix}'].append(np.mean(residuals))
+            res[f'STD(Res){suffix}'].append(np.std(residuals))
 
     if meta['global']:
         if meta['complex']:
@@ -238,7 +244,7 @@ def parse_returns(meta, raw_returns):
     return [p1s, res]
 
 
-def get_summary_text(status, meta, p0, r_squared, residuals, label, function, splits, uncs=None, ind_r_squareds=None, t_fit = None):
+def get_summary_text(status, meta, p0, r_squared, residuals, label, function, splits, uncertainties=None, ind_r_squareds=None, t_fit = None):
     t0 = time()
 
     label_length = min(max([len(label) for label in meta['result']]), 10)
@@ -252,8 +258,8 @@ def get_summary_text(status, meta, p0, r_squared, residuals, label, function, sp
     if meta['global']:
         p0 = np.split(p0, splits)
 
-        if uncs != None:
-            uncs = np.split(uncs, splits)
+        if uncertainties != None:
+            uncertainties = np.split(uncertainties, splits)
 
     param_text = ''
 
@@ -264,19 +270,22 @@ def get_summary_text(status, meta, p0, r_squared, residuals, label, function, sp
             val = np.mean(np.mean(p0[i]))
             param_text += '{}<{:.3E}>'.format(' '*int(val>=0),val)
 
-            if uncs != None:
-                val = np.mean(uncs[i])
-                param_text += r' $\pm$ {}<{:.3E}>'.format(' '*int(val>=0), val)
+            if uncertainties != None:
+                val = np.mean(uncertainties[i])
+                param_text += fr' $\pm$ <{val:.3E}>'
 
             param_text += r' $\sigma$={:.3E}'.format(np.std(p0[i]))
         else:
-            #print(p0[i])
-            val = float(p0[i])
+            if meta['global']:
+                val = float(p0[i][0])
+            else:
+                val = float(p0[i])
+
             param_text += ' {}{:.3E}'.format(' '*int(val>=0), val)
 
-            if uncs != None:
-                val = np.mean(uncs[i])
-                param_text += r'  $\pm$  {}{:.3E}'.format(' '*int(val>=0), val)
+            if uncertainties != None:
+                val = np.mean(uncertainties[i])
+                param_text += fr'  $\pm$  {val:.3E}'
 
     r_squared_text = f'R^2 {r_squared:.3f}'
 
@@ -387,6 +396,7 @@ def check_vals(vals, label):
             if debug:
                 for i, val in enumerate(vals):
                     print(f'ys[{i}] {type(val)}')
+
             newVals = [np.array(val) for val in vals]
         except:
             raise TypeError(f'Could not convert {label} of type {type(vals)} to numpy array')
@@ -397,6 +407,7 @@ def check_vals(vals, label):
         if type(vals) != np.ndarray:
             try:
                 print(f'WARNING: Expecting {label} array to be type np.ndarray, received {type(vals)}')
+
                 newVals = [np.array(vals)]
             except:
                 raise TypeError('Could not convert {label} of type {type(vals)} to numpy array')
@@ -421,7 +432,9 @@ def check_p0(p0):
     for i, p in enumerate(p0):
         if debug:
             test = len(p) if type(p) in [list, np.ndarray] else ''
+
             print(f'p{i} {type(p)} {test}')
+
         if type(p) == np.ndarray:
             pass
         elif type(p) == list:
@@ -459,6 +472,7 @@ def parse_meta_kwargs(kwargs, xs, ys, sigmas, p0):
     #meta['residuals'] = 0 #will return residuals
     meta['result'] = '' #returns result with passed string used to label variables
     meta['suffix'] = '' #suffix for result variabless
+    meta['summary'] = False #suffix for result variabless
     meta['savefig'] = '' #path with extension to save figure
 
     #If the kwarg is not option in meta, assumes it's for curve_fit
@@ -476,6 +490,7 @@ def parse_meta_kwargs(kwargs, xs, ys, sigmas, p0):
 
     if meta['global'] and meta['fine']:
         print('WARNING: Cannot fine plot global fits')
+
         meta['fine'] = 0
 
     if meta['result'] == '':
@@ -484,6 +499,8 @@ def parse_meta_kwargs(kwargs, xs, ys, sigmas, p0):
         meta['result'] = [s.strip() for s in meta['result'].split(',')]
 
     meta['result'] = [meta['prefix'] + label + meta['suffix'] for label in meta['result']]
+
+    meta['max_result_label_length'] = max([len(r) for r in meta['result']])
 
     if meta['multi'] > 1 and meta['guess'] + meta['check'] > 0:
         print('WARNING: no multiprocessing when guessing or checking fits')
@@ -560,6 +577,7 @@ def prep_global(xs, ys, sigmas, p0_raw, meta, function, fit_kwargs):
                 offset += 1
 
     orders = np.array(orders)
+
 
     def globalFunc(x, *p):
         p = np.array(p)
@@ -766,13 +784,13 @@ def plot_fit_summary(ax3, summary):
     text = summary[1]
     lines = text.count('\n')
 
-    if lines<12:
+    if lines < 12:
         font = summary_font_L
     else:
         font = summary_font_S
 
     ax3.set_title(f'{status} parameter summary', fontsize=title_font)
-    ax3.plot([0,10],[10,0], color='w')
+    ax3.plot([0, 10], [10, 0], color='w')
 
     plt.tick_params( axis='both'
                     ,which='both'
@@ -786,6 +804,48 @@ def plot_fit_summary(ax3, summary):
     plt.text(-0.3, 9.99, text, verticalalignment='top', wrap=True, fontsize=font, family='Courier New')
 
     get_time(t0, 'plot_fit_summary')
+
+
+def plot_summary(meta, result, count):
+    num_plots = len(meta['result']) + 2
+
+    if num_plots <= 8:
+        fig, axs = plt.subplots(2, int(np.ceil(num_plots/2)))
+    elif num_plots <= 12:
+        fig, axs = plt.subplots(3, int(np.ceil(num_plots/3)))
+    elif num_plots <= 16:
+        fig, axs = plt.subplots(4, int(np.ceil(num_plots/4)))
+
+    fig.suptitle('Fit Results Summary')
+
+    indices = np.arange(count)
+
+    for i, e in enumerate(meta['result']):
+        ax = axs[i//len(axs[0])][i%len(axs[0])]
+        ax.set_title(e)
+
+        ax.errorbar(indices, result[e], result[f'{e}_err'])
+
+    axs[-1][-2].set_title('Residuals')
+
+    if meta['complex']:
+        axs[-1][-2].errorbar(indices, result['<Res.real>'], result['STD(Res.real)'], label='R')
+        axs[-1][-2].errorbar(indices, result['<Res.imag>'], result['STD(Res.imag)'], label='I')
+        axs[-1][-2].legend()
+    else:
+        axs[-1][-2].errorbar(indices, result['<Res>'], result['STD(Res)'])
+
+
+    axs[-1][-1].set_title('R^2')
+
+    if meta['global']:
+        axs[-1][-1].plot(indices, result['R^2_ind'])
+
+    axs[-1][-1].plot(indices, result['R^2'])
+
+    button()
+    plt.tight_layout()
+    plt.show()
 
 
 def res_printer(res, length, note):
@@ -835,6 +895,7 @@ def fit_error_worker():
 
 def fine_worker():
     from numpy.random import normal,uniform,seed
+
     seed(0)
     """
     x = np.linspace(0,4*3.14159,50)
@@ -870,7 +931,7 @@ def fine_worker():
 
 
 def intense_fit():
-    from numpy.random import normal,uniform,seed
+    from numpy.random import normal, uniform, seed
     seed(0)
 
     def compExpDec(x, a, df, te, phi0):
@@ -897,8 +958,8 @@ def worker():
     from function_library import comp_exp_dec
 
     a = spyctra()
-    for i in range(3):
-        a.add(fake_spyctra(t_2=(i+1)*3e-3, df=i*10, phi=i, noise=16))
+    for i in range(25):
+        a.add(fake_spyctra(amp=10000, points=256, t_2=(i+1)*3e-3, df=-i**2*.010, phi=i*0.01, seed=i, noise=8))
 
     b = a.copy()
     b.resize(b.points*8)
@@ -920,7 +981,7 @@ def worker():
                ,dfs
                ,phis
               ]
-              ,guess=1, check=1, result='a, t_2, df, phi')
+              ,guess=0, check=0, summary=1, result='a, t_2, df, phi')
 
 
 def main():

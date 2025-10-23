@@ -1,6 +1,8 @@
 """
 Test suite of spyctra operations. Used for debugging.
 """
+import sys
+sys.path.append('../')
 
 import numpy as np
 from time import time
@@ -18,6 +20,8 @@ CHANGE LOG
 2025-09-27 the great get_ overhaul
 2025-09-14 Initial release
 """
+
+spyctra_rep_path = '../../spyctra_rep'
 
 def spyctra_test_suite_0():
     from spyctra import spyctra, fake_spyctra
@@ -317,8 +321,8 @@ def TNT_test():
     from TNT import read
 
     a = spyctra()
-    a.add(read('../spyctraRep/TNT/test_sets/slse_', 4, ''))
-    a.add(read('../spyctraRep/TNT/test_sets/slse_', 4, ''))
+    a.add(read(spyctra_rep_path + '/TNT/test_sets/slse_', 4, ''))
+    a.add(read(spyctra_rep_path + '/TNT/test_sets/slse_', 4, ''))
 
     for e in a.meta:
         if 'Read Time' not in e:
@@ -349,7 +353,7 @@ def SDF_test():
     from SDF import read
     from fitlib import fit
 
-    raw = read('../spyctraRep/SDF/AN_sept2018c', '4')
+    raw = read(spyctra_rep_path + '/SDF/AN_sept2018c', zones=4)
 
     for a in raw:
         for m in a.meta:
@@ -393,7 +397,7 @@ def SDF_test():
 def TREEV2_test():
     from TREEV2 import read
 
-    a = read('../spyctraRep/TREEV2/CPMG_', 10)
+    a = read(spyctra_rep_path + '/TREEV2/CPMG_', 10)
 
     res = result()
 
@@ -419,7 +423,7 @@ def TREEV2_test():
 
 
 def fitlib_test():
-    from fitlib import fit
+    from fitlib_dev import fit
     from spyctra import spyctra, fake_spyctra
     from numpy.random import uniform, seed, RandomState
 
@@ -671,7 +675,7 @@ def fitlib_test():
 
 def main():
     c0 = time()
-    #spyctra_test_suite_4()
+    #SDF_test()
     #exit()
     #"""
     spyctra_test_suite_0()

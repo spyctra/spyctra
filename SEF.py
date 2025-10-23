@@ -20,7 +20,7 @@ def t1(t0):
     return round(1000*(time()-t0),1)
 
 
-def parse_path_and_options(path_data, *options):
+def parse_path_and_options(path_data, text_options, **kwargs):
     t0 = time()
 
     global debug
@@ -40,18 +40,13 @@ def parse_path_and_options(path_data, *options):
     if directory == '':
         directory = './'
 
-    if options:
-        options = options[0]
-    else:
-        options = []
-
-    if 'quiet' in options:
+    if 'quiet' in text_options:
         quiet = 1
 
-    if 'debug' in options:
+    if 'debug' in text_options:
         debug = 1
 
-    if 'quiet' not in options:
+    if 'quiet' not in text_options:
         print(f' {filename}', end='')
 
     if debug:
@@ -138,18 +133,22 @@ def make_spyctra(start, delta, data, meta, t0):
     return a
 
 
-def SEF_reader(path_data, *options):
+def SEF_reader(path_data, text_options='', **kwargs):
     t0 = time()
-    a, meta = parse_path_and_options(path_data, *options)
+    a, meta = parse_path_and_options(path_data, text_options, **kwargs)
     start, delta, data = getData(a)
 
     return make_spyctra(start, delta, data, meta, t0)
 
 
-def read(path, *rawOptions):
+def read(path,  numbered_files=None, text_options='', **kwargs):
     from fileReader import masterReader
 
-    return masterReader(path, '.sef', *rawOptions)
+    return masterReader(path, '.sef', numbered_files, text_options, **kwargs)
+
+
+def SEF_test_suite_read():
+    ...
 
 
 def test_suite():
@@ -157,7 +156,7 @@ def test_suite():
     from fitlib import fit
     from math import e, pi
 
-    a = SEF_reader('../spyctraRep/Stelar/PDMS_mj_2Aug2018_4MHz_T1.sef')
+    a = SEF_reader('../spyctra_rep/Stelar/PDMS_mj_2Aug2018_4MHz_T1.sef')
     #a.plot()
     #plt.show()
 

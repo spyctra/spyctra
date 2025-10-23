@@ -26,6 +26,7 @@ import numpy as np
 """
 CHANGE LOG
 
+2025-10-22 forced params numbered_files and text_options and now allow kwargs and send to reader
 2025-09-18 GUI option use_GUI added
 2025-09-07 Initial release
 """
@@ -37,18 +38,19 @@ def t1(t0):
     return round(1000*(time()-t0), 1)
 
 
-def master_reader(path, extension, *raw_options):
+def master_reader(path, extension, numbered_files=None, text_options='', **kwargs):
     t0 = time()
 
     if path is not None:
         directory, filename = parse_path(path)
-        suffixes, options = parse_options(*raw_options)
+        suffixes, text_options = parse_options(numbered_files, text_options)
+
         filenames = match_files(directory, filename, suffixes, extension)
     else:
-        directory, filenames, options = use_GUI(extension)
+        directory, filenames, text_options = use_GUI(extension)
 
 
-    return reader(directory, filenames, extension, options, t0)
+    return reader(directory, filenames, extension, text_options, t0, **kwargs)
 
 
 def parse_path(path):
@@ -68,7 +70,7 @@ def parse_path(path):
         directory += '/'
 
     if debug:
-        print('\nparsePath()')
+        print('\nparse_path()')
         print(f' filename: {filename}')
         print(f' directory: {directory}')
 
@@ -98,26 +100,31 @@ def parse_path(path):
         sys.exit()
 
 
-def parse_options(*raw_options):
-    suffixes = [] #the suffixes of numbered files, default is empty list
-    read_options = ''
+def parse_options(numbered_files, text_options):
+    if debug:
+        print(f'{numbered_files = }')
+        print(f'{text_options = }')
 
-    for raw_option in raw_options:
-        if type(raw_option) == int:
-            suffixes = [repr(i) for i in range(raw_option)]
-        elif type(raw_option) in([list, np.array]):
-            suffixes = [repr(i) for i in raw_option]
-        elif type(raw_option) == str:
-            read_options = raw_option.lower() #only work in lower case
+    suffixes = []
+
+    if numbered_files is not None:
+        if type(numbered_files) == int:
+            suffixes = [repr(i) for i in range(numbered_files)]
+        elif type(numbered_files) in([list, np.array]):
+            suffixes = [repr(i) for i in numbered_files]
+        elif type(numbered_files) == str: #nasty hack in case you don't specify numbered files
+            text_options = numbered_files
         else:
-            raise TypeError(f'\nERROR: Expecting [int, list, np.array, str] but received {type(option)}')
+            raise TypeError(f'ERROR: numbered_files is unsupported type {type(numbered_files)}')
+
+    text_options = text_options.lower()
 
     if debug:
         print('\nparse_options()')
         print(f' suffixes: {suffixes}')
-        print(f' options: {read_options}')
+        print(f' options: {text_options}')
 
-    return suffixes, read_options
+    return suffixes, text_options
 
 
 def match_files(directory, filename, suffixes, extension):
@@ -218,7 +225,7 @@ def match_suffixed_files(directory, filename, suffixes, extension):
     return matched_files[:found]
 
 
-def reader(directory, filenames, extension, read_options, t0):
+def reader(directory, filenames, extension, text_options, t0, **kwargs):
     if extension == '.tnt':
         from TNT import TNT_reader
 
@@ -236,12 +243,12 @@ def reader(directory, filenames, extension, read_options, t0):
         a = spyctra()
 
         for filename in filenames:
-            a.add(func([directory, filename], read_options))
+            a.add(func(f'{directory}{filename}', text_options, **kwargs))
     else:
         a = []
 
         for filename in filenames:
-            a += func([directory, filename], read_options)
+            a += func(f'{directory}{filename}', text_options, **kwargs)
 
     if len(filenames) != 1:
         print(f'Read {a.count} in {t1(t0)} ms\n')
@@ -294,34 +301,34 @@ def use_GUI(extension):
 
 
 def test_suite():
-    options = ['', 'nometa', 'quiet', 'nometa,quiet']
+    options = ['', 'debug', 'nometa', 'quiet', 'nometa,quiet']
     #options = ['']
     #"""
 
-    master_reader('../spyctraRep/TNT/exp1_385/slsb_*', '.tnt')
+    master_reader('../spyctra_rep/TNT/exp1_385/slse_', '.tnt', 4, joy='loveless')
     exit()
     master_reader('FID_0', '.tnt')
     master_reader('./FID_0', '.tnt')
-    master_reader('../spyctraRep/TNT/exp1_385/FID_0', '.tnt')
+    master_reader('../spyctra_rep/TNT/exp1_385/FID_0', '.tnt')
     master_reader(None, '.tnt')
     exit()
 
     for option in options:
-        master_reader('../spyctraRep/TNT/exp1_385/slse_*', '.tnt', option)
-        master_reader('../spyctraRep/TNT/exp1_385/slse_*', '.tnt', 10, option)
-        master_reader('../spyctraRep/TNT/exp1_385/slse_*', '.tnt', [i for i in range(5)], option)
+        master_reader('../spyctra_rep/TNT/exp1_385/slse_*', '.tnt', option)
+        master_reader('../spyctra_rep/TNT/exp1_385/slse_*', '.tnt', 10, option)
+        master_reader('../spyctra_rep/TNT/exp1_385/slse_*', '.tnt', [i for i in range(5)], option)
 
-        master_reader('../spyctraRep/TNT/exp1_385/slse_0', '.tnt', option)
-        master_reader('../spyctraRep/TNT/exp1_385/slse_', '.tnt', 10, option)
-        master_reader('../spyctraRep/TNT/exp1_385/slse_', '.tnt', [i for i in range(5)], option)
+        master_reader('../spyctra_rep/TNT/exp1_385/slse_0', '.tnt', option)
+        master_reader('../spyctra_rep/TNT/exp1_385/slse_', '.tnt', 10, option)
+        master_reader('../spyctra_rep/TNT/exp1_385/slse_', '.tnt', [i for i in range(5)], option)
 
-        master_reader('../spyctraRep/TREEV2/CPMG_*', '.tdms', option)
-        master_reader('../spyctraRep/TREEV2/CPMG_*', '.tdms', 10, option)
-        master_reader('../spyctraRep/TREEV2/CPMG_*', '.tdms', [i for i in range(5)], option)
+        master_reader('../spyctra_rep/TREEV2/CPMG_*', '.tdms', option)
+        master_reader('../spyctra_rep/TREEV2/CPMG_*', '.tdms', 10, option)
+        master_reader('../spyctra_rep/TREEV2/CPMG_*', '.tdms', [i for i in range(5)], option)
 
-        master_reader('../spyctraRep/TREEV2/CPMG_00', '.tdms', option)
-        master_reader('../spyctraRep/TREEV2/CPMG_', '.tdms', 10, option)
-        master_reader('../spyctraRep/TREEV2/CPMG_', '.tdms', [i for i in range(5)], option)
+        master_reader('../spyctra_rep/TREEV2/CPMG_00', '.tdms', option)
+        master_reader('../spyctra_rep/TREEV2/CPMG_', '.tdms', 10, option)
+        master_reader('../spyctra_rep/TREEV2/CPMG_', '.tdms', [i for i in range(5)], option)
     #"""
     #error cases
     #master_reader('../spyctraRep/TNTno/a/a/a/a/a/a/slse_*', '.tnt') #no folder

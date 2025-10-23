@@ -121,29 +121,41 @@ def make_spyctra(data, meta, t0):
     return plain_data
 
 
-def TNT_reader(path_data, options=''):
+def TNT_reader(path_data, text_options='', **kwargs):
     t0 = time()
 
-    meta = parse_path_and_options(path_data, options)
-    data, meta1 = TNT.TNT_reader(meta['directory'] + meta['filename'], options)
+    meta = parse_path_and_options(path_data, text_options)
+    data, meta1 = TNT.TNT_reader(meta['directory'] + meta['filename'], text_options, **kwargs)
     meta.update(meta1)
 
     return make_spyctra(data, meta, t0)
 
 
-def read(path=None, *options):
+def read(path=None, numbered_files=None, text_options='', **kwargs):
     from file_reader import master_reader
 
-    return master_reader(path, '.tnt', *options)
+    return master_reader(path, '.tnt', numbered_files, text_options, **kwargs)
+
+
+def TNT_test_suite_read():
+    import matplotlib.pyplot as plt
+
+    path = '../spyctra_rep/TNT/exp1_385/'
+
+    a = read()
+    a = read(path + 'FID_', 4) #1.001
+    a = read(path + 'FID_', [i for i in range(0,10,2)]) #1.001
+    a = read(path + 'FID_', 1, 'debug') #1.001
+    a = read(path + 'FID_', 2, joy='love') #1.001
+    a = read(path + 'FID_1', 'debug') #1.001
+    a = read(path + 'FID_0', 'debug', joy='love') #1.001
+
+    a.plot()
+    plt.show()
 
 
 def test_suite():
-    path = '../spyctraRep/TNT/test_files/'
-
-    """
-    TNT_reader(path + 'EXP_00') #1.005
-    exit()
-    #"""
+    path = '../spyctra_rep/TNT/test_files/'
 
     TNT_reader(path + 'GJL001_pPAPs_f1=15_02272019_0cm_open_vary_excite') #1.005
     TNT_reader(path + 'Sensor2314_InterferenceRejection_1p31Mhz_F1=10_11292018_v5') #1.003
@@ -165,15 +177,9 @@ def test_suite():
     TNT_reader(path + 'A0_1008_2024_F-HCl_coil12_150K_cpmg') #1.008
     TNT_reader(path + 'A1_1008_2024_F-HCl_coil12_150K_cpmg_shorter_tau') #1.003
 
-    #"""
-    exit()
 
-    import matplotlib.pyplot as plt
-
-    a = TNT_reader(path + 'Cu2O_spinEcho_v3', 'debug') #1.005
-
-    a.plot()
-    plt.show()
+def main():
+    TNT_test_suite_read()
 
 if __name__ == '__main__':
-    test_suite()
+    main()
