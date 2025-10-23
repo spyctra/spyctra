@@ -427,13 +427,6 @@ def TNT_reader(path, text_options, **kwargs):
 
 def test_suite():
     path = '../spyctra_rep/TNT/test_files/'
-    data, meta = TNT_reader(path + 'LW_0') #1.001
-
-    #data, meta = TNT_reader(path + 'LW_0', 'quiet,debug') #1.001
-
-
-def main():
-    path = '../spyctra_rep/TNT/test_files/'
     #data, meta = TNT_reader(path + 'slse_0') #1.003
     #exit()
     data, meta = TNT_reader(path + 'GJL001_pPAPs_f1=15_02272019_0cm_open_vary_excite') #1.005
@@ -467,6 +460,15 @@ def main():
     plt.show()
 
 
-if __name__ == '__main__':
+def worker():
+    path = '../spyctra_rep/TNT/test_files/'
+    data, meta = TNT_reader(path + 'LW_0') #1.001
+
+    #data, meta = TNT_reader(path + 'LW_0', 'quiet,debug') #1.001
+
+def main():
     test_suite()
-    #main()
+
+
+if __name__ == '__main__':
+    main()
