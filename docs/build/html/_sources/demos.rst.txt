@@ -1,0 +1,93 @@
+Demos
+========================
+
+Demonstrations of common operations or groups of operations
+
+Decimation: spyctra.decimate()
+===============================
+
+Decimation effectively averages the specified number of spyctra. If we start with 256 noisy spectra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(256):
+        a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
+
+    a.plot(0)
+
+an individual spyctra barely reveals any signal.
+
+.. image:: /images/decimate_pre.png
+
+But if we average by 64 using decimate
+
+.. code-block:: python
+
+    a.decimate(64) #decimate example
+
+we end up with four less noisy spyctra.
+
+.. image:: /images/decimate_post.png
+
+We can decimate all spyctra in an object by not specifying an amount
+
+.. code-block:: python
+
+    a.decimate() #decimate example
+
+.. image:: /images/decimate_all.png
+
+
+Exponential Multiplication: spyctra.exp_mult()
+================================================
+
+Match filtering via exponential multiplication is a technique to suppress noise for later processing.
+
+If we start with two spyctra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(2):
+        a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
+
+    a.plot()
+
+.. image:: /images/exp_mult_pre.png
+
+exponential multiplication applies a weight to the data that removes the noise as longer times.
+
+.. code-block:: python
+
+    a.exp_mult(120) #exp_mult example
+    a.plot()
+
+.. image:: /images/exp_mult_post.png
+
+We can also apply unique weights to each spyctra
+
+.. code-block:: python
+
+    a.exp_mult(120) #exp_mult example
+    a.plot()
+
+.. image:: /images/exp_mult_dual.png
+
+
+
+Offsets: spyctra.get_offset, spyctra.subtract
+==============================================
+
+To remove a dc offset, first the offset needs to be measured with spyctra.get_offset() and then removed with spyctra.subtract()
+
+.. image:: /images/get_offset_pre.png
+
+.. code-block:: python
+
+    offset = a.get_offset() #get_offset example
+    a.subtract(offset) #subtract example
+
+.. image:: /images/get_offset_post.png

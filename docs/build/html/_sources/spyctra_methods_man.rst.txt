@@ -1,0 +1,1284 @@
+Spyctra Methods Examples
+========================
+
+Demonstrations of the individual spyctra methods with appropriate visualizations and guidance.
+
+
+add(new_spyctra): Building Spyctra
+----------------------------------------------------
+
+Combine spyctra with add().
+
+Initialize a new, empty spyctra and add() four fake_spyctra().
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(4):
+        a.add(fake_spyctra(amp=256*(i+1), t_2=3e-3, delta=1e-5))
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/add_first.png
+
+Initialize and populate a second empty spyctra() and add() to the first
+
+.. code-block:: python
+
+    b = spyctra()
+
+    for i in range(8):
+        b.add(fake_spyctra(amp=256*(i+1), t_2=3e-3, delta=1e-5))
+
+    a.add(b)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/add_second.png
+
+You can use the __getitem__ operator to add a select set from the second spyctra
+
+.. code-block:: python
+
+    a.add(b[0:6:2])
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/add_third.png
+
+
+
+
+
+
+copy(to_copy): Copy Spyctra
+----------------------------------------------------
+
+Create deepcopied new spyctra.
+
+Starting with a set of spyctra you can create a new subset using copy. Default will copy all spyctra.
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(4):
+        a.add(fake_spyctra(amp=256*(i+1), t_2=3e-3, delta=1e-5))
+
+    b = a.copy([0,2])
+
+    b.plot()
+    plt.show()
+
+.. image:: /images/copy_png
+
+
+
+
+
+
+decimate(number): Averaging Successive Spyctra
+----------------------------------------------------
+
+Decimation averages the specified number of spyctra.
+
+If we start with 256 noisy spectra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(256):
+        a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
+
+an individual spyctra barely reveals any signal.
+
+.. code-block:: python
+
+    a.plot(0)
+    plt.show()
+
+.. image:: /images/decimate_pre.png
+
+But if we average 64 successive spyctra using decimate()
+
+.. code-block:: python
+
+    a.decimate(64)
+    a.plot()
+    plt.show()
+
+we end up with four less-noisy spyctra.
+
+.. image:: /images/decimate_post.png
+
+Decimate all spyctra by not specifying *number*.
+
+.. code-block:: python
+
+    a.decimate()
+    a.plot()
+    plt.show()
+
+.. image:: /images/decimate_all.png
+
+
+
+
+
+exp_mult(FWHM): Exponential Multiplication
+------------------------------------------------
+
+Match filtering via exponential multiplication effectively weights later points in a spyctra less than earlier points.
+
+If we start with two spyctra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(2):
+        a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/exp_mult_pre.png
+
+exponential multiplication applies a weight to the data that removes the noise, and signal, at longer times. The larger the value of FWHM, the more aggressive the weighting.
+
+.. code-block:: python
+
+    a.exp_mult(120)
+    a.plot()
+    plt.show()
+
+.. image:: /images/exp_mult_post.png
+
+We can also apply unique weights to each spyctra
+
+.. code-block:: python
+
+    a.exp_mult([120, 1200])
+    a.plot()
+    plt.show()
+
+.. image:: /images/exp_mult_dual.png
+
+
+
+
+
+
+fft(divide=0, rezero=1): Fast Fourier Transform
+---------------------------------------------------
+
+FFT spyctra with fft().
+
+Because the domain is tracked by spyctra with *self.space*
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=3e-3, df=100, phi=1, noise=64)
+    a.plot()
+    plt.show()
+
+.. image:: /images/fft_pre.png
+
+fft() knows to convert from the time domain
+
+.. code-block:: python
+
+    a.fft()
+    a.plot()
+    plt.show()
+
+to the frequency domain.
+
+.. image:: /images/fft_post.png
+
+*self.start* will be 0 when returning to the time domain.
+
+
+
+
+
+get_df(): Off-Resonance (:math:`\Delta`\ f)
+-----------------------------------------------------
+
+The off-resonance (:math:`\Delta`\ f) of a spyctra can be quickly estimated using get_df. This approach is limited in resolution to *self.delta*, unlike lineshape fitting approaches.
+
+If we start with eight spyctra with known :math:`\Delta`\ fs
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    dfs_in = [128*(i+1) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(t_2=3e-3, df=dfs_in[i], phi=i, noise=4))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-2000,2000])
+
+    dfs = a.get_df()
+
+the values returned by get_df() accurately reflect the initial inputs.
+
+.. code-block:: python
+
+    plt.figure(figsize=(11,11))
+    plt.suptitle('get_df() demo')
+    plt.subplot(2,1,1)
+    plt.plot(dfs_in, dfs)
+    plt.ylabel('df (Hz)')
+    plt.subplot(2,1,2)
+    plt.plot(dfs_in, dfs_in-dfs)
+    plt.axhline(0)
+    plt.xlabel('signal off-resonance (Hz)')
+    plt.ylabel('actual - observed (Hz)')
+
+.. image:: /images/get_df_demo.png
+
+
+
+
+
+get_freq(): Frequency Estimation
+---------------------------------------------
+
+Quickly estimate the absolute frequency of spyctra with get_freq(). This uses *self.freq* and get_df() to estimate the frequency of the spyctra so is limited in accuracy to *self.delta*.
+
+If we create spyctra with known frequencies
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    dfs_in = [128*(i+1) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(t_2=3e-3, df=dfs_in[i], phi=i, noise=4))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-2000,2000])
+
+    freqs = a.get_freq()
+
+    a.plot()
+    plt.show()
+
+
+the estimated outputs agree well.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_freq() demo')
+    plt.plot(dfs_in, freqs)
+    plt.xlabel('signal off resonance (Hz)')
+    plt.ylabel('frequency (Hz)')
+    plt.show()
+
+.. image:: /images/get_freq.png
+
+
+
+
+
+get_linewidth(component='R'): Linewidth Estimation
+-----------------------------------------------------
+
+Quickly estimate spyctra full-width at half-maximum (FWHM) linewidth with get_linewidth(). The method finds the x-index of the peak of the user specified component and then finds the first x-indices to the left or right with values less than half the peak value. Resolution is ultimately limited by *self.delta*.
+
+
+If we create spyctra with known linewidths determined with *t_2*
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    t_2s = [(i+1)*5e-4 for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(t_2=t_2s[i], df=i*8, phi=i, noise=1, points=16384))
+
+    a.fft()
+    a.phase()
+    a.resize([-1000,1000])
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/linewidth_data.png
+
+the user can measure the linewidth based on the desired component of the spyctra.
+
+.. code-block:: python
+
+    lws = a.get_linewidth()
+    lws_r = a.get_linewidth('R')
+    lws_i = a.get_linewidth('I')
+    lws_m = a.get_linewidth('M')
+
+For sufficiently small *self.delta* and high SNR, get_linewidth() prodvides a useful estimate of FWHM.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_linewidth() demo')
+    plt.plot(t_2s, lws, label='LW')
+    plt.plot(t_2s, lws_r, label='LW_R')
+    plt.plot(t_2s, lws_i, label='LW_I')
+    plt.plot(t_2s, lws_m, label='LW_M')
+    plt.xlabel('t_2 in (s)')
+    plt.ylabel('linewidth (Hz)')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.legend()
+    plt.show()
+
+.. image:: /images/linewidth_analysis.png
+
+
+
+
+
+get_noise(fraction=4): RMS Noise Estimation
+----------------------------------------------
+
+Determine the root mean square (RMS) of the noise with get_noise().
+
+If we start with a set of spyctra with known noise standard deviations
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    noises_in = [8**(i/4) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(noise=noises_in[i]))
+
+    a.fft()
+
+    a.plot()
+    plt.show()
+
+we can estimate noise based on which fraction of the data we want to investigate
+
+.. code-block:: python
+
+    noises = a.get_noise()
+    noises_3 = a.get_noise(3)
+    noises_8 = a.get_noise(8)
+
+The returned values agree well with the inputs unless there is some spectral leakage into the data we investigate.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_noise() demo')
+    plt.plot(noises_in, noises,label='noise')
+    plt.plot(noises_in, noises_3,label='noise_3')
+    plt.plot(noises_in, noises_8,label='noise_8')
+    plt.xlabel('noise in')
+    plt.ylabel('noise')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.legend()
+    plt.show()
+
+.. image:: /images/noise.png
+
+
+
+
+
+
+get_offset(fraction=8): DC Offset Estimation
+------------------------------------------------
+
+Determine the value of a DC offset with get_offset() using the last 1/*fraction* of the data.
+
+If we start with a pyctra with a known offset
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=1e-3, df=1000, noise=16)
+
+    offset_in = 50*e**(1j*2)
+
+    a.data[0] += 50*e**(1j*2)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/noise.png
+
+we can remove the offset with get_offset() and subtract()
+
+.. code-block:: python
+
+    a.subtract(a.get_offset()) #subtract example
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/get_offset_post.png
+
+
+
+
+
+
+get_peak(component='M'): Peak Indices and Values
+--------------------------------------------------
+
+Determine both the x-index and value of the peak in each spyctra. Use resize() to focus on a particular set of x-values for complex, multi-peak spyctra.
+
+If we create set of spyctra with known amplitudes and off-resonances,
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    amps_in = 16*np.arange(1, trials+1)
+    dfs_in = 128*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps_in[i], t_2=3e-3, df=dfs_in[i], noise=16))
+
+    a.fft()
+
+the user can specify which component of the peak to target. The default is 'M'.
+
+.. code-block:: python
+
+    peaks = a.get_peak()
+    peaks_R = a.get_peak('R')
+    peaks_I = a.get_peak('I')
+    peaks_M = a.get_peak('M')
+
+get_peak return two ndarrays with peak indices and their values. These compare well to the inputs above
+
+.. code-block:: python
+
+    plt.figure()
+    plt.subplot(2,1,1)
+    plt.plot(dfs_in, peaks[0]  ,label='peak')
+    plt.plot(dfs_in, peaks_R[0],label='peak_R')
+    plt.plot(dfs_in, peaks_I[0],label='peak_I')
+    plt.plot(dfs_in, peaks_M[0],label='peak_M')
+    plt.ylabel('peak index')
+    plt.legend()
+    plt.subplot(2,1,2)
+    plt.plot(amps_in, np.abs(peaks[1]),label='peak')
+    plt.plot(amps_in, np.abs(peaks_R[1]),label='peak_R')
+    plt.plot(amps_in, np.abs(peaks_I[1]),label='peak_I')
+    plt.plot(amps_in, np.abs(peaks_M[1]),label='peak_M')
+    plt.xlabel('off resonance in (Hz)')
+    plt.ylabel('peak value')
+    plt.legend()
+    plt.show()
+
+.. image:: /images/get_peak.png
+
+
+
+
+
+get_phi_by_time(): Phase Evolution
+-----------------------------------
+
+Looking at a spyctra's phase at each x-value can reveal off-resonance more precisely than get_df() alone.
+
+Starting with spyctra with a known off-resonance
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(2):
+        a.add(fake_spyctra(t_2=3e-3, df=(i+1)*10, noise=2))
+
+    phase_by_time = a.get_phi_by_time()
+
+the phase evolution shows a linear pattern indicative of the off-resonance. This can be fit to reveal the actual value of off-resonacne more accurately than get_df().
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_phi_by_time() demo')
+    plt.plot(a.x, phase_by_time[0], label='df=10')
+    plt.plot(a.x, phase_by_time[1], label='df=20')
+    plt.xlabel('time (s)')
+    plt.ylabel('phase (radians)')
+    plt.legend()
+    plt.show()
+
+.. image:: /images/get_phi_by_time.png
+
+
+
+
+
+
+get_phi(): Phase Measurement
+---------------------------------------
+
+Determine the phase of the signal based on the properties of the peak in magnitude.
+
+Create a set of spyctra with known phase
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    phis_in = np.linspace(0, 2*pi, trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(phi=phis_in[i], noise=4))
+
+    a.fft()
+    phis = a.get_phi()
+
+and get_phi() correctly recovers the original phase information apart from the wrapping at  :math:`\pi`\.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_phi() demo')
+    plt.plot(phis_in, phis)
+    plt.xlabel('phi in (radians)')
+    plt.ylabel('phi observed (radians)')
+
+.. image:: /images/get_phi.png
+
+
+
+
+
+get_point(x_indices, component='C'): Values of Specific Points
+--------------------------------------------------------------
+
+Return the values of specific points with get_point().
+
+For a given spyctra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    amps_in = 256*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps_in[i], noise=4, points=4096, delta=1, t_2=10))
+
+    a.fft()
+
+the user can specify to get data from the same point from all spyctra.
+
+.. code-block:: python
+
+    points = a.get_point(a.points//2 - 1)
+
+or a point specific to each spyctra.
+
+.. code-block:: python
+
+    points_x_i = a.get_point(a.points//2 - 1 + np.arange(a.count))
+
+The blue line is linear with the original signal amplitude because we have selected to always look at the peak. The orange line, however, rolls off as the x-index is intentionally further and further from the peak.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_point() demo')
+    plt.plot(amps_in, np.abs(points), label='points')
+    plt.plot(amps_in, np.abs(points_x_i), label='x_i')
+    plt.legend()
+    plt.xlabel('amps in')
+    plt.ylabel('np.abs(point) @ a.points//2 - 1')
+    plt.show()
+
+.. image:: /images/get_point.png
+
+
+
+
+
+get_snr(peaks=None): Signal To Noise Ratio Estimation
+------------------------------------------------------
+
+Estimate the signal to noise ratio of spyctra with get_snr().
+
+We can create spyctra with known noise profiles
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    noises = [256*(i+1) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(df=100, phi=i, noise=noises[i]))
+
+    a.fft()
+    a.phase()
+
+and estimate the RMS of the noise with the default get_noise() method. The default signal estimate is to pick the peak magnitude
+
+.. code-block:: python
+
+    snrs = a.get_snr()
+
+or you can spcify the magnitude from a specific point for all spyctra
+
+.. code-block:: python
+
+    snrs_at_x_0 = a.get_snr(0)
+
+or a unique point for all spyctra.
+
+.. code-block:: python
+
+    snrs_at_x_i = a.get_snr(np.arange(a.count))
+
+Comparing the result we see that the SNR observed from the peak is the strongest, whilst the SNRs observed away from the peak are, as expected, less.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_snr() demo')
+    plt.plot(noises_in, snrs, label='SNR')
+    plt.plot(noises_in, snrs_at_x_0, label='SNR @x[0]')
+    plt.plot(noises_in, snrs_at_x_i, label='SNR @x[i]')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('noise in')
+    plt.ylabel('SNR')
+    plt.legend()
+    savefig('SNR_analysis.png')
+
+.. image:: /images/SNR_analysis.png
+
+
+
+
+
+
+imshow(to_plot=None, components='M'): 2D Plotting
+------------------------------------------------------
+
+2D plotting of specified spyctra components
+
+If we create a set of spyctra with difference off-resonances
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    dfs = 100*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(df=dfs[i], noise=4))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-2000,2000])
+
+    a.imshow()
+
+we can see the drift in the signal peak with imshow().
+
+.. image:: /images/imshow_single.png
+
+imshow() allows the user to specify which spyctra to plot and which components.
+
+.. code-block:: python
+
+    a.imshow([0,3,6,9,12], 'RIM')
+
+.. image:: /images/imshow_select_RIM.png
+
+
+
+
+
+
+
+integrate(components='R'): Trapezoial Integration
+----------------------------------------------------
+
+Return the area of the selected component.
+
+If we create a set of spyctra with different amplitudes
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    amps = np.logspace(1,4,trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps[i], noise=128))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-1000, 1000])
+    a.phase()
+
+we can calculate their integrals with integrate(). The user can pick which components to integrate. The default is 'R'.
+
+.. code-block:: python
+
+    integrals = a.integrate() #integrate example
+    integrals_R = a.integrate('R') #integrate example
+    integrals_I = a.integrate('I') #integrate example
+    integrals_M = a.integrate('M') #integrate example
+
+The calculated integrals increase linearly with the initial amplitude except when noise dominates the signal. The magnitude has the largest integral, since it never goes negative, while the real is linear with the initial amplitude. The typically symmetric imaginary component has no appreciable integral apart from the effects of noise.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('integrate() demo')
+    plt.plot(amps, integrals, label='integrals_')
+    plt.plot(amps, integrals_R, label='integrals_R')
+    plt.plot(amps, integrals_I, label='integrals_I')
+    plt.plot(amps, integrals_M, label='integrals_M')
+    plt.legend()
+    plt.xlabel('amps')
+    plt.ylabel('integrals')
+    plt.yscale('log')
+    plt.xscale('log')
+    plt.show()
+
+.. image:: /images/integrate.png
+
+
+
+
+new_count(N): Seperating and Appending Data
+---------------------------------------------
+
+new_count() allows the user to separate spyctra into *N* smaller spyctra (e.g. in order to isolate individual echos or  regions where signal predominantly a DC offset) or append *self.count* into *N* larger spyctra (e.g. when done processing individual echoes).
+
+If we start with a single spyctra
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=3e-3, noise=64)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/new_count_more_post.png
+
+we can break it into 4 with new_count()
+
+    a.new_count(4)
+
+    a.fft()
+    a.plot()
+    plt.show()
+
+.. image:: /images/new_count_more_post.png
+
+We can also start with a set of spyctra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    amps = np.logspace(3,1,trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps[i], noise=128, points=64))
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/new_count_less_pre.png
+
+and append them into a single spyctra.
+
+    a.new_count(1)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/new_count_less_post.png
+
+
+
+
+
+
+normalize(norm=None): Rescaling
+---------------------------------
+
+Divide all the values in a spyctra by *norm*, which can be an int or an iterable.
+
+If we start with a set of spyctra with different amplitudes
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    amps = np.logspace(3,1,trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps[i], noise=128, points=64))
+
+    a.fft()
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/normalize_pre.png
+
+we can normalized them by a single value for all spyctra or, as shown below, an interable.
+
+.. code-block:: python
+
+    a.normalize(1/amps)
+
+.. image:: /images/normalize_specific.png
+
+If the user doesn't specify *norm*, all spyctra will be scaled so their peak magnitude is 1.
+
+.. code-block:: python
+
+    a.normalize()
+
+.. image:: /images/normalize_null.png
+
+
+
+
+
+
+
+phase(phis=None): Zeroth Order Phase Corrections
+------------------------------------------------
+
+Applies a global phase correction to all points within a spyctra.
+
+If we start with a collection of spyctra with different phases
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    phis = np.linspace(0, 2*pi, trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(phi=phis[i], t_2=3e-3, noise=16))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-1000,1000])
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/phase_pre.png
+
+the user can apply a single phase, or an iterable, to all spyctra.
+
+
+.. code-block:: python
+
+    a.phase(a.count)
+
+.. image:: /images/phase_many.png
+
+If the user doesn't specify *phis* the data will automatically adjust the phase so that the peak of each spyctra has a phase of 0.
+
+.. code-block:: python
+
+    a.phase()
+
+.. image:: /images/phase_null.png
+
+
+
+
+
+plot(to_plot=None, components='RIM'): Visualizing Individual Spyctra
+----------------------------------------------------------------------
+
+1D visualization of individual spyctra data.
+
+If we start with a set of spyctra we can plot all of them with an empty call.
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    amps = 16*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps[i], t_2=3e-3, noise=16))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-1000,1000])
+
+    a.plot()
+    plt.show()
+
+The default behavior is to plot every spyctra and every component in a single plot. Due to the infinite blessing that is python, the x-axis values are correctly displayed.
+
+.. image:: /images/plot_null.png
+
+The user can specify which spyctra to plot using an iterable or an integer, if just one is desired, and the components to plot.
+
+.. code-block:: python
+
+    a.plot([0,4,5], 'RI')
+
+.. image:: /images/plot_params.png
+
+
+
+
+
+
+plot_over(to_plot=None, components='RIM'): Visualizing Multiple Spyctra
+------------------------------------------------------------------------
+
+1D Visualization of multiple spyctra in a single figure.
+
+Starting with a set of spyctra, plot_over() will display all the data from plot() but in a single plot. If the legend is too long, it will not be plotted.
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    amps = 16*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps[i], t_2=3e-3, phi=i, noise=16))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-1000,1000])
+
+    a.plot_over()
+    plt.show()
+
+.. image:: /images/plot_over_default.png
+
+The user can specify which spyctra to plot with an interable and which component[s].
+
+.. code-block:: python
+
+    a.plot_over([0,4,5], 'R')
+
+.. image:: /images/plot_over_params.png
+
+
+
+
+
+
+
+pop(to_remove): Removing Selected Spyctra
+-------------------------------------------
+
+Pop allows the user to delete spyctra (including metadata) from *self* by passing an int or an iterable.
+
+If we start with a set of spyctra we with linearly increasing amplitudes
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    amps = 16*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps[i], t_2=3e-3, noise=16))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-1000,1000])
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/pop_pre.png
+
+by running pop(), the user can remove undesired spyctra. For instance if the noise is too high or the off-resonance exceeds some limit.
+
+    a.pop([1,2,5,6])
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/pop_post.png
+
+
+
+
+
+
+resize(N): Isolating And Expanding Spyctra Data
+------------------------------------------------
+
+Increase or decrease the number of points in a spyctra using resize(). If an integer is passed, the new spyctra will either increase in length, by zero-filling, or decrease the points, by truncating. When an iterable of length two is passed, the new spyctra will have start and stop values corresponding to the *x-values* specified by the iterable.
+
+Starting with a single spyctra
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=3e-3, noise=16)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/resize_time_pre.png
+
+the user can use resize() to both reduce and expand the spyctra data.
+
+.. code-block:: python
+
+    a.resize(256)
+    a.resize(2048)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/resize_time.png
+
+
+When passed an iterable the new *self.x* will reflect the specified values as closely as possible.
+
+.. code-block:: python
+
+    a.fft()
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/resize_freq_pre.png
+
+.. code-block:: python
+
+    indices = a.resize([-1000,1000])
+    print(indices)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/resize_freq_post.png
+
+
+
+
+
+
+shift(shifts): Replacing Data With Zeros
+-------------------------------------------
+
+shift() removes data at either the beginning or end of a spyctra but preserves the spyctra's length by adding zeros. An iterable can be passed which will change but *self.start* will not be changed
+
+Starting with a single spyctra,
+
+.. code-block:: python
+
+    a = fake_spyctra(df=0.1, noise=16, points=64, delta=1)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/shift_pre.png
+
+shift() with positive value removes earlier points and adds an equal number of zeros to the end of the data. *self.start* will increase.
+
+.. code-block:: python
+
+    a.shift(20)
+
+.. image:: /images/shift_left.png
+
+shift with a negative value removes points from the end of the spyctra and adds an equal number of zeros to the beginning of the data. *self.start* will decrease.
+
+.. code-block:: python
+
+    a.shift(-10)
+
+.. image:: /images/shift_right.png
+
+
+
+
+
+smooth(smooth): Averaging Adjacent Points
+-------------------------------------------
+
+A quick way to apply a low pass filter to spyctra. *self.start* and *self.delta* updated.
+
+
+If we start with a noisy spyctra,
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=3e-3, df=100, noise=64)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/smooth_pre.png
+
+smooth() helps reveal the low frequency trend underneath.
+
+.. code-block:: python
+
+    a.smooth(16)
+
+.. image:: /images/smooth_post.png
+
+
+
+
+
+sort(x): Reorder the Spyctra According to a Key Sequence
+----------------------------------------------------------
+
+Passing sort an unsorted iterable (the key) will sort the spyctra, including all metadata, by the same order necessary to sort the key.
+
+If we start with a spyctra where the off-resonance is descending,
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    dfs = 100*np.arange(trials)[::-1]
+
+    for i in range(trials):
+        a.add(fake_spyctra(df=dfs[i], t_2=3e-2, noise=4, points=16384))
+
+    a.fft()
+    a.resize([-1000,1000])
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/sort_pre.png
+
+sort() using the array that defined the off-resonance as key reorder the spyctra so the off-resonance is now ascending.
+
+.. code-block:: python
+
+    a.sort(dfs)
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/sort_post.png
+
+
+
+
+
+
+
+subtract(offset): Removing DC Terms
+-------------------------------------
+
+Remove the specified complex DC terms from the spyctra.
+
+If we create a spyctra with a known DC offset
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=1e-3, df=1000, noise=16)
+
+    offset_in = 50*e**(1j*2)
+    a.data[0] += 50*e**(1j*2)
+    offset = a.get_offset()
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/get_offset_pre.png
+
+the user can remove the offset with subtract() by determining its value with get_offset().
+
+.. code-block:: python
+
+    a.subtract(a.get_offset())
+
+    a.plot()
+    plt.show()
+
+.. image:: /images/get_offset_post.png
+
+
+
+
+
+
+transpose(): Swapping Direct and Indirect Dimensions
+----------------------------------------------------------
+
+Transpose *self.data* to switch the direct and indirect dimensions.
+
+Starting with a set of spyctra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    dfs = 128*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(df=dfs[i], noise=4))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-2000,2000])
+
+    a.imshow()
+    plt.show()
+
+.. image:: /images/transpose_pre.png
+
+applying transpose() swaps the dimensions of *self.data*.
+
+.. code-block:: python
+
+    a.transpose()
+
+    a.imshow()
+    plt.show()
+
+.. image:: /images/transpose_post.png

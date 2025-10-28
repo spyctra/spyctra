@@ -1,0 +1,444 @@
+Demos
+========================
+
+Demonstrations of common operations or groups of operations
+
+
+
+
+decimate(): Averaging
+--------------------------------------
+
+Decimation effectively averages the specified number of spyctra. If we start with 256 noisy spectra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(256):
+        a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
+
+    a.plot(0)
+
+an individual spyctra barely reveals any signal.
+
+.. image:: /images/decimate_pre.png
+
+But if we average by 64 using decimate
+
+.. code-block:: python
+
+    a.decimate(64) #decimate example
+
+we end up with four less noisy spyctra.
+
+.. image:: /images/decimate_post.png
+
+We can decimate all spyctra in an object by not specifying an amount
+
+.. code-block:: python
+
+    a.decimate() #decimate example
+
+.. image:: /images/decimate_all.png
+
+
+
+
+
+exp_mult(): Exponential Multiplication
+------------------------------------------------
+
+Match filtering via exponential multiplication is a technique to suppress noise for later processing.
+
+If we start with two spyctra
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(2):
+        a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
+
+    a.plot()
+
+.. image:: /images/exp_mult_pre.png
+
+exponential multiplication applies a weight to the data that removes the noise as longer times.
+
+.. code-block:: python
+
+    a.exp_mult(120) #exp_mult example
+    a.plot()
+
+.. image:: /images/exp_mult_post.png
+
+We can also apply unique weights to each spyctra
+
+.. code-block:: python
+
+    a.exp_mult(120) #exp_mult example
+    a.plot()
+
+.. image:: /images/exp_mult_dual.png
+
+
+
+
+
+fft(): Fast Fourier Transform
+---------------------------------------
+
+To perform an FFT on spyctra use spyctra.fft()
+
+.. code-block:: python
+
+    a = fake_spyctra(t_2=3e-3, df=100, phi=1, noise=64)
+
+    a.plot()
+
+.. image:: /images/fft_pre.png
+
+to convert from the time domain
+
+.. code-block:: python
+
+    a.fft() #fft example
+
+    a.plot()
+
+to the frequency domain.
+
+.. image:: /images/fft_post.png
+
+
+Because the current domain is stored in *self.space* the same commmand can be used to return back to the time domain.
+
+
+
+
+
+get_df(): Off-Resonance (:math:`\Delta f`)
+-----------------------------------------------------
+
+The off-resonance (delta-f) of a spyctra can be quickly estimated using get_df.
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    dfs_in = [128*(i+1) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(t_2=3e-3, df=dfs_in[i], phi=i, noise=4))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-2000,2000])
+
+    dfs = a.get_df() #get_df example
+
+With sufficiently high SNR this can be a fast way to get reasonable estimates of delta-f. However, the resolution is limitted to the length of the spycra acquisition. Resizxing the data can help.
+
+.. code-block:: python
+
+    plt.figure(figsize=(11,11))
+    plt.suptitle('get_df() demo')
+    plt.subplot(2,1,1)
+    plt.plot(dfs_in, dfs)
+    plt.ylabel('df (Hz)')
+    plt.subplot(2,1,2)
+    plt.plot(dfs_in, dfs_in-dfs)
+    plt.axhline(0)
+    plt.xlabel('signal off-resonance (Hz)')
+    plt.ylabel('actual - observed (Hz)')
+
+.. image:: /images/get_df_demo.png
+
+
+
+
+get_freq(): Frequency Estimation
+---------------------------------------------
+
+To quickly estimate the aboslute frequency of a spyctra, use get_freq(). This uses *self.freq* and get_df() to estimate the frequency of the spyctra.
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 8
+    dfs_in = [128*(i+1) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(t_2=3e-3, df=dfs_in[i], phi=i, noise=4))
+
+    a.resize(16384)
+    a.fft()
+    a.resize([-2000,2000])
+
+    freqs = a.get_freq() #get_freq example
+
+This can be a reliable way to estimate the frequency of a spyctra but is ultimately limitted by the resoltuion of the frequency domain data *self.delta*.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_freq() demo')
+    plt.plot(dfs_in, freqs)
+    plt.xlabel('signal off resonance (Hz)')
+    plt.ylabel('frequency (Hz)')
+    plt.show()
+
+.. image:: /images/get_freq.png
+
+
+
+
+
+get_linewidth(): Linewidth Estimation
+-------------------------------------------
+
+Quick estimation of spyctra's full-width at half-maximum (FWHM) linewidth can be obtained with get_linewidth(). The method finds the x-location of the peak of the user specified component and then find the first x-locations to the left or right with values less than half the peak value. Resolution is ultimately limited by *self.delta*.
+
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    t_2s = [(i+1)*5e-4 for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(t_2=t_2s[i], df=i*8, phi=i, noise=1, points=16384))
+
+    a.fft()
+    a.phase()
+    a.resize([-1000,1000])
+
+    a.plot()
+
+.. image:: /images/linewidth_data.png
+
+get_linewidth() allows the user to specify which component of the signal to measure. The default is Real.
+
+.. code-block:: python
+
+    lws = a.get_linewidth() #get_linewidth example
+    lws_r = a.get_linewidth('R') #get_linewidth example
+    lws_i = a.get_linewidth('I') #get_linewidth example
+    lws_m = a.get_linewidth('M') #get_linewidth example
+
+With sufficiently small delta and high SNR, get_linewidth is a useful tool.
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_linewidth() demo')
+    plt.plot(t_2s, lws, label='LW')
+    plt.plot(t_2s, lws_r, label='LW_R')
+    plt.plot(t_2s, lws_i, label='LW_I')
+    plt.plot(t_2s, lws_m, label='LW_M')
+    plt.xlabel('t_2 in (s)')
+    plt.ylabel('linewidth (Hz)')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.legend()
+
+.. image:: /images/linewidth_analysis.png
+
+
+
+
+
+get_noise(): RMS Noise Estimation
+----------------------------------
+
+The RMS noise in a spyctra can be estimated with get_noise.
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    noises_in = [8**(i/4) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(noise=noises_in[i]))
+
+    a.fft()
+
+    a.plot()
+
+.. code-block:: python
+
+    noises = a.get_noise() #get_noise example
+    noises_3 = a.get_noise(3) #get_noise example
+    noises_8 = a.get_noise(8) #get_noise example
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_noise() demo')
+    plt.plot(noises_in, noises,label='noise')
+    plt.plot(noises_in, noises_3,label='noise_3')
+    plt.plot(noises_in, noises_8,label='noise_8')
+    plt.xlabel('noise in')
+    plt.ylabel('noise')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.legend()
+    plt.show()
+
+If the linewidth is large enough it can impact the noise estimation as it leaks into the x-values assumed to be purely noise.
+
+.. image:: /images/noise.png
+
+
+
+
+
+
+get_offset(): DC Offset Estimation
+------------------------------------------------
+
+To remove a dc offset, first the offset needs to be measured with spyctra.get_offset() and then removed with spyctra.subtract()
+
+.. image:: /images/get_offset_pre.png
+
+.. code-block:: python
+
+    offset = a.get_offset() #get_offset example
+    a.subtract(offset) #subtract example
+
+.. image:: /images/get_offset_post.png
+
+
+
+
+
+get_peak(): Peak Indices and Values
+------------------------------------
+
+The x-index and value of the peaks in a spyctra. Use resize() to focus on a particular set of x-values
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    amps_in = 16*np.arange(1, trials+1)
+    dfs_in = 128*np.arange(trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(amp=amps_in[i], t_2=3e-3, df=dfs_in[i], noise=16))
+
+    a.fft()
+
+The user can specify the component of the peak to find. Default is 'M'
+
+.. code-block:: python
+
+    peaks = a.get_peak() #get_peak example
+    peaks_R = a.get_peak('R') #get_peak example
+    peaks_I = a.get_peak('I') #get_peak example
+    peaks_M = a.get_peak('M') #get_peak example
+
+.. code-block:: python
+
+    plt.figure()
+    plt.subplot(2,1,1)
+    plt.plot(dfs_in, peaks[0]  ,label='peak')
+    plt.plot(dfs_in, peaks_R[0],label='peak_R')
+    plt.plot(dfs_in, peaks_I[0],label='peak_I')
+    plt.plot(dfs_in, peaks_M[0],label='peak_M')
+    plt.ylabel('peak index')
+    plt.legend()
+    plt.subplot(2,1,2)
+    plt.plot(amps_in, np.abs(peaks[1]),label='peak')
+    plt.plot(amps_in, np.abs(peaks_R[1]),label='peak_R')
+    plt.plot(amps_in, np.abs(peaks_I[1]),label='peak_I')
+    plt.plot(amps_in, np.abs(peaks_M[1]),label='peak_M')
+    plt.xlabel('off resonance in (Hz)')
+    plt.ylabel('peak value')
+    plt.legend()
+
+.. image:: /images/get_peak.png
+
+
+
+
+
+get_phi_by_time(): Phase Evolution
+-----------------------------------
+
+Phase evolution directly reveals off-resonance.
+
+
+.. code-block:: python
+
+    a = spyctra()
+
+    for i in range(2):
+        a.add(fake_spyctra(t_2=3e-3, df=(i+1)*10, noise=2))
+
+    phase_by_time = a.get_phi_by_time() #get_phi_by_time example
+
+.. code-block:: python
+
+    plt.figure()
+    plt.title('get_phi_by_time() demo')
+    plt.plot(a.x, phase_by_time[0], label='df=10')
+    plt.plot(a.x, phase_by_time[1], label='df=20')
+    plt.xlabel('time (s)')
+    plt.ylabel('phase (radians)')
+    plt.legend()
+    plt.show()
+
+.. image:: /images/get_phi_by_time.png
+
+
+
+
+
+
+
+
+get_snr(): Signal To Noise Ratio Estimation
+-------------------------------------------------
+
+Estimate the signal to noise ratio of spyctra with get_snr().
+
+.. code-block:: python
+
+    a = spyctra()
+
+    trials = 16
+    noises = [256*(i+1) for i in range(trials)]
+
+    for i in range(trials):
+        a.add(fake_spyctra(df=100, phi=i, noise=noises[i]))
+
+    a.fft()
+    a.phase()
+
+Noise for the SNR calculation is always obtained with the default options for get_noise(). The default signal estimate is to pick the peak magnitude.
+
+.. code-block:: python
+
+    snrs = a.get_snr() #get_snr example
+
+or you can spcify the magnitude from a specific point for all spyctra
+
+.. code-block:: python
+
+    snrs_at_x_0 = a.get_snr(0) #get_snr example
+
+or a unique point for all spyctra
+
+.. code-block:: python
+
+    snrs_at_x_i = a.get_snr(np.arange(a.count)) #get_snr example
+
+.. image:: /images/SNR_analysis.png
