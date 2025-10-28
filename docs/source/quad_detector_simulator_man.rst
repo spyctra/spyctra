@@ -18,6 +18,6 @@ Don't you wish you knew how quadrature detectors worked? In principle, it works 
    :type f_demod: float
    :param bandwidth: The cutoff frequency for the low pass butterworth filter simulation.
    :type bandwidth: float
-   :return: A new spyctra.
-   :rtype: spyctra
+   :return: complex demodulated data
+   :rtype: ndarray(complex)
 

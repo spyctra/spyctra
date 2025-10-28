@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'spyctra_v6'
+project = 'Spyctra'
 copyright = '2025, Michael W. Malone'
 author = 'Michael W. Malone'
 release = '6'

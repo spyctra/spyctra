@@ -420,7 +420,7 @@ class spyctra():
         return freq
 
 
-    def get_linewidth(self, comp='R'):
+    def get_linewidth(self, component='R'):
         """
         Quickly determine the linewidth (Full-Width-at-Half-Max) of the specified component of the signal
 
@@ -435,15 +435,15 @@ class spyctra():
 
         self.t0()
 
-        print(f'{self.level} Calculating linewidths of {comp} with precision {self.delta:.3f} Hz:')
+        print(f'{self.level} Calculating linewidths of {component} with precision {self.delta:.3f} Hz:')
 
-        check_component(comp)
+        check_component(component)
         self.check_space('Hz')
 
         linewidths = np.zeros(self.count)
-        peaks, vals = self.get_peak(comp)
+        peaks, vals = self.get_peak(component)
 
-        func = get_component_function(comp)
+        func = get_component_function(component)
 
         half_vals = vals/2
 

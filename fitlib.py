@@ -22,6 +22,7 @@ from plot_defaults import button
 """
 CHANGE LOG
 
+2025-10-26 save check and guess fig options added
 2025-10-04 summary keyword added to fit options. Plots all the fit parameters if multiple y.
 2025-09-14 Initial release
 """
@@ -473,7 +474,8 @@ def parse_meta_kwargs(kwargs, xs, ys, sigmas, p0):
     meta['result'] = '' #returns result with passed string used to label variables
     meta['suffix'] = '' #suffix for result variabless
     meta['summary'] = False #suffix for result variabless
-    meta['savefig'] = '' #path with extension to save figure
+    meta['save_check_fig'] = '' #path with extension to save figure
+    meta['save_guess_fig'] = '' #path with extension to save figure
 
     #If the kwarg is not option in meta, assumes it's for curve_fit
     fit_kwargs = {}
@@ -638,9 +640,24 @@ def plotter(x, y, sigma, y1, residuals, r_squared, meta, summary, xf=None, yf=No
     plot_residual_histogram(ax2, residuals, meta)
     plot_fit_summary(ax3, summary)
 
-    if meta['savefig']:
-        extension = meta['savefig'][-3:]
-        plt.savefig(meta['savefig'], format=extension, dpi=fig.dpi)
+    if summary[0] == 'FIT' and meta['save_check_fig'] != '':
+        print(f'saving FIT to {meta['save_check_fig'] = }')
+        extension = meta['save_check_fig'][-3:]
+        plt.savefig(meta['save_check_fig'], format=extension, dpi=fig.dpi)
+    else:
+        print()
+        print(summary)
+        print(meta['save_check_fig'])
+        print()
+    if summary[0] == 'GUESS' and meta['save_guess_fig'] != '':
+        print(f'saving GUESS to {meta['save_guess_fig'] = }')
+        extension = meta['save_guess_fig'][-3:]
+        plt.savefig(meta['save_guess_fig'], format=extension, dpi=fig.dpi)
+    else:
+        print()
+        print(summary)
+        print(meta['save_check_fig'])
+        print()
 
     #Button to close program
     button()

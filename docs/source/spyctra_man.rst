@@ -1,14 +1,14 @@
 spyctra
 ========================
 
-The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within *self*, or can accept an iterable, with same length as *self.data*, with each value applied to the corresponding spyctra.
+The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within *self*, or can accept an iterable, with length equal to *self.count*, with each value applied to the corresponding spyctra.
 
 
 .. py:function:: spyctra.__init__(self, path=None, **kwargs)
 
    Initialize the python object.
 
-   :param path: Optional path to saved spyctra.
+   :param path: Optional path to a previously saved spyctra.
    :type path: str or None
    :param data: List of ndarrays() containing the individual spyctra data.
    :type data: list[ndarray]
@@ -17,7 +17,7 @@ The methods below are designed to be terse. One common convention is that method
    :param delta: The x-axis increment.
    :type delta: float
    :param space: A flag indicating if the data is in the time ('s') or frequency ('Hz') domain.
-   :type space: char
+   :type space: str
    :param phi: The cumulative phase adjustments made to each spyctra. Default is 0.
    :type phi: ndarray or None
    :param meta: A dictionary of iterables that track additional metadata of the spyctra.
@@ -27,14 +27,19 @@ The methods below are designed to be terse. One common convention is that method
    :param time: The datetime.timestamps of the spyctra.
    :type time: datetime.timestamp or None
 
+
+
+
 .. py:function:: spyctra.__getitem__(self, ind)
 
    Copy individual spyctra into a new object in a pythonic way.
 
    :param ind: The spyctra to copy.
    :type ind: int or list[int] or slice
-   :return: A new subset of the original spyctra.
+   :return: A new spyctra that is a subset of the original.
    :rtype: spyctra
+
+
 
 
 .. py:function:: spyctra.count(self)
@@ -45,12 +50,18 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: int
 
 
+
+
+
 .. py:function:: spyctra.points(self)
 
    Return the length of the spyctra. Spyctra assumes, but does not require, *self.data[i]* all have the same length.
 
    :return: len(*self.data[0]*).
    :rtype: int
+
+
+
 
 
 .. py:function:: spyctra.x(self)
@@ -61,6 +72,9 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray
 
 
+
+
+
 .. py:function:: spyctra.add(self, new_spyctra)
 
    Add additional spyctra to *self*.
@@ -69,22 +83,33 @@ The methods below are designed to be terse. One common convention is that method
    :type new_spyctra: spyctra
 
 
+
+
+
 .. py:function:: spyctra.copy(self, *user_copy, quiet=0)
 
    Copy the selected spyctra.
 
    :param user_copy: The spyctra to copy. Default is all, i.e. *self.count*.
    :type user_copy: int or iterable[int] or None
+   :param quiet: A flag that suppresses output during copy.
+   :type quite: int[0, 1] or bool
    :return: A new spyctra object.
    :rtype: spyctra
+
+
+
 
 
 .. py:function:: spyctra.decimate(self, number=0)
 
    Average *self.data* at each x value across number of spyctra.
 
-   :param number: The number of spyctra to average. If *self.count%number* > 0, decimate will ignore the remainder. If *number* == 0, decimate by *self.count*.
+   :param number: The number of spyctra to average. If *self.count%number* > 0, decimate will ignore the remainder. If *number* == 0, will decimate by *self.count*.
    :type number: int
+
+
+
 
 
 .. py:function:: spyctra.exp_mult(self, FWHM)
@@ -94,6 +119,9 @@ The methods below are designed to be terse. One common convention is that method
 
    :param FWHM: The *FWHM* used to define the time constants of the exponential weighting.
    :type FWHM: float or iterable[float]
+
+
+
 
 
 .. py:function:: spyctra.fft(self, divide=0, rezero=1)
@@ -106,6 +134,9 @@ The methods below are designed to be terse. One common convention is that method
    :type rezero: int[0, 1]
 
 
+
+
+
 .. py:function:: spyctra.get_df(self)
 
    Estimate the off-resonance (delta-f) of the peak, relative to the observation frequency, of the spyctra data in the frequency domain.
@@ -114,12 +145,18 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float]
 
 
+
+
+
 .. py:function:: spyctra.get_freq(self)
 
    Estimate the absolute frequency of the peak of the spyctra data in the frequency domain.
 
    :return: The array of frequencies for each element in *self.data*.
    :rtype: ndarray[float]
+
+
+
 
 
 .. py:function:: spyctra.get_lw(self, component='R')
@@ -132,6 +169,9 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float].
 
 
+
+
+
 .. py:function:: spyctra.get_noise(self, fraction=4)
 
    Estimate the RMS of the magnitude of noise in the frequency domain using the first and last 1/*fraction* of the data.
@@ -140,6 +180,9 @@ The methods below are designed to be terse. One common convention is that method
    :type fraction: int
    :return: The array of the RMS of the noise for each spyctra.
    :rtype: ndarray[float].
+
+
+
 
 
 .. py:function:: spyctra.get_offset(self, fraction=8)
@@ -152,6 +195,9 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float, complex].
 
 
+
+
+
 .. py:function:: spyctra.get_peak(self, component='M')
 
    Return the index and value of the peak of the signal for the specified component.
@@ -162,6 +208,9 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: list[ndarray[int], ndarray[float, complex]]
 
 
+
+
+
 .. py:function:: spyctra.get_phi(self)
 
    Calculate the phase adjustment needed to phase the data to the peak.
@@ -170,12 +219,18 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float]
 
 
+
+
+
 .. py:function:: spyctra.get_phi_by_time(self)
 
    Calculate the phase of each point for each spyctra. Useful for identifying electromagnet instabilities.
 
    :return: ndarray of ndarrays of the phase for each spyctra.
    :rtype: ndarray[ndarray[float]]
+
+
+
 
 
 .. py:function:: spyctra.get_point(self, x_indices, component='C')
@@ -190,6 +245,9 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float, complex]
 
 
+
+
+
 .. py:function:: spyctra.get_snr(self, peaks=None)
 
    Return the signal to noise ratio (SNR) at the peak signal location (default) or user specified location. Noise is always the default *self.noise* calculation.
@@ -198,6 +256,9 @@ The methods below are designed to be terse. One common convention is that method
    :type peaks: int or iterable[int] or None
    :return: The SNR[s].
    :rtype: ndarray[float]
+
+
+
 
 
 .. py:function:: spyctra.get_time(self, t0=None, scale=1)
@@ -212,6 +273,9 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float]
 
 
+
+
+
 .. py:function:: spyctra.imshow(self, *args)
 
    Plot a 2d representation of the desired subset of *self.data*.
@@ -220,6 +284,9 @@ The methods below are designed to be terse. One common convention is that method
    :type to_plot: int or iterable[float]
    :param component: Which component[s] (RIM) of the data to plot.
    :type component: char or str
+
+
+
 
 
 .. py:function:: spyctra.integrate(self, components='R')
@@ -232,12 +299,18 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: ndarray[float] or ndarray[ndarray[float]]
 
 
+
+
+
 .. py:function:: spyctra.new_count(self, N)
 
    Refactor the data into *N* new spyctra. If *N* > *self.count*, metadata such as *self.freq* is preserved. If *N* < *self.count*, metadata is lost.
 
    :param N: The number of new spyctra to create from the existing data.
    :type N: int
+
+
+
 
 
 .. py:function:: spyctra.normalize(self, norm=None)
@@ -248,12 +321,18 @@ The methods below are designed to be terse. One common convention is that method
    :type norm: float or iterable[float]
 
 
+
+
+
 .. py:function:: spyctra.open(self, path)
 
    Open a pickled spyctra object.
 
    :param path: The path to the pickled spyctra.
    :type path: str
+
+
+
 
 
 .. py:function:: spyctra.phase(self, phis=None)
@@ -264,12 +343,18 @@ The methods below are designed to be terse. One common convention is that method
    :type phis: float or iterable[float]
 
 
+
+
+
 .. py:function:: spyctra.phase_foc(self, phase_corrs)
 
    Apply first or phase correction[s].
 
    :param phase_corrs: The phase adjustment to be made to each spyctra.
    :type phase_corrs: iterable[iterable[dPhidF, f0, phi0]]
+
+
+
 
 
 .. py:function:: spyctra.plot(self, *args)
@@ -282,6 +367,9 @@ The methods below are designed to be terse. One common convention is that method
    :type component: char or str
 
 
+
+
+
 .. py:function:: spyctra.plot_over(self, *args)
 
    Plot the desired subset of spyctra in a single figure.
@@ -290,6 +378,9 @@ The methods below are designed to be terse. One common convention is that method
    :type to_plot: int or iterable[int]
    :param component: Which components (RIM) of the data to plot.
    :type component: char or str
+
+
+
 
 
 .. py:function:: spyctra.plot_phase_corr(self, dPhidF=0, dPhidF_inc=0.001, f0=0, f0_inc=0.01, phi0=0, phi0_inc=0.1)
@@ -310,12 +401,18 @@ The methods below are designed to be terse. One common convention is that method
    :type dphi0_inc: float
 
 
+
+
+
 .. py:function:: spyctra.pop(self, to_remove)
 
    Remove the specified spyctra from *self*.
 
    :param to_remove: The subset of spyctra to remove.
    :type to_remove: int or iterable[int]
+
+
+
 
 
 .. py:function:: spyctra.print(self, points=None)
@@ -326,9 +423,16 @@ The methods below are designed to be terse. One common convention is that method
    :type points: int
 
 
+
+
+
 .. py:function:: spyctra.report(self)
 
    Print useful information about the spyctra.
+
+
+
+
 
 
 .. py:function:: spyctra.resize(self, N)
@@ -345,12 +449,18 @@ The methods below are designed to be terse. One common convention is that method
    :rtype: list
 
 
+
+
+
 .. py:function:: spyctra.save(self, path)
 
    Pickle a spyctra and save to *path* for future processing.
 
    :param path: The path to save the pickled spyctra.
    :type path: str
+
+
+
 
 
 .. py:function:: spyctra.shift(self, shifts)
@@ -361,12 +471,18 @@ The methods below are designed to be terse. One common convention is that method
    :type shifts: int or iterable[int]
 
 
+
+
+
 .. py:function:: spyctra.smooth(self, smooth)
 
    Successivle average points within a spyctra. Effectively a computationally cheap low-pass filter.
 
    :param smooth: the number of adjacent points to average. If *smooth%self.points* > 0 the remainder of points will be dropped.
    :type smooth: int
+
+
+
 
 
 .. py:function:: spyctra.sort(self, x)
@@ -377,6 +493,9 @@ The methods below are designed to be terse. One common convention is that method
    :type x: iterable
 
 
+
+
+
 .. py:function:: spyctra.subtract(self, offset)
 
    Subtract offset[s] from the spyctra.
@@ -385,9 +504,16 @@ The methods below are designed to be terse. One common convention is that method
    :type offset: float(complex), iterable(float, complex)
 
 
+
+
+
 .. py:function:: spyctra.transpose(self)
 
    Transpose the data in *self*. Resets *self*: *freq*, *time*, *meta*, *phi*.
+
+
+
+
 
 
 .. py:function:: fake_spyctra(points=1024, delta=10e-6, df=0, noise=0, t_2=numpy.inf, phi=0, seed=None, amp=512, scans=1, freq=0, meta={}):

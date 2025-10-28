@@ -17,6 +17,21 @@ CHANGE LOG
 2025-09-16 Initial release
 """
 
+def show():
+    # save figures without showingo
+    if False:
+        plt.show()
+    else:
+        plt.close()
+
+
+def savefig(fig_name):
+    try:
+        plt.savefig(f'./docs/source/images/{fig_name}', format='png')
+    except Exception as e:
+        print(e)
+
+
 def spyctra_introduction():
     a = spyctra()
 
@@ -25,7 +40,7 @@ def spyctra_introduction():
 
     #"""
     a.plot()
-    plt.show()
+    show()
     #"""
 
     b = a.copy()
@@ -35,7 +50,7 @@ def spyctra_introduction():
     b.phase()
 
     b.plot()
-    plt.show()
+    show()
 
     dfs = b.get_df()
     phis = b.phi
@@ -55,7 +70,7 @@ def spyctra_introduction():
     plt.errorbar(np.arange(a.count), d['df'], d['df_err'])
     plt.subplot(2,1,2)
     plt.errorbar(np.arange(a.count), d['a'], d['a_err'])
-    plt.show()
+    show()
 
 
 def advanced_fitting():
@@ -123,7 +138,7 @@ def advanced_fitting():
     plt.errorbar(np.arange(b.count), d['df'], d['df_err'])
     plt.subplot(2,2,4)
     plt.errorbar(np.arange(b.count), np.array(d['phi'])%pi, np.array(d['phi_err']))
-    plt.show()
+    show()
     #"""
 
 
@@ -133,24 +148,24 @@ def add_demo():
     print(a.count)
 
     for i in range(4):
-        a.add(fake_spyctra()) #add example
+        a.add(fake_spyctra())
 
     b = spyctra()
 
     for i in range(8):
-        b.add(fake_spyctra()) #add example
+        b.add(fake_spyctra())
 
     print(a.count)
 
-    a.add(b) #add example
+    a.add(b)
 
     print(a.count)
 
-    a.add(b[0:6:2]) #add example
+    a.add(b[0:6:2])
 
     print(a.count)
 
-    a.add(b.copy([i for i in range(2)])) #add example
+    a.add(b.copy([i for i in range(2)]))
 
     print(a.count)
 
@@ -162,17 +177,20 @@ def decimate_demo():
         a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
 
     a.plot(0)
-    plt.show()
+    savefig('decimate_pre.png')
+    show()
 
-    a.decimate(64) #decimate example
-
-    a.plot()
-    plt.show()
-
-    a.decimate() #decimate example
+    a.decimate(64)
 
     a.plot()
-    plt.show()
+    savefig('decimate_post.png')
+    show()
+
+    a.decimate()
+
+    a.plot()
+    savefig('decimate_all.png')
+    show()
 
 
 def exp_mult_demo():
@@ -182,67 +200,41 @@ def exp_mult_demo():
         a.add(fake_spyctra(t_2=3e-3, df=100, phi=1, noise=1000))
 
     a.plot()
-    plt.show()
+    savefig('exp_mult_pre.png')
+    show()
 
-    a.exp_mult(120) #exp_mult example
-
-    a.plot()
-    plt.show()
-
-    a.exp_mult([120,1200]) #exp_mult example
+    a.exp_mult(120)
 
     a.plot()
-    plt.show()
+    savefig('exp_mult_post.png')
+    show()
+
+    a.exp_mult([120,1200])
+
+    a.plot()
+    savefig('exp_mult_dual.png')
+    show()
 
 
 def fft_demo():
     a = fake_spyctra(t_2=3e-3, df=100, phi=1, noise=64)
 
     a.plot()
-    plt.show()
+    savefig('fft_pre.png')
+    show()
 
     a.fft() #fft example
 
     a.plot()
-    plt.show()
+    savefig('fft_post.png')
+    show()
 
     a.fft()
-    a.fft(rezero=False) #fft example
+    a.fft(rezero=False)
 
     a.plot()
-    plt.show()
-
-
-def get_snr_demo():
-    a = spyctra()
-
-    trials = 16
-    noises = [256*(i+1) for i in range(trials)]
-
-    for i in range(trials):
-        a.add(fake_spyctra(df=100, phi=i, noise=noises[i]))
-
-    a.fft()
-    a.phase()
-
-    a.plot()
-    plt.show()
-
-    snrs = a.get_snr() #get_snr example
-    snrs_at_x_0 = a.get_snr(0) #get_snr example
-    snrs_at_x_i = a.get_snr(np.arange(a.count)) #get_snr example
-
-    plt.figure()
-    plt.title('get_snr() demo')
-    plt.plot(noises, snrs, label='SNR')
-    plt.plot(noises, snrs_at_x_0, label='SNR @x[0]')
-    plt.plot(noises, snrs_at_x_i, label='SNR @x[i]')
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel('noise in')
-    plt.ylabel('SNR')
-    plt.legend()
-    plt.show()
+    savefig('fft_rezero_false.png')
+    show()
 
 
 def get_df_demo():
@@ -259,9 +251,9 @@ def get_df_demo():
     a.resize([-2000,2000])
 
     a.plot()
-    plt.show()
+    show()
 
-    dfs = a.get_df() #get_df example
+    dfs = a.get_df()
 
     plt.figure(figsize=(11,11))
     plt.suptitle('get_df() demo')
@@ -271,9 +263,10 @@ def get_df_demo():
     plt.subplot(2,1,2)
     plt.plot(dfs_in, dfs_in-dfs)
     plt.axhline(0)
-    plt.xlabel('signal off resonance (Hz)')
-    plt.ylabel('act-obs off resonance (Hz)')
-    plt.show()
+    plt.xlabel('signal off-resonance (Hz)')
+    plt.ylabel('actual - observed (Hz)')
+    savefig('./get_df_demo.png')
+    show()
 
 
 def get_freq_demo():
@@ -283,45 +276,50 @@ def get_freq_demo():
     dfs_in = [128*(i+1) for i in range(trials)]
 
     for i in range(trials):
-        a.add(fake_spyctra(t_2=3e-3, df=dfs_in[i], phi=i, noise=4))
+        a.add(fake_spyctra(t_2=3e-3, df=dfs_in[i], phi=i, noise=4, freq=1e6))
 
     a.resize(16384)
     a.fft()
     a.resize([-2000,2000])
 
     a.plot()
-    plt.show()
+    show()
 
-    freqs = a.get_freq() #get_freq example
+    freqs = a.get_freq()
 
     plt.figure()
     plt.title('get_freq() demo')
     plt.plot(dfs_in, freqs)
     plt.xlabel('signal off resonance (Hz)')
     plt.ylabel('frequency (Hz)')
-    plt.show()
+    savefig('get_freq.png')
+    show()
 
 
 def get_linewidth_demo():
     a = spyctra()
 
     trials = 16
-    t_2s = [(i+1)*5e-4 for i in range(trials)]
+    t_2s = np.logspace(-4, -2.5, trials)
 
     for i in range(trials):
-        a.add(fake_spyctra(t_2=t_2s[i], df=i*8, phi=i, noise=1, points=16384))
+        a.add(fake_spyctra(t_2=t_2s[i], df=0, phi=i, noise=.1, points=16384))
+
+    a.subtract(a.get_offset())
 
     a.fft()
     a.phase()
-    a.resize([-1000,1000])
+    a.resize([-10000,10000])
 
     a.plot()
-    plt.show()
+    savefig('linewidth_data.png')
 
-    lws = a.get_linewidth() #get_linewidth example
-    lws_r = a.get_linewidth('R') #get_linewidth example
-    lws_i = a.get_linewidth('I') #get_linewidth example
-    lws_m = a.get_linewidth('M') #get_linewidth example
+    show()
+
+    lws = a.get_linewidth()
+    lws_r = a.get_linewidth('R')
+    lws_i = a.get_linewidth('I')
+    lws_m = a.get_linewidth('M')
 
     plt.figure()
     plt.title('get_linewidth() demo')
@@ -334,38 +332,41 @@ def get_linewidth_demo():
     plt.xscale('log')
     plt.yscale('log')
     plt.legend()
-    plt.show()
+    savefig('linewidth_analysis.png')
+    show()
 
 
 def get_noise_demo():
     a = spyctra()
 
     trials = 16
-    noises_in = [8**(i/4) for i in range(trials)]
+    noises_in = np.logspace(1,4,trials)
 
     for i in range(trials):
-        a.add(fake_spyctra(noise=noises_in[i]))
+        a.add(fake_spyctra(amp=4096, t_2=3e-6, delta=1e-6, noise=noises_in[i], points=2048))
 
+    a.subtract(a.get_offset())
     a.fft()
 
     a.plot()
-    plt.show()
+    show()
 
-    noises = a.get_noise() #get_noise example
-    noises_3 = a.get_noise(3) #get_noise example
-    noises_8 = a.get_noise(8) #get_noise example
+    noises = a.get_noise()
+    noises_10 = a.get_noise(10)
+    noises_50 = a.get_noise(50)
 
     plt.figure()
     plt.title('get_noise() demo')
     plt.plot(noises_in, noises,label='noise')
-    plt.plot(noises_in, noises_3,label='noise_3')
-    plt.plot(noises_in, noises_8,label='noise_8')
+    plt.plot(noises_in, noises_10,label='noise_10')
+    plt.plot(noises_in, noises_50,label='noise_50')
     plt.xlabel('noise in')
     plt.ylabel('noise')
     plt.xscale('log')
     plt.yscale('log')
     plt.legend()
-    plt.show()
+    savefig('noise.png')
+    show()
 
 
 def get_offset_demo():
@@ -376,12 +377,13 @@ def get_offset_demo():
     a.data[0] += 50*e**(1j*2)
 
     a.plot()
-    plt.show()
+    plt.savefig('./docs/source/images/get_offset_pre.png', format='png')
+    show()
 
-    offset = a.get_offset() #get_offset example
-    offset_2 = a.get_offset(2) #get_offset example
-    offset_4 = a.get_offset(4) #get_offset example
-    offset_8 = a.get_offset(8) #get_offset example
+    offset = a.get_offset()
+    offset_2 = a.get_offset(2)
+    offset_4 = a.get_offset(4)
+    offset_8 = a.get_offset(8)
 
     print(f'{offset_in = }')
     print(f'{offset = }')
@@ -389,10 +391,11 @@ def get_offset_demo():
     print(f'{offset_4 = }')
     print(f'{offset_8 = }')
 
-    a.subtract(a.get_offset()) #subtract example
+    a.subtract(a.get_offset())
 
     a.plot()
-    plt.show()
+    plt.savefig('./docs/source/images/get_offset_post.png', format='png')
+    show()
 
 
 def get_peak_demo():
@@ -407,10 +410,10 @@ def get_peak_demo():
 
     a.fft()
 
-    peaks = a.get_peak() #get_peak example
-    peaks_R = a.get_peak('R') #get_peak example
-    peaks_I = a.get_peak('I') #get_peak example
-    peaks_M = a.get_peak('M') #get_peak example
+    peaks = a.get_peak()
+    peaks_R = a.get_peak('R')
+    peaks_I = a.get_peak('I')
+    peaks_M = a.get_peak('M')
 
     plt.figure()
     plt.subplot(2,1,1)
@@ -428,7 +431,8 @@ def get_peak_demo():
     plt.xlabel('off resonance in (Hz)')
     plt.ylabel('peak value')
     plt.legend()
-    plt.show()
+    savefig('get_peak.png')
+    show()
 
 
 def get_phi_by_time_demo():
@@ -437,7 +441,7 @@ def get_phi_by_time_demo():
     for i in range(2):
         a.add(fake_spyctra(t_2=3e-3, df=(i+1)*10, noise=2))
 
-    phase_by_time = a.get_phi_by_time() #get_phi_by_time example
+    phase_by_time = a.get_phi_by_time()
 
     plt.figure()
     plt.title('get_phi_by_time() demo')
@@ -446,7 +450,8 @@ def get_phi_by_time_demo():
     plt.xlabel('time (s)')
     plt.ylabel('phase (radians)')
     plt.legend()
-    plt.show()
+    savefig('get_phi_by_time.png')
+    show()
 
 
 def get_phi_demo():
@@ -459,14 +464,15 @@ def get_phi_demo():
         a.add(fake_spyctra(phi=phis_in[i], noise=4))
 
     a.fft()
-    phis = a.get_phi() #get_phi example
+    phis = a.get_phi()
 
     plt.figure()
     plt.title('get_phi() demo')
     plt.plot(phis_in, phis)
     plt.xlabel('time (s)')
     plt.ylabel('phase (radians)')
-    plt.show()
+    savefig('get_phi.png')
+    show()
 
 
 def get_point_demo():
@@ -480,8 +486,8 @@ def get_point_demo():
 
     a.fft()
 
-    points = a.get_point(a.points//2 - 1) #get_point example
-    points_x_i = a.get_point(np.arange(a.count)) #get_point example
+    points = a.get_point(a.points//2 - 1)
+    points_x_i = a.get_point(np.arange(a.count))
 
     plt.figure()
     plt.title('get_point() demo')
@@ -490,7 +496,41 @@ def get_point_demo():
     plt.legend()
     plt.xlabel('amps in')
     plt.ylabel('np.abs(point) @ a.points//2 - 1')
-    plt.show()
+    savefig('get_point.png')
+    show()
+
+
+def get_snr_demo():
+    a = spyctra()
+
+    trials = 16
+    noises_in = np.logspace(1, 3.5, trials)
+
+    for i in range(trials):
+        a.add(fake_spyctra(df=100, phi=i, noise=noises_in[i]))
+
+    a.fft()
+    a.phase()
+
+    a.plot()
+    show()
+
+    snrs = a.get_snr()
+    snrs_at_x_0 = a.get_snr(0)
+    snrs_at_x_i = a.get_snr(np.arange(a.count))
+
+    plt.figure()
+    plt.title('get_snr() demo')
+    plt.plot(noises_in, snrs, label='SNR')
+    plt.plot(noises_in, snrs_at_x_0, label='SNR @x[0]')
+    plt.plot(noises_in, snrs_at_x_i, label='SNR @x[i]')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel('noise in')
+    plt.ylabel('SNR')
+    plt.legend()
+    savefig('SNR_analysis.png')
+    show()
 
 
 def imshow_demo():
@@ -506,17 +546,19 @@ def imshow_demo():
     a.fft()
     a.resize([-2000,2000])
 
-    a.imshow() #imshow example
-    plt.show()
+    a.imshow()
+    savefig('imshow_single.png')
+    show()
 
-    a.imshow([0,1,2,4,8], 'R') #imshow example
-    plt.show()
+    a.imshow([0,1,2,4,8], 'R')
+    show()
 
-    a.imshow('RI') #imshow example
-    plt.show()
+    a.imshow('RI')
+    show()
 
-    a.imshow([0,3,6,9,12], 'RIM') #imshow example
-    plt.show()
+    a.imshow([0,3,6,9,12], 'RIM')
+    savefig('imshow_select_RIM.png')
+    show()
 
 
 
@@ -534,10 +576,10 @@ def integrate_demo():
     a.resize([-1000, 1000])
     a.phase()
 
-    integrals = a.integrate() #integrate example
-    integrals_R = a.integrate('R') #integrate example
-    integrals_I = a.integrate('I') #integrate example
-    integrals_M = a.integrate('M') #integrate example
+    integrals = a.integrate()
+    integrals_R = a.integrate('R')
+    integrals_I = a.integrate('I')
+    integrals_M = a.integrate('M')
 
     plt.figure()
     plt.title('integrate() demo')
@@ -550,18 +592,20 @@ def integrate_demo():
     plt.ylabel('integrals')
     plt.yscale('log')
     plt.xscale('log')
-    plt.show()
+    savefig('integrate.png')
+    show()
 
 
 def new_count_more_demo():
     a = fake_spyctra(t_2=3e-3, noise=64)
 
-    a.new_count(4) #new_count example
+    a.new_count(4)
 
     a.fft()
 
     a.plot()
-    plt.show()
+    savefig('new_count_more.png')
+    show()
 
 
 def new_count_less_demo():
@@ -574,12 +618,13 @@ def new_count_less_demo():
         a.add(fake_spyctra(amp=amps[i], noise=128, points=64))
 
     a.plot()
-    plt.show()
+    show()
 
-    a.new_count(1) #new_count example
+    a.new_count(1)
 
     a.plot()
-    plt.show()
+    savefig('new_count_less.png')
+    show()
 
 
 def normalize_demo():
@@ -594,17 +639,20 @@ def normalize_demo():
     a.fft()
 
     a.plot()
-    plt.show()
+    savefig('normalize_pre.png')
+    show()
 
-    a.normalize(1/amps) #normalize example
-
-    a.plot()
-    plt.show()
-
-    a.normalize() #normalize example
+    a.normalize(1/amps)
 
     a.plot()
-    plt.show()
+    savefig('normalize_specific.png')
+    show()
+
+    a.normalize()
+
+    a.plot()
+    savefig('normalize_null.png')
+    show()
 
 
 def phase_demo():
@@ -621,17 +669,20 @@ def phase_demo():
     a.resize([-1000,1000])
 
     a.plot()
-    plt.show()
+    savefig('phase_pre.png')
+    show()
 
-    a.phase(a.count) #phase demo
-
-    a.plot()
-    plt.show()
-
-    a.phase() #phase demo
+    a.phase(a.count)
 
     a.plot()
-    plt.show()
+    savefig('phase_many.png')
+    show()
+
+    a.phase()
+
+    a.plot()
+    savefig('phase_null.png')
+    show()
 
 
 def plot_demo():
@@ -647,26 +698,28 @@ def plot_demo():
     a.fft()
     a.resize([-1000,1000])
 
-    a.plot(5) #plot example
-    plt.show()
+    a.plot(5)
+    show()
 
-    a.plot() #plot example
-    plt.show()
+    a.plot()
+    savefig('plot_null.png')
+    show()
 
-    a.plot([0,4,5]) #plot example
-    plt.show()
+    a.plot([0,4,5])
+    show()
 
-    a.plot('R') #plot example
-    plt.show()
+    a.plot('R')
+    show()
 
-    a.plot('RI') #plot example
-    plt.show()
+    a.plot('RI')
+    show()
 
-    a.plot([0,4,5], 'R') #plot example
-    plt.show()
+    a.plot([0,4,5], 'R')
+    show()
 
-    a.plot([0,4,5], 'RI') #plot example
-    plt.show()
+    a.plot([0,4,5], 'RI')
+    savefig('plot_params.png')
+    show()
 
 
 def plot_over_demo():
@@ -676,34 +729,36 @@ def plot_over_demo():
     amps = 16*np.arange(trials)
 
     for i in range(trials):
-        a.add(fake_spyctra(amp=amps[i], t_2=3e-3, noise=16))
+        a.add(fake_spyctra(amp=amps[i], t_2=3e-3, phi=i, noise=16))
 
     a.resize(16384)
     a.fft()
     a.resize([-1000,1000])
 
-    a.plot_over() #plot_over example
-    plt.show()
+    a.plot_over()
+    savefig('plot_over_default.png')
+    show()
 
-    a.phase(np.arange(a.count))
+    a.phase()
 
-    a.plot_over() #plot_over example
-    plt.show()
+    a.plot_over()
+    show()
 
-    a.plot_over([0,4,5]) #plot_over example
-    plt.show()
+    a.plot_over([0,4,5])
+    show()
 
-    a.plot_over('R') #plot_over example
-    plt.show()
+    a.plot_over('R')
+    show()
 
-    a.plot_over('RI') #plot_over example
-    plt.show()
+    a.plot_over('RI')
+    show()
 
-    a.plot_over([0,4,5], 'R') #plot_over example
-    plt.show()
+    a.plot_over([0,4,5], 'R')
+    savefig('plot_over_params.png')
+    show()
 
-    a.plot_over([0,4,5], 'RI') #plot_over example
-    plt.show()
+    a.plot_over([0,4,5], 'RI')
+    show()
 
 
 def plot_phase_cor_demo():
@@ -716,11 +771,11 @@ def plot_phase_cor_demo():
     a.fft()
     a.resize([-100,100])
 
-    phis = a.plot_phase_cor() #plot_phase_cor example
+    phis = a.plot_phase_cor()
     a.phase_foc(phis)
 
     a.plot()
-    plt.show()
+    show()
 
 
 
@@ -738,68 +793,77 @@ def pop_demo():
     a.resize([-1000,1000])
 
     a.plot()
-    plt.show()
+    show()
 
-    a.pop([1,3,5,6]) #pop example
+    a.pop([1,2,5,6])
 
     a.plot()
-    plt.show()
+    savefig('pop_post.png')
+    show()
 
 
 def resize_demo():
     a = fake_spyctra(t_2=3e-3, noise=16)
 
     a.plot()
-    plt.show()
+    show()
 
-    a.resize(256) #resize example
-
-    a.plot()
-    plt.show()
-
-    a.resize(2048) #resize example
+    a.resize(256)
 
     a.plot()
-    plt.show()
+    show()
+
+    a.resize(2048)
+
+    a.plot()
+    savefig('resize_time.png')
+    show()
 
     a.fft()
 
     a.plot()
-    plt.show()
+    show()
 
-    a.resize([-1000,1000]) #resize example
+    indices = a.resize([-1000,1000])
+
+    print(indices)
 
     a.plot()
-    plt.show()
+    savefig('resize_freq.png')
+    show()
 
 
 def shift_demo():
     a = fake_spyctra(df=0.1, noise=16, points=64, delta=1)
 
     a.plot()
-    plt.show()
+    show()
 
-    a.shift(10) #shift example
-
-    a.plot()
-    plt.show()
-
-    a.shift(-10) #shift example
+    a.shift(10)
 
     a.plot()
-    plt.show()
+    savefig('shift_left.png')
+    show()
+
+    a.shift(-10)
+
+    a.plot()
+    savefig('shift_right.png')
+    show()
 
 
 def smooth_demo():
     a = fake_spyctra(t_2=3e-3, df=100, noise=64)
 
     a.plot()
-    plt.show()
+    savefig('smooth_pre.png')
+    show()
 
-    a.smooth(16) #smooth example
+    a.smooth(16)
 
     a.plot()
-    plt.show()
+    savefig('smooth_post.png')
+    show()
 
 
 
@@ -816,12 +880,13 @@ def sort_demo():
     a.resize([-1000,1000])
 
     a.plot()
-    plt.show()
+    show()
 
-    a.sort(dfs) #sort example
+    a.sort(dfs)
 
     a.plot()
-    plt.show()
+    savefig('sort.png')
+    show()
 
 
 def subtract_demo():
@@ -842,16 +907,17 @@ def transpose_demo():
     a.resize([-2000,2000])
 
     a.imshow()
-    plt.show()
+    savefig('transpose_pre.png')
+    show()
 
-    a.transpose() #transpose example
+    a.transpose()
 
     a.imshow()
-    plt.show()
+    savefig('transpose_post.png')
+    show()
 
 
 def method_demos():
-    plot_over_demo()
 
     add_demo()
     decimate_demo()

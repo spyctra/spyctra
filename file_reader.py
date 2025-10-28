@@ -26,7 +26,8 @@ import numpy as np
 """
 CHANGE LOG
 
-2025-10-22 forced params numbered_files and text_options and now allow kwargs and send to reader
+2025-10-22 forced params numbered_files and text_options and now allow kwargs
+           and send to readers
 2025-09-18 GUI option use_GUI added
 2025-09-07 Initial release
 """

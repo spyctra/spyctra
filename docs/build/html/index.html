@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>spyctra_v6 Documentation &#8212; spyctra_v6 6 documentation</title>
+    <title>Spyctra v6 Documentation &#8212; Spyctra 6 documentation</title>
   
   
   
@@ -109,7 +109,7 @@
   
   
   
-    <p class="title logo__title">spyctra_v6 6 documentation</p>
+    <p class="title logo__title">Spyctra 6 documentation</p>
   
 </a></div>
     
@@ -317,29 +317,30 @@
                 <article class="bd-article">
                   
   <section id="spyctra-v6-documentation">
-<h1>spyctra_v6 Documentation<a class="headerlink" href="#spyctra-v6-documentation" title="Link to this heading">#</a></h1>
+<h1>Spyctra v6 Documentation<a class="headerlink" href="#spyctra-v6-documentation" title="Link to this heading">#</a></h1>
 <p>Spyctra is a python library to quickly process and visualize maganetic resonance data, although any discretely sampled data is suitable. Spyctra exists to allow the experimentalist to audit data as it comes in from the spectrometer to concurrently identify problems and redesign experiments. This feedback loop allows for rapid convergence on the <em>right</em> experiment and the <em>right</em> processing.</p>
 </section>
 <section id="spyctra-overview">
 <h1>Spyctra Overview<a class="headerlink" href="#spyctra-overview" title="Link to this heading">#</a></h1>
-<p>Spyctra objects contain</p>
+<p>Spyctra objects manipulate the following attributes:</p>
 <ul class="simple">
 <li><p><em>self.data</em>: a list constaining np.arrays (for the individual spyctra) that make up the data.</p></li>
 <li><p><em>self.delta</em>: the increment of the x axis for the data</p></li>
 <li><p><em>self.start</em>: the initial x axis value</p></li>
 <li><p><em>self.space</em>: indicates if data is in the time (‘s’) or frequency (‘Hz’) domain</p></li>
-<li><p><em>self.phi</em>: an ndarray tracking the net phase adjustment made to the data</p></li>
-<li><p><em>self.meta</em>: a dictionary containing any other metadata about the spyctra object.</p></li>
+<li><p><em>self.phi</em>: an ndarray tracking the net global phase adjustments made to the spyctra</p></li>
+<li><p><em>self.meta</em>: a dictionary containing any other metadata about the spyctra</p></li>
 <li><p><em>self.freq</em>: an ndarray with the observation frequency of the data</p></li>
 <li><p><em>self.time</em>: an ndarray of datetime.timestamps representing the time of the data</p></li>
 </ul>
 </section>
-<section id="design-choices">
-<h1>Design choices<a class="headerlink" href="#design-choices" title="Link to this heading">#</a></h1>
+<section id="design-choice-rationalizations">
+<h1>Design Choice Rationalizations<a class="headerlink" href="#design-choice-rationalizations" title="Link to this heading">#</a></h1>
 <ul class="simple">
-<li><p>spyctra assumes you know what you’re doing and has minimal error conditions. For example spyctra assumes, but does not require, all spyctra within an object to have the same length.</p></li>
-<li><p>Why lists and not 2D numpy arrays to store data? Becasuse self.data is a list it is much easier to add or remove spyctra from self. Especially when data is streaming in, it may not be clear how much data you have to process and the performance hit from forcing 2D numpy arrays can be obnoxious.</p></li>
+<li><p>Spyctra assumes you know what you’re doing and has minimal error conditions. For example spyctra assumes, but does not require, all spyctra within an object to have the same length.</p></li>
+<li><p>Why lists and not 2D numpy arrays to store data? Because <em>self.data</em> is a list it is much easier to add or remove spyctra from <em>self</em>. Especially when data is streaming in, it may not be clear how much data you have to process and the performance hit from forcing 2D numpy arrays can be obnoxious.</p></li>
 <li><p>Why no multithreading inside spyctra? It’s been attempted but no clear performance benefit has been found on the datasets commonly acquired by the authors. But using a multithreaded process where each subprocess works on a spyctra object might be useful for some users with really large spyctra.</p></li>
+<li><p>Why is phi used as the variable for phase? Regarding the spyctra object, phase is a verb and phi is a noun. However, through the documentation I refer to the tracked values of phi as phase.</p></li>
 </ul>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
@@ -391,9 +392,9 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">spyctra_v6 Documentation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Spyctra v6 Documentation</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#spyctra-overview">Spyctra Overview</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#design-choices">Design choices</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#design-choice-rationalizations">Design Choice Rationalizations</a></li>
 </ul>
 
   </nav></div>
