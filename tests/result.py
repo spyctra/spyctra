@@ -144,16 +144,11 @@ def work():
 
     r = result()
 
-    r['a'] = 1.6*np.ones(3, dtype=np.float64)
-    r['b'] = [1,2,3]
+    r['a'] = np.zeros((3,3))
 
-    r.pop(1)
-    r.print()
     r.print_ind()
-
-    print(r)
 
 
 if __name__ == "__main__":
-    test_suite()
+    #test_suite()
     work()

@@ -7,7 +7,8 @@ import numpy as np
 
 def main():
     new_file_path = './test_suite.res2'
-    old_file_path = '../../spyctra_v6/tests/test_suite.res2'
+    old_file_path = './test_suite_a.res'
+    #old_file_path = '../../spyctra_v6/tests/test_suite.res2'
 
     with open(new_file_path, 'r') as file:
         new_file = [line.rstrip() for line in file]

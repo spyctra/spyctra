@@ -1,4 +1,4 @@
-# spyctra_v6
+# spyctra v6
 
 Spyctra is a set of tools for quickly manipulating, visualizing, and processing discretely sampled data with a focus on magnetic resonance problems.
 
