@@ -1,22 +1,22 @@
 spyctra
 ========================
 
-The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within *self*, or can accept an iterable, with length equal to *self.count*, with each value applied to the corresponding spyctra.
+The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within *self*, and they can accept an iterable, with length equal to *self.count*, with each value applied to the corresponding spyctra.
 
 
 .. py:function:: spyctra.__init__(self, path=None, **kwargs)
 
-   Initialize the python object.
+   Initialize the spyctra object.
 
    :param path: Optional path to a previously saved spyctra.
    :type path: str or None
-   :param data: List of ndarrays() containing the individual spyctra data.
+   :param data: List of ndarrays containing the individual spyctra data.
    :type data: list[ndarray]
    :param start: The initial x-axis value.
    :type start: float
    :param delta: The x-axis increment.
    :type delta: float
-   :param space: A flag indicating if the data is in the time ('s') or frequency ('Hz') domain.
+   :param space: A flag indicating if the data is in the time ('s') or frequency ('Hz') domain. Default is 's'.
    :type space: str
    :param phi: The cumulative phase adjustments made to each spyctra. Default is 0.
    :type phi: ndarray or None
@@ -24,8 +24,8 @@ The methods below are designed to be terse. One common convention is that method
    :type meta: dict or None
    :param freq: The observation frequencies of the spyctra. Default is 0.
    :type freq: ndarray or None
-   :param time: The datetime.timestamps of the spyctra.
-   :type time: datetime.timestamp or None
+   :param time: The datetime.timestamps of the spyctra (i.e. seconds since Jan 1, 1970). Default it 0.
+   :type time: ndarray[float/datetime.timestamp]
 
 
 
@@ -34,7 +34,7 @@ The methods below are designed to be terse. One common convention is that method
 
    Copy individual spyctra into a new object in a pythonic way.
 
-   :param ind: The spyctra to copy.
+   :param ind: The spyctra in *self* to copy.
    :type ind: int or list[int] or slice
    :return: A new spyctra that is a subset of the original.
    :rtype: spyctra
@@ -103,9 +103,9 @@ The methods below are designed to be terse. One common convention is that method
 
 .. py:function:: spyctra.decimate(self, number=0)
 
-   Average *self.data* at each x value across number of spyctra.
+   Average *self.data* at each x value across *number* of spyctra.
 
-   :param number: The number of spyctra to average. If *self.count%number* > 0, decimate will ignore the remainder. If *number* == 0, will decimate by *self.count*.
+   :param number: The number of spyctra to average. If *self.count%number* > 0, decimate will ignore the remainder. Default behavior (i.e. *number* == 0), will decimate by *self.count*.
    :type number: int
 
 
@@ -187,9 +187,9 @@ The methods below are designed to be terse. One common convention is that method
 
 .. py:function:: spyctra.get_offset(self, fraction=8)
 
-   Estimate the DC offset of each spyctra by sampling the last 1/*fraction* of the data.
+   Estimate the DC offset of each spyctra by averaging the last 1/*fraction* of the data.
 
-   :param fraction: The *fraction* of data sampled to calculate offset.
+   :param fraction: The *fraction* of data sampled to calculate the offset.
    :type fraction: int
    :return: The array of the offsets for each spyctra.
    :rtype: ndarray[float, complex].
@@ -204,7 +204,7 @@ The methods below are designed to be terse. One common convention is that method
 
    :param component: Which component (RIM) of the spyctra to process.
    :type component: char
-   :return: A list or two ndarrays containing the indices and values corresponding to the peak.
+   :return: A list of two ndarrays containing the indices and values corresponding to the peak.
    :rtype: list[ndarray[int], ndarray[float, complex]]
 
 
@@ -266,10 +266,10 @@ The methods below are designed to be terse. One common convention is that method
    Calculate the time since t0 for each spyctra and then divide by *scale* to put into desired units.
 
    :param t0: The initial time to compare to. If *t0* == None will use time of first spyctra.
-   :type t0: datetime.timestamp
-   :param scale: The number of seconds to divide the elapsed times by to convert to minutes (60), hours(60\*60), days(24\*60\*60).
+   :type t0: float/datetime.timestamp or None
+   :param scale: The number of seconds to divide the elapsed times by to convert to minutes (60), hours(60\*60), days(24\*60\*60), etc.
    :type scale: float
-   :return: the elapsed times.
+   :return: The elapsed times.
    :rtype: ndarray[float]
 
 
@@ -280,9 +280,9 @@ The methods below are designed to be terse. One common convention is that method
 
    Plot a 2d representation of the desired subset of *self.data*.
 
-   :param to_plot: Subset of spyctra to plot.
+   :param to_plot: Subset of spyctra to plot. Default is all.
    :type to_plot: int or iterable[float]
-   :param component: Which component[s] (RIM) of the data to plot.
+   :param component: Which component[s] (RIM) of the data to plot. Default is 'M'.
    :type component: char or str
 
 
@@ -295,7 +295,7 @@ The methods below are designed to be terse. One common convention is that method
 
    :param components: Which components (RIM) to integrate. Default is 'R'.
    :type components: char or str or None
-   :return: the desired integrals.
+   :return: The desired integrals.
    :rtype: ndarray[float] or ndarray[ndarray[float]]
 
 
@@ -337,9 +337,9 @@ The methods below are designed to be terse. One common convention is that method
 
 .. py:function:: spyctra.phase(self, phis=None)
 
-   Phase spyctra by the specified value[s].
+   Phase spyctra by the specified value[s] in *phis*.
 
-   :param phis: The phase adjustment, in radians, to be made to each spyctra.
+   :param phis: The phase adjustment, in radians, to be made to each spyctra. Default is to use the values return by *self.get_phi*.
    :type phis: float or iterable[float]
 
 
@@ -361,9 +361,9 @@ The methods below are designed to be terse. One common convention is that method
 
    Plot the desired subset of spyctra as adjacent plots.
 
-   :param to_plot: The subset of spyctra to plot.
+   :param to_plot: The subset of spyctra to plot. Default is all spyctra.
    :type to_plot: int or iterable[int]
-   :param component: Which components (RIM) of the data to plot.
+   :param component: Which components (RIM) of the data to plot. Default is 'RIM'.
    :type component: char or str
 
 
@@ -372,11 +372,11 @@ The methods below are designed to be terse. One common convention is that method
 
 .. py:function:: spyctra.plot_over(self, *args)
 
-   Plot the desired subset of spyctra in a single figure.
+   Plot the desired subset of spyctra overlaid in a single figure.
 
-   :param to_plot: The subset of spyctra to plot.
+   :param to_plot: The subset of spyctra to plot. Default is all spyctra.
    :type to_plot: int or iterable[int]
-   :param component: Which components (RIM) of the data to plot.
+   :param component: Which components (RIM) of the data to plot. Default is 'RIM'.
    :type component: char or str
 
 
@@ -437,14 +437,10 @@ The methods below are designed to be terse. One common convention is that method
 
 .. py:function:: spyctra.resize(self, N)
 
-   Resize spyctra by removing data or adding zeros.
-
- * If *N* is an integer, truncate or append zeros to make *self.points* == *N*.
- * If *N* is negative, zeros are prepended.
- * If *N* is list, isolate data between the extremes in the list.
+   Resize spyctra by removing data or adding zeros. If *N* is an integer, truncate or append zeros to make *self.points* == *N*. If *N* is negative, *N* zeros are prepended. If *N* is list, isolate data between the extremes in the list.
 
    :param N: The new length of the spyctra.
-   :type N: int or list
+   :type N: int or iterable
    :return: The indices used to subset the data if *N* is a list.
    :rtype: list
 
@@ -524,7 +520,7 @@ The methods below are designed to be terse. One common convention is that method
    :type points: int
    :param delta: The x increment of the spyctra x-axis.
    :type delta: int or list
-   :param df: The off-resonance (delta-f) of the spyctra.
+   :param df: The off-resonance (delta-f) of the spyctra compared to the observation frequency *freq*.
    :type df: float
    :param noise: The standard deviation of the noise in both the real and imaginary channels from one scan.
    :type noise: float

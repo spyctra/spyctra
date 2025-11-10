@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>fitlib &#8212; Spyctra 6 documentation</title>
+    <title>Laplace Inversion &#8212; Spyctra 6 documentation</title>
   
   
   
@@ -41,11 +41,11 @@
     <script src="_static/documentation_options.js?v=e22f532e"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'fitlib_man';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'invlap_man';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="TNT" href="TNT_man.html" />
-    <link rel="prev" title="spyctra" href="spyctra_man.html" />
+    <link rel="next" title="Quadrature Detector Simulator" href="quad_detector_simulator_man.html" />
+    <link rel="prev" title="SDF" href="SDF_man.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -131,8 +131,8 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="fitlib_man.html">
     fitlib
   </a>
 </li>
@@ -152,8 +152,8 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="invlap_man.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Laplace Inversion
   </a>
 </li>
@@ -255,8 +255,8 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="fitlib_man.html">
     fitlib
   </a>
 </li>
@@ -276,8 +276,8 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="invlap_man.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Laplace Inversion
   </a>
 </li>
@@ -355,7 +355,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">fitlib</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Laplace Inversion</span></li>
   </ul>
 </nav>
 </div>
@@ -372,67 +372,52 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="fitlib">
-<h1>fitlib<a class="headerlink" href="#fitlib" title="Link to this heading">#</a></h1>
-<p>Because LMFIT is deficient. fitlib is a glorified wrapper for scipy.optimize.curve_fit. It handles global fitting (i.e. fitting multiple traces with one global parameter), complex variables, complex global fitting, and has a handy visualization tool so you can see how close your initial fit parameters were before you start fitting and wasting the time of all those poor electrons.</p>
+  <section id="laplace-inversion">
+<h1>Laplace Inversion<a class="headerlink" href="#laplace-inversion" title="Link to this heading">#</a></h1>
+<p>Calculate 1 and 2D Laplace inversions to recover the distribution of time constants in data.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fit" title="Link to this definition">#</a></dt>
-<dd><p>The curve_fit wrapper that finds the parameters p1 that minimize the sum of the squared errors of <em>function</em>(<em>xs</em>[i], *p1) - <em>ys</em>[i]</p>
+<dt class="sig sig-object py" id="laplace_inversion">
+<span class="sig-name descname"><span class="pre">laplace_inversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_es</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">exp_dec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#laplace_inversion" title="Link to this definition">#</a></dt>
+<dd><p>Perform a 1D Laplace inversion of the data defined by <em>x</em> and <em>y</em> using the decay constants <em>T_es</em> and the specific kernel. The kernel can be and ‘exp_dec’ for an exponential decay, ‘inv_rec’ for an inversion recovery, or ‘sat_rec’ for a saturation recovery.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>function</strong> (<em>object</em>) – The name of the function to be fit.</p></li>
-<li><p><strong>xs</strong> (<em>iterable</em><em>[</em><em>float</em><em>] or </em><em>iterable</em><em>[</em><em>iterable</em><em>[</em><em>float</em><em>]</em><em>]</em>) – The x values of the y data. Can be 2D.</p></li>
-<li><p><strong>ys</strong> (<em>iterable</em><em>[</em><em>float</em><em>, </em><em>complex</em><em>] or </em><em>iterable</em><em>[</em><em>iterable</em><em>[</em><em>float</em><em>, </em><em>complex</em><em>]</em><em>]</em>) – The y values of the data. Can be 2D.</p></li>
-<li><p><strong>p0</strong> – The initial guess of the fit parameters. If there are multiple y iterables (i.e. len(<em>ys</em>) &gt; 1), but one <em>p0</em> parameter is not an iterable with len() &gt; 1, a global fit will be performed for that parameter.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Examples:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>individual fits:</dt><dd><ul>
-<li><p>len(<em>ys</em>) == 1: <em>p0</em>=[1.0, 1.1, 1.2, 1.3], one value for each parameter</p></li>
-<li><p>len(<em>ys</em>) &gt; 1: <em>p0</em>= [[1.0]*len(<em>ys</em>), [1.1]*len(<em>ys</em>), [1.2]*len(<em>ys</em>), [1.3]*len(<em>ys</em>)] each parameter has same length as <em>ys</em></p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>global fits:</dt><dd><ul>
-<li><p>len(<em>ys</em>) &gt; 1: <em>p0</em>=[1.0, [1.1]*len(<em>ys</em>), [1.2]*len(<em>ys</em>), [1.3]*len(<em>ys</em>)], at least one parameter be a single value (or an iterable of length(1))</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>guess</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag indicating whether to plot the fit comparison using the initial <em>p0</em>. Default is 0.</p></li>
-<li><p><strong>check</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag indicating whether to plot the fit comparison using the final fit parameters <em>p1</em>. Default is 0.</p></li>
-<li><p><strong>result</strong> (<em>str</em><em> or </em><em>None</em>) – A single string of comma seperate values serving as the label for the displayed fit parameters and result dictionary. Default is p_0, p_1, etc. Example: result=’amplitude, frequency, phase, linewidth’</p></li>
-<li><p><strong>fine</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag indicating whether to plot guess or check plots with a finer array of x values than the default of the <em>xs</em> values. Default is 0.</p></li>
-<li><p><strong>multi</strong> (<em>int</em>) – The number of threads to use when fitting a large number of <em>ys</em> in a non-global fit. Beware Amdahl’s Law: multithreading overhead limits performance gains. Default is 1.</p></li>
-<li><p><strong>logx</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag indicating if a log scale should be used for the x axis in the guess and check plots. Default is 0.</p></li>
-<li><p><strong>logy</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag indicating if a log scale should be used for the y axis in the guess and check plots. Default is 0.</p></li>
-<li><p><strong>note</strong> (<em>str</em>) – Text to display next to printout of the fit results summary. Default is ‘’.</p></li>
-<li><p><strong>xlabel</strong> (<em>str</em>) – Text for the xlabel of the guess and check plots. Default is ‘’.</p></li>
-<li><p><strong>ylabel</strong> (<em>str</em>) – Text for the ylabel of the guess and check plots. Default is ‘’.</p></li>
-<li><p><strong>prefix</strong> (<em>str</em>) – Text to prepend to the labels of the parameter variable names based on result. Default is ‘’.</p></li>
-<li><p><strong>quiet</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag to suppress printing results to standard out. Default is 0.</p></li>
-<li><p><strong>suffix</strong> (<em>str</em>) – Text to append to the labels of the parameter variable names based on <em>result</em>. Default is ‘’.</p></li>
-<li><p><strong>summary</strong> (<em>int</em><em>[</em><em>0</em><em>, </em><em>1</em><em>] or </em><em>bool</em>) – A flag indicating whether to plot a summary of the fit parameters for calls to fit with len(<em>ys</em>)&gt;1. Default is 0.</p></li>
-<li><p><strong>savefig</strong> (<em>str</em>) – If specified, a path, with file extension, of where to save the guess and check figures. Default is ‘’.</p></li>
-<li><p><strong>**kwargs</strong> – Other **kwargs recognized by scipy.optimize.curve_fit.</p></li>
+<li><p><strong>x</strong> (<em>iterable</em><em>(</em><em>float</em><em>)</em>) – The x values of the data with same length as y.</p></li>
+<li><p><strong>y</strong> (<em>iterable</em><em>(</em><em>float</em><em>)</em>) – The y values of the data with same length as x.</p></li>
+<li><p><strong>T_es</strong> (<em>iterable</em><em>[</em><em>float</em><em>]</em>) – The possible decay constants of the data.</p></li>
+<li><p><strong>kernel</strong> (<em>function reference</em>) – The functional form the signal is being decomposed into. Default is ‘exp_dec’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The fit parameters and a summary dictionary as <em>p1</em> and <em>r</em></p>
+<dd class="field-even"><p>The y values of the Laplace inversion corresponding to T_es.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[p1=ndarray], r=dict]</p>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="laplace_inversion_2D">
+<span class="sig-name descname"><span class="pre">laplace_inversion_2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t2_times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t1_times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncomp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_1s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_2s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#laplace_inversion_2D" title="Link to this definition">#</a></dt>
+<dd><p>Perform a 2D Laplace inversion of the data taken along T2 (direct) and T1 (indirect) dimensions. Assumes exponential decay along T2 dimension and inversion recovery along T1 dimension but can be altered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>2D ndarray</em>) – The magnitude of the 2D data with T2 along rows and T1 along columns.</p></li>
+<li><p><strong>t2_times</strong> (<em>ndarray</em>) – The time of the 2D observations.</p></li>
+<li><p><strong>t1_times</strong> (<em>ndarray</em>) – The time of the 1D observations.</p></li>
+<li><p><strong>lambda0</strong> (<em>float</em>) – The value for the regularization parameter lamda.</p></li>
+<li><p><strong>ncomp</strong> (<em>float</em>) – The number of singular values to use for SVD compression.</p></li>
+<li><p><strong>T_1s</strong> (<em>float</em>) – The possible T1 values in the data.</p></li>
+<li><p><strong>T_2s</strong> (<em>float</em>) – The possible T2 values in the data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The 2D Laplace inversion of the data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2D ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -450,20 +435,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="spyctra_man.html"
+       href="SDF_man.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">spyctra</p>
+        <p class="prev-next-title">SDF</p>
       </div>
     </a>
     <a class="right-next"
-       href="TNT_man.html"
+       href="quad_detector_simulator_man.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">TNT</p>
+        <p class="prev-next-title">Quadrature Detector Simulator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -486,7 +471,8 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laplace_inversion"><code class="docutils literal notranslate"><span class="pre">laplace_inversion()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laplace_inversion_2D"><code class="docutils literal notranslate"><span class="pre">laplace_inversion_2D()</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -494,7 +480,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/fitlib_man.rst.txt"
+      <li><a href="_sources/invlap_man.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

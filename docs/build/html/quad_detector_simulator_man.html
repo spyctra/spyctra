@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>quad_detector_simulator &#8212; Spyctra 6 documentation</title>
+    <title>Quadrature Detector Simulator &#8212; Spyctra 6 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'quad_detector_simulator_man';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="SDF" href="SDF_man.html" />
+    <link rel="prev" title="Laplace Inversion" href="invlap_man.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -151,12 +151,29 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    quad_detector_simulator
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="invlap_man.html">
+    Laplace Inversion
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Quadrature Detector Simulator
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -258,9 +275,16 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="invlap_man.html">
+    Laplace Inversion
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    quad_detector_simulator
+    Quadrature Detector Simulator
   </a>
 </li>
 
@@ -330,7 +354,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">quad_detector_simulator</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Quadrature Detector Simulator</span></li>
   </ul>
 </nav>
 </div>
@@ -347,9 +371,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="quad-detector-simulator">
-<h1>quad_detector_simulator<a class="headerlink" href="#quad-detector-simulator" title="Link to this heading">#</a></h1>
-<p>Don’t you wish you knew how quadrature detectors worked? In principle, it works by splitting the analog signal into two initially identical channels: the real and imaginary. Both channels get multiplied by an AC signal at the demodulation frequency but the AC signal for each channel differs by pi/2 radians. The channels are then filtered to remove high frequency components. After the filter the data is discretely sampled and that data is averaged over some sampling period: the dwell time.</p>
+  <section id="quadrature-detector-simulator">
+<h1>Quadrature Detector Simulator<a class="headerlink" href="#quadrature-detector-simulator" title="Link to this heading">#</a></h1>
+<p>Don’t you wish you knew how quadrature detectors worked on signal from a single coil? In principle, it works by splitting the analog signal into two initially identical channels: the real and imaginary. Both channels get multiplied by an AC signal at the demodulation frequency but the AC signal for each channel differs by pi/2 radians. The channels are then filtered to remove high frequency components. After the filter the data is discretely sampled and that data is averaged over some sampling period: the dwell time.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="quad_detector">
 <span class="sig-name descname"><span class="pre">quad_detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_dwell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_demod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rec_phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quad_detector" title="Link to this definition">#</a></dt>
@@ -362,10 +386,11 @@
 <li><p><strong>t_dwell</strong> (<em>float</em>) – The demodulated data’s sampling period or dwell time.</p></li>
 <li><p><strong>f_demod</strong> (<em>float</em>) – The demodulation frequency of the detector.</p></li>
 <li><p><strong>bandwidth</strong> (<em>float</em>) – The cutoff frequency for the low pass butterworth filter simulation.</p></li>
+<li><p><strong>rec_phase</strong> (<em>float</em>) – The receiver phase of the system.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>complex demodulated data.</p>
+<dd class="field-even"><p>complex demodulated data</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray(complex)</p>
@@ -386,12 +411,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="SDF_man.html"
+       href="invlap_man.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">SDF</p>
+        <p class="prev-next-title">Laplace Inversion</p>
       </div>
     </a>
 </div>

@@ -1,7 +1,7 @@
 fitlib
 ==================================
 
-Because LMFIT is deficient. fitlib is a glorified wrapper for scipy.optimize.curve_fit. It handles global fitting, complex variables, complex global fitting, and has a handy visualization tool so you can see how close your initial fit parameters were before you start fitting and wasting the time of all those poor electrons.
+Because LMFIT is deficient. fitlib is a glorified wrapper for scipy.optimize.curve_fit. It handles global fitting (i.e. fitting multiple traces with one global parameter), complex variables, complex global fitting, and has a handy visualization tool so you can see how close your initial fit parameters were before you start fitting and wasting the time of all those poor electrons.
 
 .. py:function:: fit(function, xs, ys, p0, **kwargs)
 
@@ -13,7 +13,7 @@ Because LMFIT is deficient. fitlib is a glorified wrapper for scipy.optimize.cur
    :type xs: iterable[float] or iterable[iterable[float]]
    :param ys: The y values of the data. Can be 2D.
    :type ys: iterable[float, complex] or iterable[iterable[float, complex]]
-   :param p0: The initial guess of the fit parameters. If there are multiple y iterables (i.e. len(*ys*) > 1), but one *p0* parameter is not an iterable with len() > 1, a global fit will be performed.
+   :param p0: The initial guess of the fit parameters. If there are multiple y iterables (i.e. len(*ys*) > 1), but one *p0* parameter is not an iterable with len() > 1, a global fit will be performed for that parameter.
 
    Examples:
 

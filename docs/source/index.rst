@@ -14,7 +14,7 @@ Spyctra objects manipulate the following attributes:
 * *self.phi*: an ndarray tracking the net global phase adjustments made to the spyctra
 * *self.meta*: a dictionary containing any other metadata about the spyctra
 * *self.freq*: an ndarray with the observation frequency of the data
-* *self.time*: an ndarray of datetime.timestamps representing the time of the data
+* *self.time*: an ndarray of datetime.timestamps with the time of the spyctra
 
 Design Choice Rationalizations
 ===============================
@@ -32,6 +32,7 @@ Design Choice Rationalizations
    fitlib_man.rst
    TNT_man.rst
    SDF_man.rst
+   invlap_man.rst
    quad_detector_simulator_man.rst
 
 

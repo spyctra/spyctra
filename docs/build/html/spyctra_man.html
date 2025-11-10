@@ -153,11 +153,28 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="quad_detector_simulator_man.html">
-    quad_detector_simulator
+  <a class="nav-link nav-internal" href="invlap_man.html">
+    Laplace Inversion
   </a>
 </li>
 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="quad_detector_simulator_man.html">
+    Quadrature Detector Simulator
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -260,8 +277,15 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="invlap_man.html">
+    Laplace Inversion
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="quad_detector_simulator_man.html">
-    quad_detector_simulator
+    Quadrature Detector Simulator
   </a>
 </li>
 
@@ -350,23 +374,23 @@
                   
   <section id="spyctra">
 <h1>spyctra<a class="headerlink" href="#spyctra" title="Link to this heading">#</a></h1>
-<p>The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within <em>self</em>, or can accept an iterable, with length equal to <em>self.count</em>, with each value applied to the corresponding spyctra.</p>
+<p>The methods below are designed to be terse. One common convention is that methods will accept a single value and then apply it to all spyctra within <em>self</em>, and they can accept an iterable, with length equal to <em>self.count</em>, with each value applied to the corresponding spyctra.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="spyctra.__init__">
 <span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Initialize the python object.</p>
+<dd><p>Initialize the spyctra object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>str</em><em> or </em><em>None</em>) – Optional path to a previously saved spyctra.</p></li>
-<li><p><strong>data</strong> (<em>list</em><em>[</em><em>ndarray</em><em>]</em>) – List of ndarrays() containing the individual spyctra data.</p></li>
+<li><p><strong>data</strong> (<em>list</em><em>[</em><em>ndarray</em><em>]</em>) – List of ndarrays containing the individual spyctra data.</p></li>
 <li><p><strong>start</strong> (<em>float</em>) – The initial x-axis value.</p></li>
 <li><p><strong>delta</strong> (<em>float</em>) – The x-axis increment.</p></li>
-<li><p><strong>space</strong> (<em>str</em>) – A flag indicating if the data is in the time (‘s’) or frequency (‘Hz’) domain.</p></li>
+<li><p><strong>space</strong> (<em>str</em>) – A flag indicating if the data is in the time (‘s’) or frequency (‘Hz’) domain. Default is ‘s’.</p></li>
 <li><p><strong>phi</strong> (<em>ndarray</em><em> or </em><em>None</em>) – The cumulative phase adjustments made to each spyctra. Default is 0.</p></li>
 <li><p><strong>meta</strong> (<em>dict</em><em> or </em><em>None</em>) – A dictionary of iterables that track additional metadata of the spyctra.</p></li>
 <li><p><strong>freq</strong> (<em>ndarray</em><em> or </em><em>None</em>) – The observation frequencies of the spyctra. Default is 0.</p></li>
-<li><p><strong>time</strong> (<em>datetime.timestamp</em><em> or </em><em>None</em>) – The datetime.timestamps of the spyctra.</p></li>
+<li><p><strong>time</strong> (<em>ndarray</em><em>[</em><em>float/datetime.timestamp</em><em>]</em>) – The datetime.timestamps of the spyctra (i.e. seconds since Jan 1, 1970). Default it 0.</p></li>
 </ul>
 </dd>
 </dl>
@@ -378,7 +402,7 @@
 <dd><p>Copy individual spyctra into a new object in a pythonic way.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ind</strong> (<em>int</em><em> or </em><em>list</em><em>[</em><em>int</em><em>] or </em><em>slice</em>) – The spyctra to copy.</p>
+<dd class="field-odd"><p><strong>ind</strong> (<em>int</em><em> or </em><em>list</em><em>[</em><em>int</em><em>] or </em><em>slice</em>) – The spyctra in <em>self</em> to copy.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A new spyctra that is a subset of the original.</p>
@@ -465,10 +489,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="spyctra.decimate">
 <span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">decimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.decimate" title="Link to this definition">#</a></dt>
-<dd><p>Average <em>self.data</em> at each x value across number of spyctra.</p>
+<dd><p>Average <em>self.data</em> at each x value across <em>number</em> of spyctra.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>number</strong> (<em>int</em>) – The number of spyctra to average. If <em>self.count%number</em> &gt; 0, decimate will ignore the remainder. If <em>number</em> == 0, will decimate by <em>self.count</em>.</p>
+<dd class="field-odd"><p><strong>number</strong> (<em>int</em>) – The number of spyctra to average. If <em>self.count%number</em> &gt; 0, decimate will ignore the remainder. Default behavior (i.e. <em>number</em> == 0), will decimate by <em>self.count</em>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -564,10 +588,10 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="spyctra.get_offset">
 <span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">get_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.get_offset" title="Link to this definition">#</a></dt>
-<dd><p>Estimate the DC offset of each spyctra by sampling the last 1/<em>fraction</em> of the data.</p>
+<dd><p>Estimate the DC offset of each spyctra by averaging the last 1/<em>fraction</em> of the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fraction</strong> (<em>int</em>) – The <em>fraction</em> of data sampled to calculate offset.</p>
+<dd class="field-odd"><p><strong>fraction</strong> (<em>int</em>) – The <em>fraction</em> of data sampled to calculate the offset.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The array of the offsets for each spyctra.</p>
@@ -587,7 +611,7 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dd class="field-odd"><p><strong>component</strong> (<em>char</em>) – Which component (RIM) of the spyctra to process.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list or two ndarrays containing the indices and values corresponding to the peak.</p>
+<dd class="field-even"><p>A list of two ndarrays containing the indices and values corresponding to the peak.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[ndarray[int], ndarray[float, complex]]</p>
@@ -667,12 +691,12 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t0</strong> (<em>datetime.timestamp</em>) – The initial time to compare to. If <em>t0</em> == None will use time of first spyctra.</p></li>
-<li><p><strong>scale</strong> (<em>float</em>) – The number of seconds to divide the elapsed times by to convert to minutes (60), hours(60*60), days(24*60*60).</p></li>
+<li><p><strong>t0</strong> (<em>float/datetime.timestamp</em><em> or </em><em>None</em>) – The initial time to compare to. If <em>t0</em> == None will use time of first spyctra.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – The number of seconds to divide the elapsed times by to convert to minutes (60), hours(60*60), days(24*60*60), etc.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the elapsed times.</p>
+<dd class="field-even"><p>The elapsed times.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray[float]</p>
@@ -687,8 +711,8 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – Subset of spyctra to plot.</p></li>
-<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which component[s] (RIM) of the data to plot.</p></li>
+<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – Subset of spyctra to plot. Default is all.</p></li>
+<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which component[s] (RIM) of the data to plot. Default is ‘M’.</p></li>
 </ul>
 </dd>
 </dl>
@@ -703,7 +727,7 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dd class="field-odd"><p><strong>components</strong> (<em>char</em><em> or </em><em>str</em><em> or </em><em>None</em>) – Which components (RIM) to integrate. Default is ‘R’.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the desired integrals.</p>
+<dd class="field-even"><p>The desired integrals.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ndarray[float] or ndarray[ndarray[float]]</p>
@@ -747,10 +771,10 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="spyctra.phase">
 <span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.phase" title="Link to this definition">#</a></dt>
-<dd><p>Phase spyctra by the specified value[s].</p>
+<dd><p>Phase spyctra by the specified value[s] in <em>phis</em>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>phis</strong> (<em>float</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – The phase adjustment, in radians, to be made to each spyctra.</p>
+<dd class="field-odd"><p><strong>phis</strong> (<em>float</em><em> or </em><em>iterable</em><em>[</em><em>float</em><em>]</em>) – The phase adjustment, in radians, to be made to each spyctra. Default is to use the values return by <em>self.get_phi</em>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -773,8 +797,8 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to plot.</p></li>
-<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which components (RIM) of the data to plot.</p></li>
+<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to plot. Default is all spyctra.</p></li>
+<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which components (RIM) of the data to plot. Default is ‘RIM’.</p></li>
 </ul>
 </dd>
 </dl>
@@ -783,12 +807,12 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="spyctra.plot_over">
 <span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">plot_over</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.plot_over" title="Link to this definition">#</a></dt>
-<dd><p>Plot the desired subset of spyctra in a single figure.</p>
+<dd><p>Plot the desired subset of spyctra overlaid in a single figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to plot.</p></li>
-<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which components (RIM) of the data to plot.</p></li>
+<li><p><strong>to_plot</strong> (<em>int</em><em> or </em><em>iterable</em><em>[</em><em>int</em><em>]</em>) – The subset of spyctra to plot. Default is all spyctra.</p></li>
+<li><p><strong>component</strong> (<em>char</em><em> or </em><em>str</em>) – Which components (RIM) of the data to plot. Default is ‘RIM’.</p></li>
 </ul>
 </dd>
 </dl>
@@ -843,29 +867,18 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="spyctra.resize">
 <span class="sig-prename descclassname"><span class="pre">spyctra.</span></span><span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spyctra.resize" title="Link to this definition">#</a></dt>
-<dd><blockquote>
-<div><p>Resize spyctra by removing data or adding zeros.</p>
-</div></blockquote>
-<ul class="simple">
-<li><p>If <em>N</em> is an integer, truncate or append zeros to make <em>self.points</em> == <em>N</em>.</p></li>
-<li><p>If <em>N</em> is negative, zeros are prepended.</p></li>
-<li><p>If <em>N</em> is list, isolate data between the extremes in the list.</p>
+<dd><p>Resize spyctra by removing data or adding zeros. If <em>N</em> is an integer, truncate or append zeros to make <em>self.points</em> == <em>N</em>. If <em>N</em> is negative, <em>N</em> zeros are prepended. If <em>N</em> is list, isolate data between the extremes in the list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">param N<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The new length of the spyctra.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N</strong> (<em>int</em><em> or </em><em>iterable</em>) – The new length of the spyctra.</p>
 </dd>
-<dt class="field-even">type N<span class="colon">:</span></dt>
-<dd class="field-even"><p>int or list</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The indices used to subset the data if <em>N</em> is a list.</p>
 </dd>
-<dt class="field-odd">return<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The indices used to subset the data if <em>N</em> is a list.</p>
-</dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
-</li>
-</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -938,7 +951,7 @@ Doesn’t check for time domain because spyctra lets you do you.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>points</strong> (<em>int</em>) – The length of the spyctra data.</p></li>
 <li><p><strong>delta</strong> (<em>int</em><em> or </em><em>list</em>) – The x increment of the spyctra x-axis.</p></li>
-<li><p><strong>df</strong> (<em>float</em>) – The off-resonance (delta-f) of the spyctra.</p></li>
+<li><p><strong>df</strong> (<em>float</em>) – The off-resonance (delta-f) of the spyctra compared to the observation frequency <em>freq</em>.</p></li>
 <li><p><strong>noise</strong> (<em>float</em>) – The standard deviation of the noise in both the real and imaginary channels from one scan.</p></li>
 <li><p><strong>t_2</strong> (<em>float</em>) – The decay constant, in seconds, of the data.</p></li>
 <li><p><strong>phi</strong> (<em>float</em>) – The phase offset, in radians, of the data.</p></li>
