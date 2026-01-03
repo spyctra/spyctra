@@ -1,4 +1,3 @@
-
 ---
 title: 'Spyctra and pyTNMR: Python Tools For Magnetic Resonance Analysis and Control'
 tags:
@@ -12,6 +11,7 @@ tags:
   - magnetic resonance
 authors:
   - name: Michael W. Malone
+    corresponding: true
     orcid: 0000-0002-9721-1538
     affiliation: 1
   - name: Adam R Altenhof
@@ -27,7 +27,7 @@ affiliations:
    index: 1
  - name: Anderson Intuition LLC, Berkeley, CA, US
    index: 2
-date: 18 October 2025
+date: 3 January 2026
 bibliography: paper.bib
 ---
 
@@ -49,6 +49,6 @@ In regular development for over ten years, both `spyctra` and `pyTNMR` have been
 
 # Acknowledgements
 
-Research presented in this report was supported by the Laboratory Directed Research and Development program of Los Alamos National Laboratory under project number XXXXXXXXXXXX. Los Alamos National Laboratory is operated by Triad National Security, LLC, for the National Nuclear Security Administration of US Department of Energy (contract no. 89233218CNA000001).
+Research presented in this report was partially supported by the Laboratory Directed Research and Development program of Los Alamos National Laboratory under project number 20260021DR. Los Alamos National Laboratory is operated by Triad National Security, LLC, for the National Nuclear Security Administration of US Department of Energy (contract no. 89233218CNA000001).
 
 # References
